@@ -22,7 +22,8 @@ resource "fmc_access_rules" "access_rule_${index}" {
 
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  name      = "$${each.value.data.name}#$${each.value.idx}"
+  #name      = "$${each.value.data.name}#$${each.value.idx}"
+  name      = each.value.data.name
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
 
