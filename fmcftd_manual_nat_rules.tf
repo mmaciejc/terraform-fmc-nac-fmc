@@ -42,7 +42,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_0" {
   unidirectional                    = try(each.value.data.unidirectional, local.defaults.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.unidirectional, null) 
   depends_on = [fmc_ftd_nat_policies.ftdnatpolicy]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -139,7 +139,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_1" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -237,7 +237,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_2" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -336,7 +336,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_3" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -436,7 +436,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_4" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -537,7 +537,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_5" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -639,7 +639,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_6" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -742,7 +742,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_7" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -846,7 +846,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_8" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -951,7 +951,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_9" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1057,7 +1057,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_10" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1164,7 +1164,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_11" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1272,7 +1272,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_12" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1381,7 +1381,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_13" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1491,7 +1491,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_14" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1602,7 +1602,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_15" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1714,7 +1714,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_16" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1827,7 +1827,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_17" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -1941,7 +1941,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_18" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2056,7 +2056,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_19" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2172,7 +2172,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_20" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2289,7 +2289,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_21" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2407,7 +2407,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_22" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2526,7 +2526,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_23" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2646,7 +2646,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_24" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2767,7 +2767,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_25" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -2889,7 +2889,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_26" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3012,7 +3012,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_27" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3136,7 +3136,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_28" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3261,7 +3261,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_29" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3387,7 +3387,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_30" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3514,7 +3514,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_31" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3642,7 +3642,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_32" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3771,7 +3771,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_33" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -3901,7 +3901,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_34" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4032,7 +4032,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_35" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4164,7 +4164,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_36" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4297,7 +4297,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_37" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4431,7 +4431,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_38" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4566,7 +4566,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_39" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4702,7 +4702,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_40" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4839,7 +4839,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_41" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -4977,7 +4977,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_42" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5116,7 +5116,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_43" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5256,7 +5256,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_44" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5397,7 +5397,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_45" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5539,7 +5539,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_46" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5682,7 +5682,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_47" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5826,7 +5826,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_48" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -5971,7 +5971,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_49" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -6117,7 +6117,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_50" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -6264,7 +6264,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_51" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -6412,7 +6412,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_52" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -6561,7 +6561,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_53" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -6711,7 +6711,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_54" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -6862,7 +6862,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_55" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7014,7 +7014,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_56" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7167,7 +7167,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_57" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7321,7 +7321,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_58" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7476,7 +7476,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_59" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7632,7 +7632,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_60" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7789,7 +7789,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_61" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -7947,7 +7947,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_62" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -8106,7 +8106,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_63" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -8266,7 +8266,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_64" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -8427,7 +8427,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_65" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -8589,7 +8589,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_66" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -8752,7 +8752,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_67" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -8916,7 +8916,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_68" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -9081,7 +9081,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_69" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -9247,7 +9247,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_70" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -9414,7 +9414,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_71" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -9582,7 +9582,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_72" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -9751,7 +9751,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_73" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -9921,7 +9921,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_74" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -10092,7 +10092,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_75" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -10264,7 +10264,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_76" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -10437,7 +10437,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_77" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -10611,7 +10611,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_78" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -10786,7 +10786,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_79" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -10962,7 +10962,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_80" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -11139,7 +11139,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_81" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -11317,7 +11317,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_82" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -11496,7 +11496,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_83" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -11676,7 +11676,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_84" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -11857,7 +11857,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_85" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -12039,7 +12039,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_86" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -12222,7 +12222,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_87" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -12406,7 +12406,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_88" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -12591,7 +12591,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_89" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -12777,7 +12777,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_90" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -12964,7 +12964,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_91" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -13152,7 +13152,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_92" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -13341,7 +13341,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_93" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -13531,7 +13531,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_94" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -13722,7 +13722,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_95" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -13914,7 +13914,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_96" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -14107,7 +14107,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_97" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -14301,7 +14301,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_98" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
@@ -14496,7 +14496,7 @@ resource "fmc_ftd_manualnat_rules" "manualnat_rules_99" {
       fmc_ftd_nat_policies.ftdnatpolicy
   ]
   lifecycle {
-    create_before_destroy = true    
+    create_before_destroy = false    
   }
   dynamic "destination_interface" {
     for_each = try(length(each.value.data.destination_interface), 0) != 0 ? ["1"] : []
