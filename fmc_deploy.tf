@@ -17,8 +17,8 @@ resource "fmc_ftd_deploy" "ftd" {
   # Mandatory  
   device = local.map_devices[each.value.device].id
   # Optional      
-  ignore_warning = each.value.deploy_ignore_warning
-  force_deploy   = each.value.deploy_force
+  ignore_warning  = each.value.deploy_ignore_warning
+  force_deploy    = each.value.deploy_force
   depends_on = [
     fmc_access_policies.accesspolicy,
     fmc_device_physical_interfaces.physical_interface,
@@ -242,5 +242,5 @@ resource "fmc_ftd_deploy" "ftd" {
     fmc_access_rules.access_rule_99,
     fmc_ftd_manualnat_rules.manualnat_rules_99,
     fmc_network_group_objects.networkgroup_l5
-  ]
+    ]
 }

@@ -200,7 +200,7 @@ resource "fmc_access_rules" "access_rule_1" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -362,7 +362,7 @@ resource "fmc_access_rules" "access_rule_2" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -525,7 +525,7 @@ resource "fmc_access_rules" "access_rule_3" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -689,7 +689,7 @@ resource "fmc_access_rules" "access_rule_4" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -854,7 +854,7 @@ resource "fmc_access_rules" "access_rule_5" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1020,7 +1020,7 @@ resource "fmc_access_rules" "access_rule_6" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1187,7 +1187,7 @@ resource "fmc_access_rules" "access_rule_7" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1355,7 +1355,7 @@ resource "fmc_access_rules" "access_rule_8" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1524,7 +1524,7 @@ resource "fmc_access_rules" "access_rule_9" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1694,7 +1694,7 @@ resource "fmc_access_rules" "access_rule_10" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1865,7 +1865,7 @@ resource "fmc_access_rules" "access_rule_11" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2037,7 +2037,7 @@ resource "fmc_access_rules" "access_rule_12" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2210,7 +2210,7 @@ resource "fmc_access_rules" "access_rule_13" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2384,7 +2384,7 @@ resource "fmc_access_rules" "access_rule_14" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2559,7 +2559,7 @@ resource "fmc_access_rules" "access_rule_15" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2735,7 +2735,7 @@ resource "fmc_access_rules" "access_rule_16" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2912,7 +2912,7 @@ resource "fmc_access_rules" "access_rule_17" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3090,7 +3090,7 @@ resource "fmc_access_rules" "access_rule_18" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3269,7 +3269,7 @@ resource "fmc_access_rules" "access_rule_19" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3449,7 +3449,7 @@ resource "fmc_access_rules" "access_rule_20" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3630,7 +3630,7 @@ resource "fmc_access_rules" "access_rule_21" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3812,7 +3812,7 @@ resource "fmc_access_rules" "access_rule_22" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3995,7 +3995,7 @@ resource "fmc_access_rules" "access_rule_23" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4179,7 +4179,7 @@ resource "fmc_access_rules" "access_rule_24" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4364,7 +4364,7 @@ resource "fmc_access_rules" "access_rule_25" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4550,7 +4550,7 @@ resource "fmc_access_rules" "access_rule_26" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4737,7 +4737,7 @@ resource "fmc_access_rules" "access_rule_27" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4925,7 +4925,7 @@ resource "fmc_access_rules" "access_rule_28" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5114,7 +5114,7 @@ resource "fmc_access_rules" "access_rule_29" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5304,7 +5304,7 @@ resource "fmc_access_rules" "access_rule_30" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5495,7 +5495,7 @@ resource "fmc_access_rules" "access_rule_31" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5687,7 +5687,7 @@ resource "fmc_access_rules" "access_rule_32" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5880,7 +5880,7 @@ resource "fmc_access_rules" "access_rule_33" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6074,7 +6074,7 @@ resource "fmc_access_rules" "access_rule_34" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6269,7 +6269,7 @@ resource "fmc_access_rules" "access_rule_35" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6465,7 +6465,7 @@ resource "fmc_access_rules" "access_rule_36" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6662,7 +6662,7 @@ resource "fmc_access_rules" "access_rule_37" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6860,7 +6860,7 @@ resource "fmc_access_rules" "access_rule_38" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7059,7 +7059,7 @@ resource "fmc_access_rules" "access_rule_39" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7259,7 +7259,7 @@ resource "fmc_access_rules" "access_rule_40" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7460,7 +7460,7 @@ resource "fmc_access_rules" "access_rule_41" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7662,7 +7662,7 @@ resource "fmc_access_rules" "access_rule_42" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7865,7 +7865,7 @@ resource "fmc_access_rules" "access_rule_43" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8069,7 +8069,7 @@ resource "fmc_access_rules" "access_rule_44" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8274,7 +8274,7 @@ resource "fmc_access_rules" "access_rule_45" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8480,7 +8480,7 @@ resource "fmc_access_rules" "access_rule_46" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8687,7 +8687,7 @@ resource "fmc_access_rules" "access_rule_47" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8895,7 +8895,7 @@ resource "fmc_access_rules" "access_rule_48" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9104,7 +9104,7 @@ resource "fmc_access_rules" "access_rule_49" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9314,7 +9314,7 @@ resource "fmc_access_rules" "access_rule_50" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9525,7 +9525,7 @@ resource "fmc_access_rules" "access_rule_51" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9737,7 +9737,7 @@ resource "fmc_access_rules" "access_rule_52" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9950,7 +9950,7 @@ resource "fmc_access_rules" "access_rule_53" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10164,7 +10164,7 @@ resource "fmc_access_rules" "access_rule_54" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10379,7 +10379,7 @@ resource "fmc_access_rules" "access_rule_55" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10595,7 +10595,7 @@ resource "fmc_access_rules" "access_rule_56" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10812,7 +10812,7 @@ resource "fmc_access_rules" "access_rule_57" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11030,7 +11030,7 @@ resource "fmc_access_rules" "access_rule_58" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11249,7 +11249,7 @@ resource "fmc_access_rules" "access_rule_59" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11469,7 +11469,7 @@ resource "fmc_access_rules" "access_rule_60" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11690,7 +11690,7 @@ resource "fmc_access_rules" "access_rule_61" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11912,7 +11912,7 @@ resource "fmc_access_rules" "access_rule_62" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12135,7 +12135,7 @@ resource "fmc_access_rules" "access_rule_63" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12359,7 +12359,7 @@ resource "fmc_access_rules" "access_rule_64" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12584,7 +12584,7 @@ resource "fmc_access_rules" "access_rule_65" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12810,7 +12810,7 @@ resource "fmc_access_rules" "access_rule_66" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13037,7 +13037,7 @@ resource "fmc_access_rules" "access_rule_67" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13265,7 +13265,7 @@ resource "fmc_access_rules" "access_rule_68" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13494,7 +13494,7 @@ resource "fmc_access_rules" "access_rule_69" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13724,7 +13724,7 @@ resource "fmc_access_rules" "access_rule_70" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13955,7 +13955,7 @@ resource "fmc_access_rules" "access_rule_71" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14187,7 +14187,7 @@ resource "fmc_access_rules" "access_rule_72" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14420,7 +14420,7 @@ resource "fmc_access_rules" "access_rule_73" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14654,7 +14654,7 @@ resource "fmc_access_rules" "access_rule_74" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14889,7 +14889,7 @@ resource "fmc_access_rules" "access_rule_75" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15125,7 +15125,7 @@ resource "fmc_access_rules" "access_rule_76" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15362,7 +15362,7 @@ resource "fmc_access_rules" "access_rule_77" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15600,7 +15600,7 @@ resource "fmc_access_rules" "access_rule_78" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15839,7 +15839,7 @@ resource "fmc_access_rules" "access_rule_79" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16079,7 +16079,7 @@ resource "fmc_access_rules" "access_rule_80" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16320,7 +16320,7 @@ resource "fmc_access_rules" "access_rule_81" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16562,7 +16562,7 @@ resource "fmc_access_rules" "access_rule_82" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16805,7 +16805,7 @@ resource "fmc_access_rules" "access_rule_83" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17049,7 +17049,7 @@ resource "fmc_access_rules" "access_rule_84" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17294,7 +17294,7 @@ resource "fmc_access_rules" "access_rule_85" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17540,7 +17540,7 @@ resource "fmc_access_rules" "access_rule_86" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17787,7 +17787,7 @@ resource "fmc_access_rules" "access_rule_87" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18035,7 +18035,7 @@ resource "fmc_access_rules" "access_rule_88" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18284,7 +18284,7 @@ resource "fmc_access_rules" "access_rule_89" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18534,7 +18534,7 @@ resource "fmc_access_rules" "access_rule_90" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18785,7 +18785,7 @@ resource "fmc_access_rules" "access_rule_91" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19037,7 +19037,7 @@ resource "fmc_access_rules" "access_rule_92" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19290,7 +19290,7 @@ resource "fmc_access_rules" "access_rule_93" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19544,7 +19544,7 @@ resource "fmc_access_rules" "access_rule_94" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19799,7 +19799,7 @@ resource "fmc_access_rules" "access_rule_95" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20055,7 +20055,7 @@ resource "fmc_access_rules" "access_rule_96" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20312,7 +20312,7 @@ resource "fmc_access_rules" "access_rule_97" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20570,7 +20570,7 @@ resource "fmc_access_rules" "access_rule_98" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20829,7 +20829,7 @@ resource "fmc_access_rules" "access_rule_99" {
       fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
