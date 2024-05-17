@@ -57,7 +57,7 @@ resource "fmc_access_rules" "access_rule_${index}" {
     fmc_access_policies_category.accesspolicy_category
     ]
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
   %{~ endif ~}
 
