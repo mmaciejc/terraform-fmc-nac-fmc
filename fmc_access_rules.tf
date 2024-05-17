@@ -19,8 +19,7 @@ resource "fmc_access_rules" "access_rule_0" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 0 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -179,8 +178,7 @@ resource "fmc_access_rules" "access_rule_1" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 1 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -203,9 +201,6 @@ resource "fmc_access_rules" "access_rule_1" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -344,8 +339,7 @@ resource "fmc_access_rules" "access_rule_2" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 2 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -369,10 +363,6 @@ resource "fmc_access_rules" "access_rule_2" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -511,8 +501,7 @@ resource "fmc_access_rules" "access_rule_3" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 3 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -537,11 +526,6 @@ resource "fmc_access_rules" "access_rule_3" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -680,8 +664,7 @@ resource "fmc_access_rules" "access_rule_4" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 4 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -707,12 +690,6 @@ resource "fmc_access_rules" "access_rule_4" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -851,8 +828,7 @@ resource "fmc_access_rules" "access_rule_5" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 5 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -879,13 +855,6 @@ resource "fmc_access_rules" "access_rule_5" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1024,8 +993,7 @@ resource "fmc_access_rules" "access_rule_6" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 6 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -1053,14 +1021,6 @@ resource "fmc_access_rules" "access_rule_6" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1199,8 +1159,7 @@ resource "fmc_access_rules" "access_rule_7" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 7 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -1229,15 +1188,6 @@ resource "fmc_access_rules" "access_rule_7" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1376,8 +1326,7 @@ resource "fmc_access_rules" "access_rule_8" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 8 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -1407,16 +1356,6 @@ resource "fmc_access_rules" "access_rule_8" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1555,8 +1494,7 @@ resource "fmc_access_rules" "access_rule_9" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 9 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -1587,17 +1525,6 @@ resource "fmc_access_rules" "access_rule_9" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1736,8 +1663,7 @@ resource "fmc_access_rules" "access_rule_10" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 10 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -1769,18 +1695,6 @@ resource "fmc_access_rules" "access_rule_10" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -1919,8 +1833,7 @@ resource "fmc_access_rules" "access_rule_11" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 11 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -1953,19 +1866,6 @@ resource "fmc_access_rules" "access_rule_11" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2104,8 +2004,7 @@ resource "fmc_access_rules" "access_rule_12" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 12 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -2139,20 +2038,6 @@ resource "fmc_access_rules" "access_rule_12" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2291,8 +2176,7 @@ resource "fmc_access_rules" "access_rule_13" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 13 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -2327,21 +2211,6 @@ resource "fmc_access_rules" "access_rule_13" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2480,8 +2349,7 @@ resource "fmc_access_rules" "access_rule_14" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 14 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -2517,22 +2385,6 @@ resource "fmc_access_rules" "access_rule_14" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2671,8 +2523,7 @@ resource "fmc_access_rules" "access_rule_15" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 15 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -2709,23 +2560,6 @@ resource "fmc_access_rules" "access_rule_15" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -2864,8 +2698,7 @@ resource "fmc_access_rules" "access_rule_16" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 16 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -2903,24 +2736,6 @@ resource "fmc_access_rules" "access_rule_16" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3059,8 +2874,7 @@ resource "fmc_access_rules" "access_rule_17" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 17 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -3099,25 +2913,6 @@ resource "fmc_access_rules" "access_rule_17" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3256,8 +3051,7 @@ resource "fmc_access_rules" "access_rule_18" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 18 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -3297,26 +3091,6 @@ resource "fmc_access_rules" "access_rule_18" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3455,8 +3229,7 @@ resource "fmc_access_rules" "access_rule_19" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 19 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -3497,27 +3270,6 @@ resource "fmc_access_rules" "access_rule_19" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3656,8 +3408,7 @@ resource "fmc_access_rules" "access_rule_20" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 20 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -3699,28 +3450,6 @@ resource "fmc_access_rules" "access_rule_20" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -3859,8 +3588,7 @@ resource "fmc_access_rules" "access_rule_21" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 21 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -3903,29 +3631,6 @@ resource "fmc_access_rules" "access_rule_21" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4064,8 +3769,7 @@ resource "fmc_access_rules" "access_rule_22" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 22 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -4109,30 +3813,6 @@ resource "fmc_access_rules" "access_rule_22" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4271,8 +3951,7 @@ resource "fmc_access_rules" "access_rule_23" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 23 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -4317,31 +3996,6 @@ resource "fmc_access_rules" "access_rule_23" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4480,8 +4134,7 @@ resource "fmc_access_rules" "access_rule_24" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 24 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -4527,32 +4180,6 @@ resource "fmc_access_rules" "access_rule_24" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4691,8 +4318,7 @@ resource "fmc_access_rules" "access_rule_25" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 25 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -4739,33 +4365,6 @@ resource "fmc_access_rules" "access_rule_25" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -4904,8 +4503,7 @@ resource "fmc_access_rules" "access_rule_26" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 26 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -4953,34 +4551,6 @@ resource "fmc_access_rules" "access_rule_26" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5119,8 +4689,7 @@ resource "fmc_access_rules" "access_rule_27" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 27 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -5169,35 +4738,6 @@ resource "fmc_access_rules" "access_rule_27" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5336,8 +4876,7 @@ resource "fmc_access_rules" "access_rule_28" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 28 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -5387,36 +4926,6 @@ resource "fmc_access_rules" "access_rule_28" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5555,8 +5064,7 @@ resource "fmc_access_rules" "access_rule_29" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 29 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -5607,37 +5115,6 @@ resource "fmc_access_rules" "access_rule_29" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5776,8 +5253,7 @@ resource "fmc_access_rules" "access_rule_30" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 30 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -5829,38 +5305,6 @@ resource "fmc_access_rules" "access_rule_30" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -5999,8 +5443,7 @@ resource "fmc_access_rules" "access_rule_31" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 31 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -6053,39 +5496,6 @@ resource "fmc_access_rules" "access_rule_31" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6224,8 +5634,7 @@ resource "fmc_access_rules" "access_rule_32" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 32 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -6279,40 +5688,6 @@ resource "fmc_access_rules" "access_rule_32" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6451,8 +5826,7 @@ resource "fmc_access_rules" "access_rule_33" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 33 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -6507,41 +5881,6 @@ resource "fmc_access_rules" "access_rule_33" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6680,8 +6019,7 @@ resource "fmc_access_rules" "access_rule_34" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 34 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -6737,42 +6075,6 @@ resource "fmc_access_rules" "access_rule_34" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -6911,8 +6213,7 @@ resource "fmc_access_rules" "access_rule_35" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 35 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -6969,43 +6270,6 @@ resource "fmc_access_rules" "access_rule_35" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7144,8 +6408,7 @@ resource "fmc_access_rules" "access_rule_36" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 36 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -7203,44 +6466,6 @@ resource "fmc_access_rules" "access_rule_36" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7379,8 +6604,7 @@ resource "fmc_access_rules" "access_rule_37" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 37 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -7439,45 +6663,6 @@ resource "fmc_access_rules" "access_rule_37" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7616,8 +6801,7 @@ resource "fmc_access_rules" "access_rule_38" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 38 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -7677,46 +6861,6 @@ resource "fmc_access_rules" "access_rule_38" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -7855,8 +6999,7 @@ resource "fmc_access_rules" "access_rule_39" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 39 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -7917,47 +7060,6 @@ resource "fmc_access_rules" "access_rule_39" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8096,8 +7198,7 @@ resource "fmc_access_rules" "access_rule_40" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 40 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -8159,48 +7260,6 @@ resource "fmc_access_rules" "access_rule_40" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8339,8 +7398,7 @@ resource "fmc_access_rules" "access_rule_41" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 41 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -8403,49 +7461,6 @@ resource "fmc_access_rules" "access_rule_41" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8584,8 +7599,7 @@ resource "fmc_access_rules" "access_rule_42" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 42 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -8649,50 +7663,6 @@ resource "fmc_access_rules" "access_rule_42" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -8831,8 +7801,7 @@ resource "fmc_access_rules" "access_rule_43" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 43 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -8897,51 +7866,6 @@ resource "fmc_access_rules" "access_rule_43" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9080,8 +8004,7 @@ resource "fmc_access_rules" "access_rule_44" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 44 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -9147,52 +8070,6 @@ resource "fmc_access_rules" "access_rule_44" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9331,8 +8208,7 @@ resource "fmc_access_rules" "access_rule_45" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 45 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -9399,53 +8275,6 @@ resource "fmc_access_rules" "access_rule_45" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9584,8 +8413,7 @@ resource "fmc_access_rules" "access_rule_46" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 46 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -9653,54 +8481,6 @@ resource "fmc_access_rules" "access_rule_46" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -9839,8 +8619,7 @@ resource "fmc_access_rules" "access_rule_47" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 47 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -9909,55 +8688,6 @@ resource "fmc_access_rules" "access_rule_47" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10096,8 +8826,7 @@ resource "fmc_access_rules" "access_rule_48" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 48 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -10167,56 +8896,6 @@ resource "fmc_access_rules" "access_rule_48" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10355,8 +9034,7 @@ resource "fmc_access_rules" "access_rule_49" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 49 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -10427,57 +9105,6 @@ resource "fmc_access_rules" "access_rule_49" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10616,8 +9243,7 @@ resource "fmc_access_rules" "access_rule_50" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 50 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -10689,58 +9315,6 @@ resource "fmc_access_rules" "access_rule_50" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -10879,8 +9453,7 @@ resource "fmc_access_rules" "access_rule_51" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 51 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -10953,59 +9526,6 @@ resource "fmc_access_rules" "access_rule_51" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11144,8 +9664,7 @@ resource "fmc_access_rules" "access_rule_52" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 52 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -11219,60 +9738,6 @@ resource "fmc_access_rules" "access_rule_52" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11411,8 +9876,7 @@ resource "fmc_access_rules" "access_rule_53" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 53 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -11487,61 +9951,6 @@ resource "fmc_access_rules" "access_rule_53" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11680,8 +10089,7 @@ resource "fmc_access_rules" "access_rule_54" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 54 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -11757,62 +10165,6 @@ resource "fmc_access_rules" "access_rule_54" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -11951,8 +10303,7 @@ resource "fmc_access_rules" "access_rule_55" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 55 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -12029,63 +10380,6 @@ resource "fmc_access_rules" "access_rule_55" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12224,8 +10518,7 @@ resource "fmc_access_rules" "access_rule_56" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 56 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -12303,64 +10596,6 @@ resource "fmc_access_rules" "access_rule_56" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12499,8 +10734,7 @@ resource "fmc_access_rules" "access_rule_57" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 57 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -12579,65 +10813,6 @@ resource "fmc_access_rules" "access_rule_57" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -12776,8 +10951,7 @@ resource "fmc_access_rules" "access_rule_58" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 58 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -12857,66 +11031,6 @@ resource "fmc_access_rules" "access_rule_58" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13055,8 +11169,7 @@ resource "fmc_access_rules" "access_rule_59" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 59 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -13137,67 +11250,6 @@ resource "fmc_access_rules" "access_rule_59" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13336,8 +11388,7 @@ resource "fmc_access_rules" "access_rule_60" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 60 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -13419,68 +11470,6 @@ resource "fmc_access_rules" "access_rule_60" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13619,8 +11608,7 @@ resource "fmc_access_rules" "access_rule_61" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 61 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -13703,69 +11691,6 @@ resource "fmc_access_rules" "access_rule_61" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -13904,8 +11829,7 @@ resource "fmc_access_rules" "access_rule_62" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 62 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -13989,70 +11913,6 @@ resource "fmc_access_rules" "access_rule_62" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14191,8 +12051,7 @@ resource "fmc_access_rules" "access_rule_63" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 63 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -14277,71 +12136,6 @@ resource "fmc_access_rules" "access_rule_63" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14480,8 +12274,7 @@ resource "fmc_access_rules" "access_rule_64" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 64 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -14567,72 +12360,6 @@ resource "fmc_access_rules" "access_rule_64" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -14771,8 +12498,7 @@ resource "fmc_access_rules" "access_rule_65" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 65 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -14859,73 +12585,6 @@ resource "fmc_access_rules" "access_rule_65" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15064,8 +12723,7 @@ resource "fmc_access_rules" "access_rule_66" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 66 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -15153,74 +12811,6 @@ resource "fmc_access_rules" "access_rule_66" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15359,8 +12949,7 @@ resource "fmc_access_rules" "access_rule_67" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 67 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -15449,75 +13038,6 @@ resource "fmc_access_rules" "access_rule_67" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15656,8 +13176,7 @@ resource "fmc_access_rules" "access_rule_68" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 68 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -15747,76 +13266,6 @@ resource "fmc_access_rules" "access_rule_68" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -15955,8 +13404,7 @@ resource "fmc_access_rules" "access_rule_69" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 69 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -16047,77 +13495,6 @@ resource "fmc_access_rules" "access_rule_69" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16256,8 +13633,7 @@ resource "fmc_access_rules" "access_rule_70" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 70 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -16349,78 +13725,6 @@ resource "fmc_access_rules" "access_rule_70" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16559,8 +13863,7 @@ resource "fmc_access_rules" "access_rule_71" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 71 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -16653,79 +13956,6 @@ resource "fmc_access_rules" "access_rule_71" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -16864,8 +14094,7 @@ resource "fmc_access_rules" "access_rule_72" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 72 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -16959,80 +14188,6 @@ resource "fmc_access_rules" "access_rule_72" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17171,8 +14326,7 @@ resource "fmc_access_rules" "access_rule_73" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 73 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -17267,81 +14421,6 @@ resource "fmc_access_rules" "access_rule_73" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17480,8 +14559,7 @@ resource "fmc_access_rules" "access_rule_74" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 74 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -17577,82 +14655,6 @@ resource "fmc_access_rules" "access_rule_74" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -17791,8 +14793,7 @@ resource "fmc_access_rules" "access_rule_75" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 75 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -17889,83 +14890,6 @@ resource "fmc_access_rules" "access_rule_75" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18104,8 +15028,7 @@ resource "fmc_access_rules" "access_rule_76" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 76 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -18203,84 +15126,6 @@ resource "fmc_access_rules" "access_rule_76" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18419,8 +15264,7 @@ resource "fmc_access_rules" "access_rule_77" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 77 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -18519,85 +15363,6 @@ resource "fmc_access_rules" "access_rule_77" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -18736,8 +15501,7 @@ resource "fmc_access_rules" "access_rule_78" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 78 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -18837,86 +15601,6 @@ resource "fmc_access_rules" "access_rule_78" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19055,8 +15739,7 @@ resource "fmc_access_rules" "access_rule_79" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 79 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -19157,87 +15840,6 @@ resource "fmc_access_rules" "access_rule_79" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19376,8 +15978,7 @@ resource "fmc_access_rules" "access_rule_80" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 80 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -19479,88 +16080,6 @@ resource "fmc_access_rules" "access_rule_80" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -19699,8 +16218,7 @@ resource "fmc_access_rules" "access_rule_81" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 81 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -19803,89 +16321,6 @@ resource "fmc_access_rules" "access_rule_81" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20024,8 +16459,7 @@ resource "fmc_access_rules" "access_rule_82" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 82 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -20129,90 +16563,6 @@ resource "fmc_access_rules" "access_rule_82" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20351,8 +16701,7 @@ resource "fmc_access_rules" "access_rule_83" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 83 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -20457,91 +16806,6 @@ resource "fmc_access_rules" "access_rule_83" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -20680,8 +16944,7 @@ resource "fmc_access_rules" "access_rule_84" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 84 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -20787,92 +17050,6 @@ resource "fmc_access_rules" "access_rule_84" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -21011,8 +17188,7 @@ resource "fmc_access_rules" "access_rule_85" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 85 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -21119,93 +17295,6 @@ resource "fmc_access_rules" "access_rule_85" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -21344,8 +17433,7 @@ resource "fmc_access_rules" "access_rule_86" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 86 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -21453,94 +17541,6 @@ resource "fmc_access_rules" "access_rule_86" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -21679,8 +17679,7 @@ resource "fmc_access_rules" "access_rule_87" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 87 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -21789,95 +17788,6 @@ resource "fmc_access_rules" "access_rule_87" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -22016,8 +17926,7 @@ resource "fmc_access_rules" "access_rule_88" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 88 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -22127,96 +18036,6 @@ resource "fmc_access_rules" "access_rule_88" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -22355,8 +18174,7 @@ resource "fmc_access_rules" "access_rule_89" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 89 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -22467,97 +18285,6 @@ resource "fmc_access_rules" "access_rule_89" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -22696,8 +18423,7 @@ resource "fmc_access_rules" "access_rule_90" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 90 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -22809,98 +18535,6 @@ resource "fmc_access_rules" "access_rule_90" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -23039,8 +18673,7 @@ resource "fmc_access_rules" "access_rule_91" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 91 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -23153,99 +18786,6 @@ resource "fmc_access_rules" "access_rule_91" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -23384,8 +18924,7 @@ resource "fmc_access_rules" "access_rule_92" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 92 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -23499,100 +19038,6 @@ resource "fmc_access_rules" "access_rule_92" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -23731,8 +19176,7 @@ resource "fmc_access_rules" "access_rule_93" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 93 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -23847,101 +19291,6 @@ resource "fmc_access_rules" "access_rule_93" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -24080,8 +19429,7 @@ resource "fmc_access_rules" "access_rule_94" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 94 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -24197,102 +19545,6 @@ resource "fmc_access_rules" "access_rule_94" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-      fmc_access_rules.access_rule_93,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -24431,8 +19683,7 @@ resource "fmc_access_rules" "access_rule_95" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 95 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -24549,103 +19800,6 @@ resource "fmc_access_rules" "access_rule_95" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-      fmc_access_rules.access_rule_93,
-      fmc_access_rules.access_rule_94,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -24784,8 +19938,7 @@ resource "fmc_access_rules" "access_rule_96" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 96 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -24903,104 +20056,6 @@ resource "fmc_access_rules" "access_rule_96" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-      fmc_access_rules.access_rule_93,
-      fmc_access_rules.access_rule_94,
-      fmc_access_rules.access_rule_95,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -25139,8 +20194,7 @@ resource "fmc_access_rules" "access_rule_97" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 97 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -25259,105 +20313,6 @@ resource "fmc_access_rules" "access_rule_97" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-      fmc_access_rules.access_rule_93,
-      fmc_access_rules.access_rule_94,
-      fmc_access_rules.access_rule_95,
-      fmc_access_rules.access_rule_96,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -25496,8 +20451,7 @@ resource "fmc_access_rules" "access_rule_98" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 98 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -25617,106 +20571,6 @@ resource "fmc_access_rules" "access_rule_98" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-      fmc_access_rules.access_rule_93,
-      fmc_access_rules.access_rule_94,
-      fmc_access_rules.access_rule_95,
-      fmc_access_rules.access_rule_96,
-      fmc_access_rules.access_rule_97,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
@@ -25855,8 +20709,7 @@ resource "fmc_access_rules" "access_rule_99" {
   for_each = { for rule in local.res_accessrules : rule.key => rule if rule.idx == 99 }
   # Mandatory
   acp       = local.map_accesspolicies[each.value.acp].id
-  #name      = "${each.value.data.name}#${each.value.idx}"
-  name      = each.value.data.name
+  name      = "${each.value.data.name}#${each.value.idx}"
   action    = each.value.data.action
   enabled   = try(each.value.data.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
   # Optional
@@ -25977,107 +20830,6 @@ resource "fmc_access_rules" "access_rule_99" {
     ]
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [
-      fmc_access_rules.access_rule_0,
-      fmc_access_rules.access_rule_1,
-      fmc_access_rules.access_rule_2,
-      fmc_access_rules.access_rule_3,
-      fmc_access_rules.access_rule_4,
-      fmc_access_rules.access_rule_5,
-      fmc_access_rules.access_rule_6,
-      fmc_access_rules.access_rule_7,
-      fmc_access_rules.access_rule_8,
-      fmc_access_rules.access_rule_9,
-      fmc_access_rules.access_rule_10,
-      fmc_access_rules.access_rule_11,
-      fmc_access_rules.access_rule_12,
-      fmc_access_rules.access_rule_13,
-      fmc_access_rules.access_rule_14,
-      fmc_access_rules.access_rule_15,
-      fmc_access_rules.access_rule_16,
-      fmc_access_rules.access_rule_17,
-      fmc_access_rules.access_rule_18,
-      fmc_access_rules.access_rule_19,
-      fmc_access_rules.access_rule_20,
-      fmc_access_rules.access_rule_21,
-      fmc_access_rules.access_rule_22,
-      fmc_access_rules.access_rule_23,
-      fmc_access_rules.access_rule_24,
-      fmc_access_rules.access_rule_25,
-      fmc_access_rules.access_rule_26,
-      fmc_access_rules.access_rule_27,
-      fmc_access_rules.access_rule_28,
-      fmc_access_rules.access_rule_29,
-      fmc_access_rules.access_rule_30,
-      fmc_access_rules.access_rule_31,
-      fmc_access_rules.access_rule_32,
-      fmc_access_rules.access_rule_33,
-      fmc_access_rules.access_rule_34,
-      fmc_access_rules.access_rule_35,
-      fmc_access_rules.access_rule_36,
-      fmc_access_rules.access_rule_37,
-      fmc_access_rules.access_rule_38,
-      fmc_access_rules.access_rule_39,
-      fmc_access_rules.access_rule_40,
-      fmc_access_rules.access_rule_41,
-      fmc_access_rules.access_rule_42,
-      fmc_access_rules.access_rule_43,
-      fmc_access_rules.access_rule_44,
-      fmc_access_rules.access_rule_45,
-      fmc_access_rules.access_rule_46,
-      fmc_access_rules.access_rule_47,
-      fmc_access_rules.access_rule_48,
-      fmc_access_rules.access_rule_49,
-      fmc_access_rules.access_rule_50,
-      fmc_access_rules.access_rule_51,
-      fmc_access_rules.access_rule_52,
-      fmc_access_rules.access_rule_53,
-      fmc_access_rules.access_rule_54,
-      fmc_access_rules.access_rule_55,
-      fmc_access_rules.access_rule_56,
-      fmc_access_rules.access_rule_57,
-      fmc_access_rules.access_rule_58,
-      fmc_access_rules.access_rule_59,
-      fmc_access_rules.access_rule_60,
-      fmc_access_rules.access_rule_61,
-      fmc_access_rules.access_rule_62,
-      fmc_access_rules.access_rule_63,
-      fmc_access_rules.access_rule_64,
-      fmc_access_rules.access_rule_65,
-      fmc_access_rules.access_rule_66,
-      fmc_access_rules.access_rule_67,
-      fmc_access_rules.access_rule_68,
-      fmc_access_rules.access_rule_69,
-      fmc_access_rules.access_rule_70,
-      fmc_access_rules.access_rule_71,
-      fmc_access_rules.access_rule_72,
-      fmc_access_rules.access_rule_73,
-      fmc_access_rules.access_rule_74,
-      fmc_access_rules.access_rule_75,
-      fmc_access_rules.access_rule_76,
-      fmc_access_rules.access_rule_77,
-      fmc_access_rules.access_rule_78,
-      fmc_access_rules.access_rule_79,
-      fmc_access_rules.access_rule_80,
-      fmc_access_rules.access_rule_81,
-      fmc_access_rules.access_rule_82,
-      fmc_access_rules.access_rule_83,
-      fmc_access_rules.access_rule_84,
-      fmc_access_rules.access_rule_85,
-      fmc_access_rules.access_rule_86,
-      fmc_access_rules.access_rule_87,
-      fmc_access_rules.access_rule_88,
-      fmc_access_rules.access_rule_89,
-      fmc_access_rules.access_rule_90,
-      fmc_access_rules.access_rule_91,
-      fmc_access_rules.access_rule_92,
-      fmc_access_rules.access_rule_93,
-      fmc_access_rules.access_rule_94,
-      fmc_access_rules.access_rule_95,
-      fmc_access_rules.access_rule_96,
-      fmc_access_rules.access_rule_97,
-      fmc_access_rules.access_rule_98,
-    ]
   }  
   dynamic "destination_dynamic_objects" {
     for_each = try(length(each.value.data.destination_dynamic_objects), 0) != 0 ? ["1"] : []
