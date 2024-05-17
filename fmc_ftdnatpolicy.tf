@@ -1,84 +1,4 @@
 ###
-# ACCESS POLICY
-###
-locals {
-  res_accesspolicies = flatten([
-    for domains in local.domains : [
-      for object in try(domains.access_policies, {}) : object if !contains(local.data_accesspolicies, object.name)
-    ]
-  ])
-}
-
-resource "fmc_access_policies" "accesspolicy" {
-  for_each = { for accesspolicy in local.res_accesspolicies : accesspolicy.name => accesspolicy }
-
-  # Mandatory
-  name = each.value.name
-
-  # Optional
-  description                             = try(each.value.description, local.defaults.fmc.domains.access_policies.description, null)
-  default_action                          = try(each.value.default_action, local.defaults.fmc.domains.access_policies.default_action, null)
-  default_action_base_intrusion_policy_id = try(local.map_ipspolicies[each.value.base_ips_policy].id, local.map_ipspolicies[local.defaults.fmc.domains.access_policies.base_ips_policy].id, null)
-  default_action_send_events_to_fmc       = try(each.value.send_events_to_fmc, local.defaults.fmc.domains.access_policies.send_events_to_fmc, null)
-  default_action_log_begin                = try(each.value.log_begin, local.defaults.fmc.domains.access_policies.log_begin, null)
-  default_action_log_end                  = try(each.value.log_end, local.defaults.fmc.domains.access_policies.log_end, null)
-  default_action_syslog_config_id         = try(each.value.syslog_config_id, local.defaults.fmc.domains.access_policies.syslog_config_id, null)
-}
-
-###
-# ACCESS POLICY CATEGORY
-###
-locals {
-  res_accesspolicies_category = flatten([
-    for domain in local.domains : [
-      for accesspolicy in try(domain.access_policies, []) : [
-        for accesspolicy_category in try(accesspolicy.categories, {}) : {
-          key  = "${accesspolicy.name}/${accesspolicy_category}"
-          acp  = local.map_accesspolicies[accesspolicy.name].id
-          data = accesspolicy_category
-        }
-      ]
-    ]
-  ])
-}
-
-resource "fmc_access_policies_category" "accesspolicy_category" {
-  for_each = { for accesspolicy_category in local.res_accesspolicies_category : accesspolicy_category.key => accesspolicy_category }
-
-  # Mandatory
-  name             = each.value.data
-  access_policy_id = each.value.acp
-}
-
-###
-# PREFILTER POLICY
-###
-locals {
-  res_prefilterpolicies = flatten([
-    for domains in local.domains : [
-      for object in try(domains.prefilter_policies, {}) : object
-    ]
-  ])
-}
-
-resource "fmc_prefilter_policy" "prefilterpolicy" {
-  for_each = { for prefpolicy in local.res_prefilterpolicies : prefpolicy.name => prefpolicy }
-
-  # Mandatory  
-  name = each.value.name
-
-  # Optional    
-  default_action {
-    #log_end           = try(each.value.log_end, null)         # Not supported by provider
-    log_begin          = try(each.value.log_begin, null)
-    send_events_to_fmc = try(each.value.send_events_to_fmc, null)
-    action             = try(each.value.action, local.defaults.fmc.domains.prefilter_policies.action, "ANALYZE_TUNNELS")
-  }
-
-  description = try(each.value.description, local.defaults.fmc.domains.prefilter_policies.description, null)
-}
-
-###
 # FTD NAT POLICY
 ###
 locals {
@@ -105,7 +25,7 @@ resource "fmc_ftd_nat_policies" "ftdnatpolicy" {
 locals {
   res_ftdautonatrules = flatten([
     for domain in local.domains : [
-      for natpolicy in try(domain.ftd_nat_policies, []) : [
+      for natpolicy in try(domain.ftd_nat_policies, {}) : [
         for ftdautonatrule in try(natpolicy.ftd_auto_nat_rules, {}) : {
           key        = "${natpolicy.name}/${ftdautonatrule.name}"
           nat_policy = local.map_natpolicies[natpolicy.name].id
@@ -159,7 +79,7 @@ resource "fmc_ftd_autonat_rules" "ftdautonatrule" {
   }
 
   dynamic "pat_options" {
-    for_each = try(length(each.value.data.pat_options), 0) != 0 ? ["1"] : []
+    for_each = can(each.value.data.pat_options) ? ["1"] : []
     content {
       extended_pat_table    = try(each.value.data.pat_options.extended_pat_table, null)
       include_reserve_ports = try(each.value.data.pat_options.include_reserve_ports, null)
@@ -193,27 +113,41 @@ resource "fmc_ftd_autonat_rules" "ftdautonatrule" {
 }
 
 ###
-# IPS POLICY
+# FTD MANUAL NAT RULE
 ###
 locals {
-  res_ipspolicies = flatten([
-    for domains in local.domains : [
-      for object in try(domains.ips_policies, []) : object
+  res_ftdmanualnatrules = flatten([
+    for domain in local.domains : [
+      for natpolicy in try(domain.ftd_nat_policies, []) : [
+        for ftdmanualnatrule in try(natpolicy.ftd_manual_nat_rules, []) : {
+          key        = replace("${natpolicy.name}_${ftdmanualnatrule.name}", " ", "")
+          nat_policy = natpolicy.name
+          data       = ftdmanualnatrule
+        }
+      ]
     ]
   ])
+
+  unique_ftdnatpolicies = distinct([for v in local.res_ftdmanualnatrules : v.nat_policy])
+  ftdmanualnatrules_by_policy = { for k in local.unique_ftdnatpolicies :
+    k => [for v in local.res_ftdmanualnatrules : v if v.nat_policy == k]
+  }
+  ftdmanualnatrules_by_policy_prev = { for k in local.unique_ftdnatpolicies :
+    k => concat([""], [for v in local.res_ftdmanualnatrules : v.key if v.nat_policy == k])
+  }
+
+  ftdmanualnatrules_template = {
+    natpolicies   = local.ftdmanualnatrules_by_policy,
+    previous      = local.ftdmanualnatrules_by_policy_prev,
+    defaults      = try(local.defaults.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules, {}),
+    networkgroups = local.res_networkgroups
+  }
 }
 
-resource "fmc_ips_policies" "ips_policy" {
-  for_each = { for ipspolicy in local.res_ipspolicies : ipspolicy.name => ipspolicy }
-
-  # Mandatory  
-  name = each.value.name
-
-  # Optional  
-  inspection_mode = try(each.value.inspection_mode, local.defaults.fmc.domains.ips_policies.inspection_mode, null)
-  basepolicy_id   = try(data.fmc_ips_policies.ips_policy[each.value.base_policy].id, null)
-
-  depends_on = [
-    data.fmc_ips_policies.ips_policy
-  ]
+resource "local_file" "ftdmanualnatrule" {
+  content = replace(
+    templatefile("${path.module}/templates/fmc_tpl_ftdmanualnatrule.tftpl", local.ftdmanualnatrules_template),
+    "/(?m)(?s)(^( )*[\r\n])/", ""
+  )
+  filename = "${path.module}/generated_fmc_ftdmanualnatrule.tf"
 }

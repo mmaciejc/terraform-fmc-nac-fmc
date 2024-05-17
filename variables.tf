@@ -16,7 +16,7 @@ variable "model" {
   default     = {}
 }
 
-variable "manage_deployment" {
+variable "deploy_support" {
   description = "Enables support for FTD deployments"
   type        = bool
   default     = true
