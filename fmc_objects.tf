@@ -259,7 +259,7 @@ resource "fmc_network_group_objects" "networkgroup_l1" {
   description = each.value.description
 
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
 }
 
@@ -292,7 +292,7 @@ resource "fmc_network_group_objects" "networkgroup_l2" {
     fmc_network_group_objects.networkgroup_l1
   ]
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
     replace_triggered_by = [
       fmc_network_group_objects.networkgroup_l1
     ]
@@ -329,7 +329,7 @@ resource "fmc_network_group_objects" "networkgroup_l3" {
     fmc_network_group_objects.networkgroup_l2
   ]
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
     replace_triggered_by = [
       fmc_network_group_objects.networkgroup_l1,
       fmc_network_group_objects.networkgroup_l2
