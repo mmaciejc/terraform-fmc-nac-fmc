@@ -236,7 +236,7 @@ locals {
 resource "fmc_network_group_objects" "networkgroup_l1" {
   for_each = { for networkgroup in local.res_networkgroups_l1 : networkgroup.name => networkgroup }
   # Mandatory
-  name = each.value.name
+  name = "${each.value.name}_1"
 
   dynamic "objects" {
     for_each = { for netgrpobj in each.value.objects : netgrpobj => netgrpobj }
@@ -259,7 +259,7 @@ resource "fmc_network_group_objects" "networkgroup_l1" {
   description = each.value.description
 
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
 }
 
@@ -267,7 +267,7 @@ resource "fmc_network_group_objects" "networkgroup_l1" {
 resource "fmc_network_group_objects" "networkgroup_l2" {
   for_each = { for networkgroup in local.res_networkgroups_l2 : networkgroup.name => networkgroup }
   # Mandatory
-  name = each.value.name
+  name = "${each.value.name}_2"
 
   dynamic "objects" {
     for_each = { for netgrpobj in each.value.objects : netgrpobj => netgrpobj }
@@ -292,7 +292,7 @@ resource "fmc_network_group_objects" "networkgroup_l2" {
     fmc_network_group_objects.networkgroup_l1
   ]
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
     #replace_triggered_by = [
     #  fmc_network_group_objects.networkgroup_l1
     #]
@@ -302,7 +302,7 @@ resource "fmc_network_group_objects" "networkgroup_l2" {
 resource "fmc_network_group_objects" "networkgroup_l3" {
   for_each = { for networkgroup in local.res_networkgroups_l3 : networkgroup.name => networkgroup }
   # Mandatory
-  name = each.value.name
+  name = "${each.value.name}_3"
 
   dynamic "objects" {
     for_each = { for netgrpobj in each.value.objects : netgrpobj => netgrpobj }
@@ -329,7 +329,7 @@ resource "fmc_network_group_objects" "networkgroup_l3" {
     fmc_network_group_objects.networkgroup_l2
   ]
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
     #replace_triggered_by = [
     #  fmc_network_group_objects.networkgroup_l1,
     #  fmc_network_group_objects.networkgroup_l2
