@@ -1,0 +1,51 @@
+version: ">= 0.14.0"
+
+formatter: markdown table
+
+content: |-
+  # Terraform Network-as-Code Cisco FMC Module
+
+  A Terraform module to configure Cisco FMC.
+
+  ## Usage
+
+  This module supports an inventory driven approach, where a complete FMC configuration or parts of it are either modeled in one or more YAML files or natively using Terraform variables.
+
+  ## Optional
+
+  The default number of supported Access Rules and Manual Nat Rules is 100. To change it, please visit: [templates](/templates)
+
+  ## Examples
+
+  Configuring a Network-group Object using YAML:
+
+  #### `data/existing.yaml`
+
+  ```yaml
+  {{ include "./examples/network_groups/existing.yaml" }}
+  ```
+
+  #### `data/fmc.yaml`
+
+  ```yaml
+  {{ include "./examples/network_groups/fmc.yaml" }}
+  ```
+
+  #### `main.tf`
+
+  ```hcl
+  {{ include "./examples/network_groups/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+  {{ .Inputs }}
+  {{ .Outputs }}
+  {{ .Resources }}
+  {{ .Modules }}
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: true
+  by: required

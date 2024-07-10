@@ -5,6 +5,7 @@
 .terraform
 .terraform.lock.hcl
 terraform.tfstate
+terraform.tfvars
 terraform.tfstate.backup
 tflint.hcl
 generated_*.tf

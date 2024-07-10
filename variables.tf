@@ -16,7 +16,7 @@ variable "model" {
   default     = {}
 }
 
-variable "deploy_support" {
+variable "manage_deployment" {
   description = "Enables support for FTD deployments"
   type        = bool
   default     = true
@@ -24,6 +24,18 @@ variable "deploy_support" {
 
 variable "write_default_values_file" {
   description = "Write all default values to a YAML file. Value is a path pointing to the file to be created."
+  type        = string
+  default     = ""
+}
+
+variable "fmc_username" {
+  description = "FMC Username"
+  type        = string
+  default     = ""
+}
+
+variable "fmc_password" {
+  description = "FMC Password"
   type        = string
   default     = ""
 }
