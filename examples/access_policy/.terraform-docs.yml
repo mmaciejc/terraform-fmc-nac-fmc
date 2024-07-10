@@ -1,0 +1,68 @@
+version: ">= 0.14.0"
+
+formatter: markdown table
+
+content: |-
+  # FMC Network/Host Objects Example
+
+  This example will create a new `MyNetwork1`, `MyNetwork2`
+  
+  Set environment variables pointing to FMC, create `terraform.tfvars`:
+
+  ```bash
+  fmc_username = "admin"
+  fmc_password = "SecretPass123!"
+  ```
+
+  To run this example you need to have terraform-provider-fmc version 2.0. If you have the copy of the new provider on your local disk, please execute:
+
+  ```bash
+  $ terraform init -plugin-dir="bin"
+  $ terraform apply
+  ```
+
+  The full path for the provider should be:
+  ```
+  ├── bin
+  │   └── registry.terraform.io
+  │       └── netascode
+  │           └── fmc
+  │               └── 0.0.666
+  │                   └── darwin_arm64
+  │                       └── terraform-provider-fmc
+  ```
+  then you can use the provider as below:
+  ```
+  terraform {
+    required_version = ">= 1.3.0"
+
+    required_providers {
+      fmc = {
+        source = "netascode/fmc"
+        version = "0.0.666"   #<<< should match folder from bin directory
+      }
+  }
+  ```
+  Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
+
+  #### `data/existing.yaml`
+
+  ```yaml
+  {{ include "./existing.yaml" }}
+  ```
+
+  #### `data/fmc.yaml`
+
+  ```yaml
+  {{ include "./fmc.yaml" }}
+  ```
+
+  #### `main.tf`
+
+  ```hcl
+  {{ include "./main.tf" }}
+  ```
+
+output:
+  file: README.md
+  mode: replace

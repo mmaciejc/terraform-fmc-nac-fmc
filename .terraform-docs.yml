@@ -3,7 +3,7 @@ version: ">= 0.14.0"
 formatter: markdown table
 
 content: |-
-  # Terraform Network-as-Code Cisco FMC Module
+  # Terraform Network-as-Code Cisco FMC Module that is using a new Terraform FMC Provider
 
   A Terraform module to configure Cisco FMC.
 
@@ -11,31 +11,66 @@ content: |-
 
   This module supports an inventory driven approach, where a complete FMC configuration or parts of it are either modeled in one or more YAML files or natively using Terraform variables.
 
-  ## Optional
+  ### Steps to compile a new terraform fmc module:
+  ```
+  export GOPATH="<put your path here>"
 
-  The default number of supported Access Rules and Manual Nat Rules is 100. To change it, please visit: [templates](/templates)
+  git clone https://github.com/netascode/terraform-provider-fmc   
 
-  ## Examples
+  cd terraform-provider-fmc
 
-  Configuring a Network-group Object using YAML:
+  go install
 
-  #### `data/existing.yaml`
+  ```
+  The bin file is compiled in $GOPATH so one folder up in above example - bin folder
 
-  ```yaml
-  {{ include "./examples/network_groups/existing.yaml" }}
+  ```
+  % ls -la
+  total 8
+  drwxr-xr-x   6 mmaciejc  staff  192 Jun 13 12:02 .
+  drwxr-xr-x   8 mmaciejc  staff  256 Jun 13 12:03 ..
+  -rw-r--r--   1 mmaciejc  staff  184 Jun 13 14:17 README.md
+  drwxr-xr-x   3 mmaciejc  staff   96 Jun 13 12:02 bin    <<< here
+  drwxr-xr-x   4 mmaciejc  staff  128 Jun 13 12:02 pkg
   ```
 
-  #### `data/fmc.yaml`
+  copy terraform-provider-fmc to folders (make a structure):
+  ```
+  ├── bin
+  │   └── registry.terraform.io
+  │       └── netascode
+  │           └── fmc
+  │               └── 0.0.9999
+  │                   └── darwin_arm64
+  │                       └── terraform-provider-fmc
+  ```
+  Use provider: usualy in versions.tf file: 
+  > you might need to copy there any other provider if in use
 
-  ```yaml
-  {{ include "./examples/network_groups/fmc.yaml" }}
+  ```
+  terraform {
+    required_providers {
+      fmc = {
+        source = "netascode/fmc"
+        version = "6.6.1"
+      }
+      utils = {
+        source  = "netascode/utils"
+        version = ">= 0.2.6"
+      }
+      local = {
+        source  = "hashicorp/local"
+        version = ">= 2.3.0"
+      }
+    }
+  }
+  ```
+  You can now:
+  ```
+  terraform init -plugin-dir="bin"
+  terraform apply
   ```
 
-  #### `main.tf`
-
-  ```hcl
-  {{ include "./examples/network_groups/main.tf" }}
-  ```
 
   {{ .Requirements }}
   {{ .Inputs }}

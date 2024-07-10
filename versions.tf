@@ -1,9 +1,9 @@
 terraform {
-  #required_version = ">= 1.3.0"
+  required_version = ">= 1.3.0"
 
   required_providers {
     fmc = {
-      source = "netascode/fmc"
+      source  = "netascode/fmc"
       version = "6.6.1"
     }
     utils = {
