@@ -27,15 +27,3 @@ variable "write_default_values_file" {
   type        = string
   default     = ""
 }
-
-variable "fmc_username" {
-  description = "FMC Username"
-  type        = string
-  default     = ""
-}
-
-variable "fmc_password" {
-  description = "FMC Password"
-  type        = string
-  default     = ""
-}

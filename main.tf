@@ -35,4 +35,14 @@ locals {
     #  }
     #},
   )
+
+  map_networkgrpobjects = merge({
+      for objectgrpnetgrp1 in local.res_network_groups :
+      objectgrpnetgrp1.name => {
+        id   = fmc_network_groups.network_group.items[objectgrpnetgrp1.name].id
+        type = "NetworkGroup"
+      }
+    },    
+  )
+
 }

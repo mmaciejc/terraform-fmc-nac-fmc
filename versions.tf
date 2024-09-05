@@ -1,10 +1,10 @@
 terraform {
-  required_version = ">= 1.3.0"
+  #required_version = ">= 1.3.0"
 
   required_providers {
     fmc = {
-      source  = "netascode/fmc"
-      version = "6.6.1"
+      source = "netascode/fmc"
+      version = "6.6.2"
     }
     utils = {
       source  = "netascode/utils"
@@ -19,6 +19,6 @@ terraform {
 
 provider "fmc" {
   username = "admin"
-  password = var.fmc_password
+  password = "SecretPass123!"
   url      = "https://10.62.158.200"
 }
