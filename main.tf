@@ -1,48 +1,27 @@
+##########################################################
+###    Content of the file:
+##########################################################
+#
+###
+#  Principles
+####
+# Module uses a new terraform provider for FMC
+# Module is built for multidomain support
+# Module is built for easy bulk operations support
+#
+###  
+#  Local variables
+###
+# local.fmc           => map of FMC configuration loaded from YAML file
+# local.domains       => map of domain configuration 
+# local.data_existing => map of existing objects configuration loaded from YAML file (should reflect builtin/read-only objects like SSH, HTTP etc.)
+#
+###
+
+
 locals {
   fmc           = try(local.model.fmc, {})
   domains       = try(local.fmc.domains, {})
   data_existing = try(local.model.existing, {})
-
-  #
-  # Create maps for combined set of _data and _resources objects
-  #
-  map_networkobjects = merge({
-    for objecthost1 in local.res_hosts :
-    objecthost1.name => {
-      id   = fmc_host.host[objecthost1.name].id
-      type = fmc_host.host[objecthost1.name].type
-    }
-    },
-    #{
-    #  for objecthost2 in local.data_hosts :
-    #  objecthost2 => {
-    #    id   = data.fmc_host_objects.host[objecthost2].id
-    #    type = data.fmc_host_objects.host[objecthost2].type
-    #  }
-    #},
-    {
-      for objectnet1 in local.res_networks :
-      objectnet1.name => {
-        id   = fmc_network.network[objectnet1.name].id
-        type = fmc_network.network[objectnet1.name].type
-      }
-    },
-    #{
-    #  for objectnet2 in local.data_networks :
-    #  objectnet2 => {
-    #    id   = data.fmc_network_objects.network[objectnet2].id
-    #    type = data.fmc_network_objects.network[objectnet2].type
-    #  }
-    #},
-  )
-
-  map_networkgrpobjects = merge({
-      for objectgrpnetgrp1 in local.res_network_groups :
-      objectgrpnetgrp1.name => {
-        id   = fmc_network_groups.network_group.items[objectgrpnetgrp1.name].id
-        type = "NetworkGroup"
-      }
-    },    
-  )
 
 }
