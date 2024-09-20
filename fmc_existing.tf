@@ -1,6 +1,5 @@
 #############################################################
 # Define terraform data representation of objects that already exist on FMC
-#
 ##########################################################
 ###    Content of the file:
 ##########################################################
@@ -22,30 +21,53 @@
 # local.map_interfaces          => to collect all interface objects by name that can be used later in the module
 #
 ###
+##########################################################
+###    Example of created local variables
+##########################################################
 
+#  + data_host               = {
+#      + Test = {
+#          + domain_name = "Global"
+#          + name        = "Test"
+#        }
+#    }
+
+ # + data_hosts              = {
+ #     + Global = {
+ #         + items = [
+ #             + "Test",
+ #           ]
+ #       }
+ #   }
 
 ##########################################################
 ###    HOST
 ##########################################################
 locals {
-  data_hosts  = {
-    for domain in try(local.data_existing.fmc.domains, {}) : domain.name => [
-      for item in try(domain.objects.hosts, {}) :  item.name 
-    ]}
+
+ data_host = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.objects.hosts, {}) : {
+          "name"        = item_value.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "domain_name" )
+    } 
+
+  data_hosts = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = flatten([ 
+        for item_value in try(domain.objects.hosts, []) : item_value.name 
+        ]  ) 
+    } 
+  }
 
 }
 
 data "fmc_host" "host" {
-  for_each = { 
-    for item_key in flatten([
-      for domain_key, domain_value in local.data_hosts : [ 
-        for item_value in domain_value : {
-          "name"        = item_value 
-          "domain_name" = domain_key
-        }
-      ]
-      ]) : item_key.name => item_key      
-    }
+  for_each = local.data_host
   
   name    = each.key
   domain  = try(each.value.domain_name, null)
@@ -55,24 +77,30 @@ data "fmc_host" "host" {
 ###    NETWORK
 ##########################################################
 locals {
-  data_networks  = {
-    for domain in try(local.data_existing.fmc.domains, {}) : domain.name => [
-      for item in try(domain.objects.networks, {}) :  item.name 
-    ]}
-    
+
+ data_network = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.objects.networks, {}) : {
+          "name"        = item_value.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" )
+    } 
+
+  data_networks = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = flatten([ 
+        for item_value in try(domain.objects.networks, []) : item_value.name 
+        ]  ) 
+    } 
+  }
+
 }
 
 data "fmc_network" "network" {
-  for_each = { 
-    for item_key in flatten([
-      for domain_key, domain_value in local.data_networks : [ 
-        for item_value in domain_value : {
-          "name"        = item_value 
-          "domain_name" = domain_key
-        }
-      ]
-      ]) : item_key.name => item_key      
-    }
+  for_each = local.data_network
   
   name    = each.key
   domain  = try(each.value.domain_name, null)

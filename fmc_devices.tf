@@ -11,7 +11,7 @@
 #  Local variables
 ###
 # local.help_device_vrfs            => map with the list of all vrfs per device/domain
-# local.resource_ipv4staticroutes   => for building dynamic resource
+# local.resource_ipv4staticroute    => for building dynamic resource - single resource
 #
 ###
 
@@ -27,43 +27,23 @@
 #        }
 #    }
 
-#  + resource_ipv4staticroutes = {
-#      + Global = {
-#          + MyDeviceName1 = {
-#              + Global = {
-#                  + ipv4StaticRoute_0001 = {
-#                      + destination_networks = [
-#                          + "LAN_1",
-#                        ]
-#                      + device_id            = "8100abc6-763b-11ef-a8ee-b0963d93da4a"
-#                      + gateway_id           = null
-#                      + gateway_literal      = "192.168.0.1"
-#                      + interface_id         = "005056B0-F7B2-0ed3-0000-004294968022"
-#                      + interface_name       = "outside"
-#                      + metric               = 1
-#                    }
-#                }
+#  + resource_ipv4_static_route = {
+#      + "Global/MyDeviceName1/Global/ipv4StaticRoute_0001"      = {
+#          + device_name       = "MyDeviceName1"
+#          + domain_name       = "Global"
+#          + gateway           = {
+#              + literal = "192.168.44.1"
 #            }
+#          + interface         = "outside"
+#          + metric            = 1
+#          + name              = "ipv4StaticRoute_0001"
+#          + selected_networks = [
+#              + "AZURE-VPN",
+#            ]
+#          + vrf               = "Global"
 #        }
 #    }
 
-
-  #+ for_each = {
-  #    + "Global/MyDeviceName1/ipv4StaticRoute_0001" = {
-  #        + device_name       = "MyDeviceName1"
-  #        + domain_name       = "Global"
-  #        + gateway           = {
-  #            + literal = "192.168.0.1"
-  #          }
-  #        + interface         = "outside"
-  #        + metric            = 1
-  #        + name              = "ipv4StaticRoute_0001"
-  #        + selected_networks = [
-  #            + "LAN_1",
-  #          ]
-  #        + vrf_name          = "Global"
-  #      }
-  #  }
 
 
 ###
@@ -96,36 +76,27 @@ locals {
       ])
     }
   }
-  resource_ipv4_static_routes = {
-    for domain in local.domains : domain.name => { 
-      for device in try(domain.devices.devices, []) : device.name => {
-        for vrf in local.help_device_vrfs[domain.name][device.name] : vrf => {
-          for ipv4staticroute in try(device.ipv4_static_routes, []) : ipv4staticroute.name => ipv4staticroute if vrf == try(ipv4staticroute.vrf, "Global")
-        }
-      }
-    }
+
+  resource_ipv4_static_route = {
+    for item in flatten([
+    for domain in local.domains : [
+      for device in try(domain.devices.devices, []) : [
+        for vrf in local.help_device_vrfs[domain.name][device.name] : flatten([
+          for ipv4staticroute in try(device.ipv4_static_routes, []) :  merge(ipv4staticroute, 
+          {
+                  "domain_name" = domain.name
+                  "device_name" = device.name
+                  "vrf"    = try(ipv4staticroute.vrf, "Global")
+          }) if vrf == try(ipv4staticroute.vrf, "Global")
+        ]) 
+        ]
+      ]
+    ]) : "${item.domain_name}/${item.device_name}/${item.vrf}/${item.name}" => item if contains(keys(item), "name" )
   }
 
 }
 resource "fmc_device_ipv4_static_route" "ipv4_static_route" {
-  for_each = {
-    for item_key in flatten([
-      for domain_key, domain_value in local.resource_ipv4_static_routes : [ 
-        for device_key, device_value in domain_value : [
-          for vrf_key, vrf_value in device_value : [
-            for ipv4staticroute_key, ipv4staticroute_value in vrf_value : [
-              merge(ipv4staticroute_value, 
-                { 
-                  "domain_name" = domain_key
-                  "device_name" = device_key
-                  "vrf_name" = vrf_key 
-                })
-            ]
-          ]
-        ]
-      ]
-    ]) : "${item_key.domain_name}/${item_key.device_name}/${item_key.name}" => item_key
-  }
+  for_each = local.resource_ipv4_static_route
 
     device_id              = local.map_devices[each.value.device_name].id 
     interface_logical_name = each.value.interface
@@ -140,7 +111,7 @@ resource "fmc_device_ipv4_static_route" "ipv4_static_route" {
    
   # Optional
     #domain = try(each.value.domain_name, null)
-    #vrf_id = try(each.value.vrf_name, null)
+    #vrf_id = try(each.value.vrf, null)
 
 
   depends_on = [ 
@@ -148,7 +119,7 @@ resource "fmc_device_ipv4_static_route" "ipv4_static_route" {
     fmc_host.host,
     data.fmc_network.network,
     fmc_network.network,
-    fmc_network_groups.network_group,
+    fmc_network_groups.network_groups,
     data.fmc_device.device,
     fmc_device.device,
     data.fmc_device_physical_interface.physical_interface,

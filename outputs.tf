@@ -7,7 +7,6 @@
 #  description = "Full model."
 #  value       = local.model
 #}
-### temp
 
 #output "for_each" {
 #  value       = local.for_each 
