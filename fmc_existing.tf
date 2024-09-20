@@ -19,7 +19,7 @@
 # local.data_devices            => for building dynamic data source
 # local.data_hosts              => for building dynamic data source
 # local.data_networks           => for building dynamic data source
-# local.map_interfaces          => to collect all interfaces object by name that can be used later in the module
+# local.map_interfaces          => to collect all interface objects by name that can be used later in the module
 #
 ###
 

@@ -33,11 +33,11 @@
 #              + Global = {
 #                  + ipv4StaticRoute_0001 = {
 #                      + destination_networks = [
-#                          + "10.1.0.114",
+#                          + "LAN_1",
 #                        ]
 #                      + device_id            = "8100abc6-763b-11ef-a8ee-b0963d93da4a"
-#                      + gateway_id           = "005056B0-F7B2-0ed3-0000-004294968589"
-#                      + gateway_literal      = null
+#                      + gateway_id           = null
+#                      + gateway_literal      = "192.168.0.1"
 #                      + interface_id         = "005056B0-F7B2-0ed3-0000-004294968022"
 #                      + interface_name       = "outside"
 #                      + metric               = 1
@@ -46,6 +46,24 @@
 #            }
 #        }
 #    }
+
+
+  #+ for_each = {
+  #    + "Global/MyDeviceName1/ipv4StaticRoute_0001" = {
+  #        + device_name       = "MyDeviceName1"
+  #        + domain_name       = "Global"
+  #        + gateway           = {
+  #            + literal = "192.168.0.1"
+  #          }
+  #        + interface         = "outside"
+  #        + metric            = 1
+  #        + name              = "ipv4StaticRoute_0001"
+  #        + selected_networks = [
+  #            + "LAN_1",
+  #          ]
+  #        + vrf_name          = "Global"
+  #      }
+  #  }
 
 
 ###

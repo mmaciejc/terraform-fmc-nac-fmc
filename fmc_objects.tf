@@ -15,7 +15,7 @@
 # local.resource_hosts              => for building dynamic resource
 # local.resource_networks           => for building dynamic resource
 # local.resource_network_groups     => for building dynamic resource
-# local.map_network_objects         => to collect all network object by name that can be used in Access Control Policy or IPv4 Static Route
+# local.map_network_objects         => to collect all network objects by name that can be used in Access Control Policy or IPv4 Static Route
 # local.map_network_group_objects   => as per above - needs to be separate to avoid circular error 
 #
 ###
