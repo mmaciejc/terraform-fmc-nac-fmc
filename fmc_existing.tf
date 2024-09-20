@@ -7,18 +7,19 @@
 ###
 #  Data sources
 ####
-# data "fmc_device" "device"
-# data "fmc_device_physical_interface" "physical_interface"
 # data "fmc_host" "host"
 # data "fmc_network" "network"
-#
+# data "fmc_access_control_policy" "access_control_policy"
+# data "fmc_device" "device"
+# data "fmc_device_physical_interface" "physical_interface"
 ###  
 #  Local variables
 ###
-# local.data_devices            => for building dynamic data source
-# local.data_hosts              => for building dynamic data source
-# local.data_networks           => for building dynamic data source
-# local.map_interfaces          => to collect all interface objects by name that can be used later in the module
+# local.data_devices                => for building dynamic data source
+# local.data_access_control_policy  => for building dynamic data source
+# local.data_hosts                  => for building dynamic data source
+# local.data_networks               => for building dynamic data source
+# local.map_interfaces              => to collect all interface objects by name that can be used later in the module
 #
 ###
 ##########################################################
@@ -70,7 +71,7 @@ data "fmc_host" "host" {
   for_each = local.data_host
   
   name    = each.key
-  domain  = try(each.value.domain_name, null)
+  domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -103,10 +104,32 @@ data "fmc_network" "network" {
   for_each = local.data_network
   
   name    = each.key
-  domain  = try(each.value.domain_name, null)
+  domain  = each.value.domain_name
 }
 
+##########################################################
+###    ACCESS CONTROL POLICY
+##########################################################
+locals {
+  data_access_control_policy = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.policies.access_policies, {}) : {
+          "name"        = item_value.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" )
+    } 
 
+}
+
+data "fmc_access_control_policy" "access_control_policy" {
+  for_each = local.data_access_control_policy
+
+  name  = each.value.name
+  domain = each.value.domain_name    
+}
 
 # Legacy part - to be modified
 
@@ -114,20 +137,34 @@ data "fmc_network" "network" {
 ###    DEVICE
 ##########################################################
 locals {
-  data_devices                   = [for item in try(local.data_existing.fmc.domains[0].devices.devices, []) : {
-    name = item.name
-    id = item.id
-  } if contains(keys(item), "id") ] 
+
+ data_device = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.devices.devices, {}) : {
+          "name"        = item_value.name
+          "id"        = try(item_value.id, null)
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "domain_name" ) && contains(keys(item), "id") # name not supported in provider yet, then id can be removed
+    } 
+
 }
 
 data "fmc_device" "device" {
-  for_each = { for device in local.data_devices : device.name => device }
-  id    = each.value.id
-  #name  = each.value.name
+  for_each = local.data_device
+
+  id      = each.value.id
+  #name   = each.value.name  # not supported in provider yet
+  domain = each.value.domain_name
 }
 
+############################################################################################
+# OLD code!
+
 ##########################################################
-###    PHYSICAL INTERFACE
+###    PHYSICAL INTERFACE - to be modified
 ##########################################################
 locals {
   data_accesspolicies = []

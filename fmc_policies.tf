@@ -1,70 +1,132 @@
+##########################################################
+###    Content of the file:
+##########################################################
+#
 ###
-# ACCESS POLICY
+#  Resources
+####
+# resource "fmc_access_control_policy" "access_control_policy" 
+#
+###  
+#  Local variables
 ###
+# local.resource_access_control_policy  => for building dynamic data source
+# local.map_access_control_policy       => to collect all access control policies objects by name that can be used later in the module
+#
+###
+##########################################################
+###    Example of created local variables
+##########################################################
+
+#  + resource_access_control_policy = {
+#      + MyAccessPolicyName1 = {
+#          + categories                        = null
+#          + default_action                    = "BLOCK"
+#          + default_action_log_begin          = null
+#          + default_action_log_end            = null
+#          + default_action_send_events_to_fmc = null
+#          + default_action_send_syslog        = null
+#          + description                       = null
+#          + domain_name                       = "Global"
+#          + name                              = "MyAccessPolicyName1"
+#          + rules                             = [
+#              + {
+#                  + action                       = "ALLOW"
+#                  + category_name                = null
+#                  + description                  = null
+#                  + destination_network_literals = []
+#                  + destination_network_objects  = []
+#                  + name                         = "MyAccessRuleNAme1"
+#                  + source_network_literals      = []
+#                  + source_network_objects       = [
+#                      + {
+#                          + id   = "cb7116e8-66a6-480b-8f9b-295191a0940a"
+#                          + type = "Network"
+#                        },
+#                    ]
+#                },
+#            ]
+#        }
+#    }
+
+#  + map_access_control_policy  = {
+#      + Dummy_ACP = {
+#          + domain_name = "Global"
+#          + id          = "005056B0-02BA-0ed3-0000-004294967348"
+#          + name        = "Dummy_ACP"
+#          + type        = null
+#        }
+#    }
+
+##########################################################
+###    HOST
+##########################################################
 locals {
-  res_accesspolicies = flatten([
-    for domain in local.domains : [
-      for object in try(domain.access_policies, {}) : 
-      {
-        name = object.name
-        domain = domain.name
-        description = try(object.description, null)
-        default_action = try(object.default_action, local.defaults.fmc.domains.access_policies.default_action)
-        default_action_log_begin = try(object.default_action_log_begin, null)
-        default_action_log_end = try(object.default_action_log_end, null)
-        default_action_send_events_to_fmc = try(object.default_action_send_events_to_fmc, null)
-        default_action_send_syslog = try(object.default_action_send_syslog, null)
+  resource_access_control_policy = {
+    for item in flatten([
+      for domain in local.domains : [
+        for item_value in try(domain.policies.access_policies, []) : [ 
+          {
+            name                                = item_value.name
+            domain_name                         = domain.name
+            description                         = try(item_value.description, null)
+            default_action                      = try(item_value.default_action, local.defaults.fmc.domains.access_policies.default_action)
+            default_action_log_begin            = try(item_value.default_action_log_begin, null)
+            default_action_log_end              = try(item_value.default_action_log_end, null)
+            default_action_send_events_to_fmc   = try(item_value.default_action_send_events_to_fmc, null)
+            default_action_send_syslog          = try(item_value.default_action_send_syslog, null)
 
-        categories = try(object.categories, null)
+            categories = try(item_value.categories, null)
 
-        rules = [ for rule in try(object.access_rules, []) : {
-            name = rule.name
-            action = rule.action
-            category_name = try(rule.category, null)
-            description = try(rule.description, null)
-            #intrusion_policy_id
-            #send_events_to_fmc
-            #log_begin
-            #log_end
-            #log_files
-            #section = 
-            source_network_objects = [ for source_network in try(rule.source_networks, []) : {
-              id    = try(local.map_network_objects[source_network].id, local.map_network_group_objects[source_network].id, null)
-              type  = try(local.map_network_objects[source_network].type, local.map_network_group_objects[source_network].type, null)
-              #test = length(try(split(".", source_network), null))
-            } if !can(cidrnetmask(source_network))
+            rules = [ for rule in try(item_value.access_rules, []) : {
+                name = rule.name
+                action = rule.action
+                category_name = try(rule.category, null)
+                description = try(rule.description, null)
+                #intrusion_policy_id
+                #send_events_to_fmc
+                #log_begin
+                #log_end
+                #log_files
+                #section = 
+                source_network_objects = [ for source_network in try(rule.source_networks, []) : {
+                  id    = try(local.map_network_objects[source_network].id, local.map_network_group_objects[source_network].id, null)
+                  type  = try(local.map_network_objects[source_network].type, local.map_network_group_objects[source_network].type, null)
+                  #test = length(try(split(".", source_network), null))
+                } if !can(cidrnetmask(source_network))
+                ]
+                source_network_literals = [ for source_network in try(rule.source_networks, []) : {
+                  value = source_network
+                  type  = can(regex("/", source_network)) ? "Network" : "Host"
+                  #test = length(try(split(".", source_network), null))
+                } if can(cidrnetmask(source_network))
+                ]
+                destination_network_objects = [ for destination_network in try(rule.destination_networks, []) : {
+                  id    = try(local.map_network_objects[destination_network].id, local.map_network_group_objects[destination_network].id, null)
+                  type  = try(local.map_network_objects[destination_network].type, local.map_network_group_objects[destination_network].type, null)
+                } if !can(cidrnetmask(destination_network))
+                ]
+                destination_network_literals = [ for destination_network in try(rule.destination_networks, []) : {
+                  value = destination_network
+                  type  = can(regex("/", destination_network)) ? "Network" : "Host"
+                  #test = length(try(split(".", source_network), null))
+                } if can(cidrnetmask(destination_network))
+                ]
+              }
             ]
-            source_network_literals = [ for source_network in try(rule.source_networks, []) : {
-              value = source_network
-              type  = can(regex("/", source_network)) ? "Network" : "Host"
-              #test = length(try(split(".", source_network), null))
-            } if can(cidrnetmask(source_network))
-            ]
-            destination_network_objects = [ for destination_network in try(rule.destination_networks, []) : {
-              id    = try(local.map_network_objects[destination_network].id, local.map_network_group_objects[destination_network].id, null)
-              type  = try(local.map_network_objects[destination_network].type, local.map_network_group_objects[destination_network].type, null)
-            } if !can(cidrnetmask(destination_network))
-            ]
-            destination_network_literals = [ for destination_network in try(rule.destination_networks, []) : {
-              value = destination_network
-              type  = can(regex("/", destination_network)) ? "Network" : "Host"
-              #test = length(try(split(".", source_network), null))
-            } if can(cidrnetmask(destination_network))
-            ]
-            #can(regex("/", literals.value)) ? "Network" : "Host"
           }
         ]
-
-      } if !contains(local.data_accesspolicies, object.name)
-    ]
-  ])
+      ]
+      ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_access_control_policy), []), item.name)
+  }
+  
 }
 
-resource "fmc_access_control_policy" "accesspolicy" {
-  for_each = { for accesspolicy in local.res_accesspolicies : accesspolicy.name => accesspolicy }
+resource "fmc_access_control_policy" "access_control_policy" {
+  for_each = local.resource_access_control_policy
 
   # Mandatory
-  name = each.value.name
+  name = each.key
   
   # Optional
   #description                             = try(each.value.description, local.defaults.fmc.domains.access_policies.description, null)
@@ -79,3 +141,33 @@ resource "fmc_access_control_policy" "accesspolicy" {
 
 }
 
+##########################################################
+###    Create maps for combined set of _data and _resources network objects 
+##########################################################
+
+######
+### map_access_control_policy 
+######
+locals {
+  map_access_control_policy = merge({
+      for item in flatten([
+        for item_key, item_value in local.resource_access_control_policy : { 
+          name = item_key
+          id   = try(fmc_access_control_policy.access_control_policy[item_key].id, null)
+          type = try(fmc_access_control_policy.access_control_policy[item_key].type, null)
+          domain_name = item_value.domain_name
+        }
+      ]) : item.name => item if contains(keys(item), "name" )
+    }, 
+    {
+      for item in flatten([
+        for item_key, item_value in local.data_access_control_policy : { 
+          name = item_key
+          id   = try(data.fmc_access_control_policy.access_control_policy[item_key].id, null)
+          type = try(data.fmc_access_control_policy.access_control_policy[item_key].type, null)
+          domain_name = item_value.domain_name
+        }
+      ]) : item.name => item if contains(keys(item), "name" )
+    }, 
+  )
+}
