@@ -81,7 +81,7 @@ locals {
   resource_hosts = { 
     for domain in local.domains : domain.name => { 
       "items" = {
-        for item in try(domain.objects.hosts, []) : item.name => item if !contains(try(local.data_hosts[domain.name].items, []), item.name)
+        for item in try(domain.objects.hosts, []) : item.name => item if !contains(try(keys(local.data_hosts[domain.name].items), []), item.name)
         } 
     } 
   }
@@ -218,7 +218,7 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_hosts : 
-          flatten([ for item in domain_value.items: {
+          flatten([ for item in keys(domain_value.items): {
           name        = item
           id          = data.fmc_host.host[item].id
           type        = data.fmc_host.host[item].type
@@ -240,7 +240,7 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_networks : 
-          flatten([ for item in domain_value.items: {
+          flatten([ for item in keys(domain_value.items): {
           name        = item
           id          = data.fmc_network.network[item].id
           type        = data.fmc_network.network[item].type
@@ -267,5 +267,5 @@ locals {
         ]) : item.name => item if contains(keys(item), "name" )
     },       
   )
-  
+
 }

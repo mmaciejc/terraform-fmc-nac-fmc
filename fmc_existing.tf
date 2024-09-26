@@ -33,13 +33,13 @@
 #        }
 #    }
 
- # + data_hosts              = {
- #     + Global = {
- #         + items = [
- #             + "Test",
- #           ]
- #       }
- #   }
+#  + data_hosts = {
+#      + Global = {
+#          + items = {
+#              + Host_1 = {}
+#            }
+#        }
+#    }
 
 ##########################################################
 ###    HOST
@@ -59,9 +59,9 @@ locals {
 
   data_hosts = { 
     for domain in local.data_existing.fmc.domains : domain.name => { 
-      "items" = flatten([ 
-        for item_value in try(domain.objects.hosts, []) : item_value.name 
-        ]  ) 
+      "items" = {
+        for item_value in try(domain.objects.hosts, []) : item_value.name => {}
+        }
     } 
   }
 
@@ -92,9 +92,9 @@ locals {
 
   data_networks = { 
     for domain in local.data_existing.fmc.domains : domain.name => { 
-      "items" = flatten([ 
-        for item_value in try(domain.objects.networks, []) : item_value.name 
-        ]  ) 
+      "items" = {
+        for item_value in try(domain.objects.networks, []) : item_value.name => {}
+      }
     } 
   }
 
@@ -167,7 +167,6 @@ data "fmc_device" "device" {
 ###    PHYSICAL INTERFACE - to be modified
 ##########################################################
 locals {
-  data_accesspolicies = []
   map_interfaces = merge(concat(
     flatten([
       for domain in local.domains : [
