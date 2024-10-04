@@ -14,6 +14,8 @@ bin
 # Env files
 .envrc
 .env
+#FMC credentials
+fmc_provider.tf
 
 # MACOS cache
 .DS_Store

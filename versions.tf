@@ -17,14 +17,3 @@ terraform {
   }
 }
 
-#provider "fmc" {
-#  username = "terraform_restapi"
-#  password = "terraform_restapi123"
-#  url      = "https://10.52.13.145:12443/"
-#}
-
-provider "fmc" {
-  username = "admin"
-  password = "SecretPass123!"
-  url      = "https://10.62.158.200/"
-}
