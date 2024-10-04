@@ -149,9 +149,9 @@ resource "fmc_device_ipv4_static_route" "ipv4_static_route" {
 
   depends_on = [ 
     data.fmc_host.host,
-    fmc_host.host,
+    fmc_hosts.hosts,
     data.fmc_network.network,
-    fmc_network.network,
+    fmc_networks.networks,
     fmc_network_groups.network_groups,
     data.fmc_device.device,
     fmc_device.device,
