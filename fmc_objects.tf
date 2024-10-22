@@ -106,8 +106,7 @@ resource "fmc_hosts" "hosts" {
 
   items =   { for item_key, item_value in each.value.items : item_key => {
       # Mandatory
-#      ip    = item_value.ip 
-      value    = item_value.ip 
+      ip    = item_value.ip 
       # Optional
       description = try(item_value.description, local.defaults.fmc.domains.objects.hosts.description, null)
     }
@@ -164,7 +163,7 @@ resource "fmc_network" "network" {
 #
 #  items =   { for item_key, item_value in each.value.items : item_key => {
 #      # Mandatory
-#      ip    = item_value.ip 
+#      prefix    = item_value.prefix 
 #      # Optional
 #      description = try(item_value.description, local.defaults.fmc.domains.objects.hosts.description, null)
 #    }
