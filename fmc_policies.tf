@@ -89,28 +89,25 @@ locals {
                 #log_end
                 #log_files
                 #section = 
-                source_network_objects = [ for source_network in try(rule.source_networks, []) : {
-                  id    = try(local.map_network_objects[source_network].id, local.map_network_group_objects[source_network].id, null)
-                  type  = try(local.map_network_objects[source_network].type, local.map_network_group_objects[source_network].type, null)
-                  #test = length(try(split(".", source_network), null))
-                } if !can(cidrnetmask(source_network))
+                source_network_objects = [ for source_network_object in try(rule.source_network_objects, []) : {
+                  id    = try(local.map_network_objects[source_network_object].id, local.map_network_group_objects[source_network_object].id, null)
+                  type  = try(local.map_network_objects[source_network_object].type, local.map_network_group_objects[source_network_object].type, null)
+                } 
                 ]
-                source_network_literals = [ for source_network in try(rule.source_networks, []) : {
-                  value = source_network
-                  type  = can(regex("/", source_network)) ? "Network" : "Host"
-                  #test = length(try(split(".", source_network), null))
-                } if can(cidrnetmask(source_network))
+                source_network_literals = [ for source_network_literal in try(rule.source_network_literals, []) : {
+                  value = source_network_literal
+                  type  = can(regex("/", source_network_literal)) ? "Network" : "Host"
+                }
                 ]
-                destination_network_objects = [ for destination_network in try(rule.destination_networks, []) : {
-                  id    = try(local.map_network_objects[destination_network].id, local.map_network_group_objects[destination_network].id, null)
-                  type  = try(local.map_network_objects[destination_network].type, local.map_network_group_objects[destination_network].type, null)
-                } if !can(cidrnetmask(destination_network))
+                destination_network_objects = [ for destination_network_object in try(rule.destination_network_objects, []) : {
+                  id    = try(local.map_network_objects[destination_network_object].id, local.map_network_group_objects[destination_network_object].id, null)
+                  type  = try(local.map_network_objects[destination_network_object].type, local.map_network_group_objects[destination_network_object].type, null)
+                } 
                 ]
-                destination_network_literals = [ for destination_network in try(rule.destination_networks, []) : {
-                  value = destination_network
-                  type  = can(regex("/", destination_network)) ? "Network" : "Host"
-                  #test = length(try(split(".", source_network), null))
-                } if can(cidrnetmask(destination_network))
+                destination_network_literals = [ for destination_network_literal in try(rule.destination_network_literals, []) : {
+                  value = destination_network_literal
+                  type  = can(regex("/", destination_network_literal)) ? "Network" : "Host"
+                } 
                 ]
               }
             ]
