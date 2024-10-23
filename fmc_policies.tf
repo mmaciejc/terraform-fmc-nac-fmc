@@ -71,10 +71,10 @@ locals {
             domain_name                         = domain.name
             description                         = try(item_value.description, null)
             default_action                      = try(item_value.default_action, local.defaults.fmc.domains.access_policies.default_action)
-            default_action_log_begin            = try(item_value.default_action_log_begin, null)
-            default_action_log_end              = try(item_value.default_action_log_end, null)
-            default_action_send_events_to_fmc   = try(item_value.default_action_send_events_to_fmc, null)
-            default_action_send_syslog          = try(item_value.default_action_send_syslog, null)
+            default_action_log_begin            = try(item_value.log_begin, local.defaults.fmc.domains.access_policies.log_begin)
+            default_action_log_end              = try(item_value.log_end, local.defaults.fmc.domains.access_policies.log_end)
+            default_action_send_events_to_fmc   = try(item_value.send_events_to_fmc, local.defaults.fmc.domains.access_policies.send_events_to_fmc)
+            default_action_send_syslog          = try(item_value.enable_syslog, local.defaults.fmc.domains.access_policies.enable_syslog)
 
             categories = try(item_value.categories, null)
 
