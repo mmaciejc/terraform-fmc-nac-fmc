@@ -85,6 +85,8 @@ locals {
                 description = try(rule.description, null)
                 #intrusion_policy_id
                 #send_events_to_fmc
+                enabled = try(rule.enabled, local.defaults.fmc.domains.access_policies.access_rules.enabled)
+                send_syslog = try(rule.enable_syslog, local.defaults.fmc.domains.access_policies.access_rules.enable_syslog)
                 #log_begin
                 #log_end
                 #log_files
