@@ -7,8 +7,9 @@
 ###
 #  Data sources
 ####
-# data "fmc_host" "host"
-# data "fmc_network" "network"
+# data "fmc_hosts" "hosts"
+# data "fmc_networks" "networks"
+# data "fmc_ports" "ports"
 # data "fmc_access_control_policy" "access_control_policy"
 # data "fmc_device" "device"
 # data "fmc_device_physical_interface" "physical_interface"
@@ -19,19 +20,13 @@
 # local.data_access_control_policy  => for building dynamic data source
 # local.data_hosts                  => for building dynamic data source
 # local.data_networks               => for building dynamic data source
+# local.data_ports                  => for building dynamic data source
 # local.map_interfaces              => to collect all interface objects by name that can be used later in the module
 #
 ###
 ##########################################################
 ###    Example of created local variables
 ##########################################################
-
-#  + data_host               = {
-#      + Test = {
-#          + domain_name = "Global"
-#          + name        = "Test"
-#        }
-#    }
 
 #  + data_hosts = {
 #      + Global = {
@@ -46,65 +41,106 @@
 ##########################################################
 locals {
 
- data_host = { 
-    for item in flatten([
-      for domain in try(local.data_existing.fmc.domains, {}) : [ 
-        for item_value in try(domain.objects.hosts, {}) : {
-          "name"        = item_value.name
-          "domain_name" = domain.name
-        }
-      ]
-      ]) : item.name => item if contains(keys(item), "domain_name" )
-    } 
-
   data_hosts = { 
     for domain in local.data_existing.fmc.domains : domain.name => { 
       "items" = {
-        for item_value in try(domain.objects.hosts, []) : item_value.name => {}
+        for element in try(domain.objects.hosts, []) : element.name => {}
         }
     } 
   }
 
 }
 
-data "fmc_host" "host" {
-  for_each = local.data_host
+data "fmc_hosts" "hosts" {
+  for_each = local.data_hosts
   
-  name    = each.key
-  domain  = each.value.domain_name
+  items   = each.value.items
+  domain  = each.key
 }
+
 
 ##########################################################
 ###    NETWORK
 ##########################################################
 locals {
 
- data_network = { 
-    for item in flatten([
-      for domain in try(local.data_existing.fmc.domains, {}) : [ 
-        for item_value in try(domain.objects.networks, {}) : {
-          "name"        = item_value.name
-          "domain_name" = domain.name
-        }
-      ]
-      ]) : item.name => item if contains(keys(item), "name" )
-    } 
+# data_network = { 
+#    for item in flatten([
+#      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+#        for element in try(domain.objects.networks, {}) : {
+#          "name"        = element.name
+#          "domain_name" = domain.name
+#        }
+#      ]
+#      ]) : item.name => item if contains(keys(item), "name" )
+#    } 
 
   data_networks = { 
     for domain in local.data_existing.fmc.domains : domain.name => { 
       "items" = {
-        for item_value in try(domain.objects.networks, []) : item_value.name => {}
+        for element in try(domain.objects.networks, []) : element.name => {}
       }
     } 
   }
 
 }
 
-data "fmc_network" "network" {
-  for_each = local.data_network
+#data "fmc_network" "network" {
+#  for_each = local.data_network
   
-  name    = each.key
-  domain  = each.value.domain_name
+#  name    = each.key
+#  domain  = each.value.domain_name
+#}
+
+data "fmc_networks" "networks" {
+  for_each = local.data_networks
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
+###    PORT
+##########################################################
+locals {
+
+  data_ports = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.ports, []) : element.name => {}
+        }
+    } 
+  }
+
+}
+
+data "fmc_ports" "ports" {
+  for_each = local.data_ports
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
+###    DYNAMIC OBJECTS
+##########################################################
+locals {
+
+  data_dynamic_objects = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.dynamic_objects, []) : element.name => {}
+        }
+    } 
+  }
+
+}
+
+data "fmc_dynamic_objects" "dynamic_objects" {
+  for_each = local.data_dynamic_objects
+  
+  items   = each.value.items
+  domain  = each.key
 }
 
 ##########################################################
@@ -127,8 +163,8 @@ locals {
 data "fmc_access_control_policy" "access_control_policy" {
   for_each = local.data_access_control_policy
 
-  name  = each.value.name
-  domain = each.value.domain_name    
+  name    = each.value.name
+  domain  = each.value.domain_name    
 }
 
 # Legacy part - to be modified

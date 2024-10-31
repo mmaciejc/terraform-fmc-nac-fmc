@@ -111,6 +111,26 @@ locals {
                   type  = can(regex("/", destination_network_literal)) ? "Network" : "Host"
                 } 
                 ]
+                source_dynamic_objects = [ for source_dynamic_object in try(rule.source_dynamic_objects, []) : {
+                  id    = try(local.map_dynamic_objects[source_dynamic_object].id, null)
+                  type  = try(local.map_dynamic_objects[source_dynamic_object].type, null)
+                } 
+                ]
+                destination_dynamic_objects = [ for destination_dynamic_object in try(rule.destination_dynamic_objects, []) : {
+                  id    = try(local.map_dynamic_objects[destination_dynamic_object].id, null)
+                  type  = try(local.map_dynamic_objects[destination_dynamic_object].type, null)
+                } 
+                ]  
+                source_port_objects = [ for source_port_object in try(rule.source_port_objects, []) : {
+                  id    = try(local.map_services[source_port_object].id, null)
+                  type  = try(local.map_services[source_port_object].type, null)
+                } 
+                ]
+                destination_port_objects = [ for destination_port_object in try(rule.destination_port_objects, []) : {
+                  id    = try(local.map_services[destination_port_object].id, null)
+                  type  = try(local.map_services[destination_port_object].type, null)
+                } 
+                ] 
               }
             ]
           }
@@ -137,6 +157,18 @@ resource "fmc_access_control_policy" "access_control_policy" {
   #default_action_syslog_config_id         = try(each.value.syslog_config_id, local.defaults.fmc.domains.access_policies.syslog_config_id, null)
   categories                              = each.value.categories
   rules                                   = each.value.rules
+
+  depends_on = [ 
+    data.fmc_hosts.hosts,
+    fmc_hosts.hosts,
+    data.fmc_networks.networks,
+    fmc_networks.networks,
+    fmc_network_groups.network_groups,
+    data.fmc_dynamic_objects.dynamic_objects,
+    fmc_dynamic_objects.dynamic_objects,
+    data.fmc_ports.ports,
+    fmc_ports.ports,
+   ]  
 
 }
 
