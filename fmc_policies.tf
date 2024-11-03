@@ -91,6 +91,10 @@ locals {
                 #log_end
                 #log_files
                 #section = 
+                source_zones = [ for source_zone in try(rule.source_zones, []) : {
+                  id = local.map_security_zones[source_zone].id
+                }
+                ]
                 source_network_objects = [ for source_network_object in try(rule.source_network_objects, []) : {
                   id    = try(local.map_network_objects[source_network_object].id, local.map_network_group_objects[source_network_object].id, null)
                   type  = try(local.map_network_objects[source_network_object].type, local.map_network_group_objects[source_network_object].type, null)
@@ -105,6 +109,10 @@ locals {
                   id    = try(local.map_network_objects[destination_network_object].id, local.map_network_group_objects[destination_network_object].id, null)
                   type  = try(local.map_network_objects[destination_network_object].type, local.map_network_group_objects[destination_network_object].type, null)
                 } 
+                ]
+                destination_zones = [ for destination_zone in try(rule.destination_zones, []) : {
+                  id = local.map_security_zones[destination_zone].id
+                }
                 ]
                 destination_network_literals = [ for destination_network_literal in try(rule.destination_network_literals, []) : {
                   value = destination_network_literal
@@ -159,6 +167,8 @@ resource "fmc_access_control_policy" "access_control_policy" {
   rules                                   = each.value.rules
 
   depends_on = [ 
+    data.fmc_security_zone.security_zone,
+    fmc_security_zone.security_zone,
     data.fmc_hosts.hosts,
     fmc_hosts.hosts,
     data.fmc_networks.networks,

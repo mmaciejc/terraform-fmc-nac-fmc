@@ -37,7 +37,7 @@
 #    }
 
 ##########################################################
-###    HOST
+###    HOSTS
 ##########################################################
 locals {
 
@@ -60,7 +60,7 @@ data "fmc_hosts" "hosts" {
 
 
 ##########################################################
-###    NETWORK
+###    NETWORKS
 ##########################################################
 locals {
 
@@ -100,7 +100,7 @@ data "fmc_networks" "networks" {
 }
 
 ##########################################################
-###    PORT
+###    PORTS
 ##########################################################
 locals {
 
@@ -119,6 +119,31 @@ data "fmc_ports" "ports" {
   
   items   = each.value.items
   domain  = each.key
+}
+
+##########################################################
+###    SECURITY ZONE
+##########################################################
+locals {
+
+ data_security_zone = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for element in try(domain.objects.security_zones, {}) : {
+          "name"        = element.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" )
+    } 
+
+}
+
+data "fmc_security_zone" "security_zone" {
+  for_each = local.data_security_zone
+  
+  name    = each.key
+  domain  = each.value.domain_name
 }
 
 ##########################################################

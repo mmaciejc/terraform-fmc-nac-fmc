@@ -61,7 +61,7 @@
 #    }
 
 ##########################################################
-###    HOST
+###    HOSTS
 ##########################################################
 locals {
 
@@ -116,7 +116,7 @@ resource "fmc_hosts" "hosts" {
 }
 
 ##########################################################
-###    NETWORK
+###    NETWORKS
 ##########################################################
 locals {
 
@@ -204,7 +204,7 @@ resource "fmc_network_groups" "network_groups" {
 }
 
 ##########################################################
-###    PORT
+###    PORTS
 ##########################################################
 locals {
 
@@ -231,6 +231,36 @@ resource "fmc_ports" "ports" {
   }
   # Optional
   domain = try(each.key, null)
+}
+
+##########################################################
+###    SECURITY ZONE
+##########################################################
+locals {
+
+  resource_security_zone = { 
+    for item in flatten([
+      for domain in local.domains : [ 
+        for item_value in try(domain.objects.security_zones, []) : [ 
+          merge(item_value, 
+            {
+              "domain_name" = domain.name
+            })
+        ]
+      ]
+      ]) : item.name => item if contains(keys(item), "name" ) && !contains(try(keys(local.data_security_zone), []), item.name)
+  }
+
+}
+
+resource "fmc_security_zone" "security_zone" {
+  for_each = local.resource_security_zone
+  # Mandatory
+  name  = each.key
+  interface_mode    = try(each.value.interface_type, local.defaults.fmc.domains.objects.security_zones.interface_type)
+
+  # Optional
+  domain = try(each.value.domain_name, null)
 }
 
 ##########################################################
@@ -393,4 +423,26 @@ locals {
     },       
   )
 
+}
+
+######
+### map_security_zones - security zones data + resource
+######
+locals {
+  map_security_zones = merge({
+    for item in local.resource_security_zone :
+      item.name => {
+        id   = fmc_security_zone.security_zone[item.name].id
+        type = fmc_security_zone.security_zone[item.name].type
+      }
+    },  
+    {
+    for item in local.data_security_zone :
+      item.name => {
+        id   = data.fmc_security_zone.security_zone[item.name].id
+        type = data.fmc_security_zone.security_zone[item.name].type
+      }
+    }, 
+  )
+  
 }
