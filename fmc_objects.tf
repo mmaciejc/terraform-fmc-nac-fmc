@@ -433,14 +433,14 @@ locals {
     for item in local.resource_security_zone :
       item.name => {
         id   = fmc_security_zone.security_zone[item.name].id
-        type = fmc_security_zone.security_zone[item.name].type
+        #type = fmc_security_zone.security_zone[item.name].type
       }
     },  
     {
     for item in local.data_security_zone :
       item.name => {
         id   = data.fmc_security_zone.security_zone[item.name].id
-        type = data.fmc_security_zone.security_zone[item.name].type
+        #type = data.fmc_security_zone.security_zone[item.name].type
       }
     }, 
   )
