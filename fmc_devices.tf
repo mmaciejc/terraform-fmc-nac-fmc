@@ -51,33 +51,26 @@
 ##########################################################
 
 locals {
-  res_devices = []
 
   resource_device = {
     for item in flatten([
       for domain in local.domains : [
         for item_value in try(domain.devices.devices, []) : [ 
-          {
-            "name"                      = try(item_value.name, null)
-            "host_name"                 = try(item_value.host_name, null)
-            "registration_key"          = try(item_value.registration_key, null)
-            "access_policy"             = try(item_value.access_policy, null)
-            "license_capabilities"      = try(item_value.licenses, [])
-            "nat_id"                    = try(item_value.nat_id, null)
-            "performance_tier"          = try(item_value.performance_tier, null)
-            "prohibit_packet_transfer"  = try(item_value.prohibit_packet_transfer, null)
-            "domain_name"               = domain.name            
-          }
+          merge(item_value, 
+            {
+              "domain_name" = domain.name
+            })
         ]
       ]
       ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_device), []), item.name)
   }
         
 }
+
 resource "fmc_device" "device" {
   for_each = local.resource_device
 
-  #Required
+  # Mandatory
     name                      = each.key
     host_name                 = each.value.host_name
     registration_key          = each.value.registration_key
@@ -85,10 +78,10 @@ resource "fmc_device" "device" {
     license_capabilities      = each.value.license_capabilities
 
   #Optional
-    nat_id                    = each.value.nat_id
-    performance_tier          = each.value.performance_tier
-    prohibit_packet_transfer  = each.value.prohibit_packet_transfer
-    domain                    = each.value.domain_name     
+    nat_id                    = try(each.value.nat_id, null)
+    performance_tier          = try(each.value.performance_tier, null)
+    prohibit_packet_transfer  = try(each.value.prohibit_packet_transfer, null)
+    domain                    = try(each.value.domain_name, null)
 
   depends_on = [ 
     data.fmc_access_control_policy.access_control_policy,
@@ -131,6 +124,7 @@ locals {
 resource "fmc_device_ipv4_static_route" "ipv4_static_route" {
   for_each = local.resource_ipv4_static_route
 
+  # Mandatory
     device_id              = local.map_devices[each.value.device_name].id 
     interface_logical_name = each.value.interface
     interface_id           = local.map_ifnames["${each.value.device_name}/${each.value.interface}"].id
@@ -152,7 +146,6 @@ resource "fmc_device_ipv4_static_route" "ipv4_static_route" {
     fmc_hosts.hosts,
     data.fmc_networks.networks,
     fmc_networks.networks,
-#    fmc_networks.networks,    
     fmc_network_groups.network_groups,
     data.fmc_device.device,
     fmc_device.device,
@@ -173,8 +166,8 @@ locals {
       for item in flatten([
         for item_key, item_value in local.resource_device :  { 
             name = item_key
-            id   = try(fmc_device.device[item_key].id, null)
-            type = try(fmc_device.device[item_key].type, null)
+            id   = fmc_device.device[item_key].id
+            type = fmc_device.device[item_key].type
             domain_name = item_value.domain_name
           }
         ]) : item.name => item if contains(keys(item), "name" )
@@ -183,8 +176,8 @@ locals {
       for item in flatten([
         for item_key, item_value in local.data_device : { 
             name = item_key
-            id   = try(data.fmc_device.device[item_key].id, null)
-            type = try(data.fmc_device.device[item_key].type, null)
+            id   = data.fmc_device.device[item_key].id
+            type = data.fmc_device.device[item_key].type
             domain_name = item_value.domain_name
           }
         ]) : item.name => item if contains(keys(item), "name" )

@@ -9,7 +9,11 @@
 ####
 # data "fmc_hosts" "hosts"
 # data "fmc_networks" "networks"
+# data "fmc_ranges" "ranges"
 # data "fmc_ports" "ports"
+# data "fmc_icmpv4_objects" "icmpv4s"
+# data "fmc_security_zones" "security_zones"
+# data "fmc_dynamic_objects"
 # data "fmc_access_control_policy" "access_control_policy"
 # data "fmc_device" "device"
 # data "fmc_device_physical_interface" "physical_interface"
@@ -20,7 +24,11 @@
 # local.data_access_control_policy  => for building dynamic data source
 # local.data_hosts                  => for building dynamic data source
 # local.data_networks               => for building dynamic data source
+# local.data_ranges                 => for building dynamic data source
+# locals data_security_zones        => for building dynamic data source
+# local.data_dynamic_objects        => for building dynamic data source
 # local.data_ports                  => for building dynamic data source
+# local.data_icmpv4s                => for building dynamic data source
 # local.map_interfaces              => to collect all interface objects by name that can be used later in the module
 #
 ###
@@ -100,6 +108,50 @@ data "fmc_networks" "networks" {
 }
 
 ##########################################################
+###    RANGES
+##########################################################
+locals {
+
+  data_ranges = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.ranges, []) : element.name => {}
+      }
+    } 
+  }
+
+}
+
+data "fmc_ranges" "ranges" {
+  for_each = local.data_ranges
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
+###    FQDNS
+##########################################################
+locals {
+
+  data_fqdns = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.fqdns, []) : element.name => {}
+      }
+    } 
+  }
+
+}
+
+data "fmc_fqdn_objects" "fqdns" {
+  for_each = local.data_fqdns
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
 ###    PORTS
 ##########################################################
 locals {
@@ -122,28 +174,69 @@ data "fmc_ports" "ports" {
 }
 
 ##########################################################
+###    ICMPv4s
+##########################################################
+locals {
+
+  data_icmpv4s = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.icmpv4s, []) : element.name => {}
+        }
+    } 
+  }
+
+}
+
+data "fmc_icmpv4_objects" "icmpv4s" {
+  for_each = local.data_icmpv4s
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
+###    Port_Groups
+##########################################################
+locals {
+
+  data_port_groups = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.port_groups, []) : element.name => {}
+        }
+    } 
+  }
+
+}
+
+data "fmc_port_groups" "port_groups" {
+  for_each = local.data_port_groups
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
 ###    SECURITY ZONE
 ##########################################################
 locals {
 
- data_security_zone = { 
-    for item in flatten([
-      for domain in try(local.data_existing.fmc.domains, {}) : [ 
-        for element in try(domain.objects.security_zones, {}) : {
-          "name"        = element.name
-          "domain_name" = domain.name
+  data_security_zones = { 
+    for domain in local.data_existing.fmc.domains : domain.name => { 
+      "items" = {
+        for element in try(domain.objects.security_zones, []) : element.name => {}
         }
-      ]
-      ]) : item.name => item if contains(keys(item), "name" )
     } 
+  }
 
 }
 
-data "fmc_security_zone" "security_zone" {
-  for_each = local.data_security_zone
+data "fmc_security_zones" "security_zones" {
+  for_each = local.data_security_zones
   
-  name    = each.key
-  domain  = each.value.domain_name
+  items   = each.value.items
+  domain  = each.key
 }
 
 ##########################################################
@@ -191,6 +284,31 @@ data "fmc_access_control_policy" "access_control_policy" {
   name    = each.value.name
   domain  = each.value.domain_name    
 }
+
+##########################################################
+###    FTD NAT Policy
+##########################################################
+locals {
+  data_ftd_nat_policy = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.policies.ftd_nat_policies, {}) : {
+          "name"        = item_value.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" )
+    } 
+
+}
+
+data "fmc_ftd_nat_policy" "fmc_ftd_nat_policy" {
+  for_each = local.data_ftd_nat_policy
+
+  name    = each.value.name
+  domain  = each.value.domain_name    
+}
+
 
 # Legacy part - to be modified
 
