@@ -372,9 +372,7 @@ resource "fmc_port_groups" "port_groups" {
   items =   { for item_key, item_value in each.value.items : item_key => {
       # Mandatory 
       description = item_value.description
-      type = "PortObjectGroup"
-      #TO BE CHANGED TO OBJECTS!!!
-      ports = [ for object_item in try(item_value.objects, {}) : {
+      objects = [ for object_item in try(item_value.objects, {}) : {
         id = local.map_services[object_item.name].id
         type = local.map_services[object_item.name].type
       }]
@@ -534,7 +532,6 @@ locals {
           name = item_key
           id   = fmc_fqdn_objects.fqdns[domain_key].items[item_key].id
           type = fmc_fqdn_objects.fqdns[domain_key].items[item_key].type
-          #type = "FQDN"
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name" )
@@ -546,7 +543,6 @@ locals {
           name        = element
           id          = data.fmc_fqdn_objects.fqdns[domain_key].items[element].id
           type        = data.fmc_fqdn_objects.fqdns[domain_key].items[element].type
-          #type        = "FQDN"
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name" )
@@ -614,8 +610,7 @@ locals {
           flatten([ for item_key, item_value in domain_value.items : { 
             name = item_key
             id   = fmc_icmpv4_objects.icmpv4s[domain_key].items[item_key].id
-            #type = fmc_icmpv4_objects.icmpv4s[domain_key].items[item_key].type
-            type        = "ICMPV4Object"
+            type = fmc_icmpv4_objects.icmpv4s[domain_key].items[item_key].type
             domain_name = domain_key
           }])
         ]) : item.name => item if contains(keys(item), "name" )
@@ -626,8 +621,7 @@ locals {
           flatten([ for element in keys(domain_value.items): {
           name        = element
           id          = data.fmc_icmpv4_objects.icmpv4s[domain_key].items[element].id
-          #type        = data.fmc_icmpv4_objects.icmpv4s[domain_key].items[element].type
-          type        = "ICMPV4Object"
+          type        = data.fmc_icmpv4_objects.icmpv4s[domain_key].items[element].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name" )
@@ -645,7 +639,7 @@ locals {
           flatten([ for item_key, item_value in domain_value.items : { 
             name = item_key
             id   = try(fmc_port_groups.port_groups[domain_key].items[item_key].id, null)
-            type = "PortObjectGroup"
+            type   = try(fmc_port_groups.port_groups[domain_key].items[item_key].type, null)
             domain_name = domain_key
           }])
         ]) : item.name => item if contains(keys(item), "name" )
@@ -656,7 +650,7 @@ locals {
           flatten([ for item_key, item_value in domain_value.items : { 
             name = item_key
             id   = try(data.fmc_port_groups.port_groups[domain_key].items[item_key].id, null)
-            type = "PortObjectGroup"
+            type   = try(data.fmc_port_groups.port_groups[domain_key].items[item_key].type, null)
             domain_name = domain_key
           }])
         ]) : item.name => item if contains(keys(item), "name" )
@@ -664,8 +658,6 @@ locals {
   )
 
 }
-
-
 
 ######
 ### map_network_group_objects
@@ -696,8 +688,7 @@ locals {
           flatten([ for item_key, item_value in domain_value.items : { 
             name = item_key
             id   = fmc_security_zones.security_zones[domain_key].items[item_key].id
-            #type = fmc_security_zones.security_zones[domain_key].items[item_key].type
-            type        = "SecurityZone"
+            type = fmc_security_zones.security_zones[domain_key].items[item_key].type
             domain_name = domain_key
           }])
         ]) : item.name => item if contains(keys(item), "name" )
@@ -708,8 +699,7 @@ locals {
           flatten([ for element in keys(domain_value.items): {
           name        = element
           id          = data.fmc_security_zones.security_zones[domain_key].items[element].id
-          #type        = data.fmc_security_zones.security_zones[domain_key].items[element].type
-          type        = "SecurityZone"
+          type        = data.fmc_security_zones.security_zones[domain_key].items[element].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name" )
