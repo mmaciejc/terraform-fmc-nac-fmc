@@ -249,47 +249,51 @@ locals {
             domain_name                         = domain.name
 
             auto_nat_rules = [ for auto_rule in try(item_value.ftd_auto_nat_rules, []) : {
-                nat_type                                      = auto_rule.nat_type              
+                # Mandatory
+                nat_type                                      = auto_rule.nat_type     
+                # Optional         
                 destination_interface_id                      = try(local.map_security_zones[auto_rule.destination_interface].id, null)
-                fall_through                                  = try(auto_rule.fall_through, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.fall_through)
-                ipv6                                          = try(auto_rule.ipv6, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.ipv6)
-                net_to_net                                    = try(auto_rule.net_to_net, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.net_to_net)
-                no_proxy_arp                                  = try(auto_rule.no_proxy_arp, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.no_proxy_arp)
+                fall_through                                  = try(auto_rule.fall_through, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.fall_through, null)
+                ipv6                                          = try(auto_rule.ipv6, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.ipv6, null)
+                net_to_net                                    = try(auto_rule.net_to_net, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.net_to_net, null)
+                no_proxy_arp                                  = try(auto_rule.no_proxy_arp, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.no_proxy_arp, null)
                 original_network_id                           = try(local.map_network_objects[auto_rule.original_network].id, local.map_network_group_objects[auto_rule.original_network].id, null)
                 original_port                                 = try(auto_rule.original_port, null)
-                route_lookup                                  = try(auto_rule.perform_route_lookup, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_manual_nat_rules.perform_route_lookup)
+                route_lookup                                  = try(auto_rule.perform_route_lookup, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_manual_nat_rules.perform_route_lookup, null)
                 protocol                                      = try(auto_rule.protocol, null)
                 source_interface_id                           = try(local.map_security_zones[auto_rule.source_interface].id, null)
-                translate_dns                                 = try(auto_rule.translate_dns, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.translate_dns)
+                translate_dns                                 = try(auto_rule.translate_dns, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.translate_dns, null)
                 translated_network_id                         = try(local.map_network_objects[auto_rule.translated_network].id, local.map_network_group_objects[auto_rule.translated_network].id, null)
-                translated_network_is_destination_interface   = try(auto_rule.translated_network_is_destination_interface, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.translated_network_is_destination_interface)
+                translated_network_is_destination_interface   = try(auto_rule.translated_network_is_destination_interface, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_auto_nat_rules.translated_network_is_destination_interface, null)
                 translated_port                               = try(auto_rule.translated_port, null)
             }]
 
             manual_nat_rules = [ for manual_rule in try(item_value.ftd_manual_nat_rules, []) : {
+              # Mandatory
               nat_type                          = manual_rule.nat_type
               section                           = upper(manual_rule.section)
+              # Optional
               description                       = try(manual_rule.description, null)
               destination_interface_id          = try(local.map_security_zones[manual_rule.destination_interface].id, null)
-              enabled                           = try(manual_rule.enabled, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_manual_nat_rules.enabled)
-              fall_through                      = try(manual_rule.fall_through, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_manual_nat_rules.fall_through)
-              interface_in_original_destination = try(manual_rule.interface_in_original_destination, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.interface_in_original_destination)
-              interface_in_translated_source    = try(manual_rule.interface_in_translated_source, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.interface_in_translated_source)
-              ipv6                              = try(manual_rule.ipv6, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.ipv6)
-              net_to_net                        = try(manual_rule.net_to_net, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.net_to_net)
-              no_proxy_arp                      = try(manual_rule.no_proxy_arp, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.no_proxy_arp)
+              enabled                           = try(manual_rule.enabled, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_manual_nat_rules.enabled, null)
+              fall_through                      = try(manual_rule.fall_through, local.defaults.fmc.domains.policies.ftd_nat_policies.ftd_manual_nat_rules.fall_through, null)
+              interface_in_original_destination = try(manual_rule.interface_in_original_destination, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.interface_in_original_destination, null)
+              interface_in_translated_source    = try(manual_rule.interface_in_translated_source, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.interface_in_translated_source, null)
+              ipv6                              = try(manual_rule.ipv6, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.ipv6, null)
+              net_to_net                        = try(manual_rule.net_to_net, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.net_to_net, null)
+              no_proxy_arp                      = try(manual_rule.no_proxy_arp, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.no_proxy_arp, null)
               original_destination_id           = try(local.map_network_objects[manual_rule.original_destination].id, local.map_network_group_objects[manual_rule.original_destination].id, null)
               original_destination_port_id      = try(local.map_services[manual_rule.original_destination_port].id, local.map_service_groups[manual_rule.original_destination_port].id, null) 
               original_source_id                = try(local.map_network_objects[manual_rule.original_source].id, local.map_network_group_objects[manual_rule.original_source].id, null)
               original_source_port_id           = try(local.map_services[manual_rule.original_source_port].id, local.map_service_groups[manual_rule.original_source_port].id, null) 
-              route_lookup                      = try(manual_rule.perform_route_lookup, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.perform_route_lookup)
+              route_lookup                      = try(manual_rule.perform_route_lookup, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.perform_route_lookup, null)
               source_interface_id               = try(local.map_security_zones[manual_rule.source_interface].id, null)
-              translate_dns                     = try(manual_rule.translate_dns, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.translate_dns)
+              translate_dns                     = try(manual_rule.translate_dns, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.translate_dns, null)
               translated_destination_id         = try(local.map_network_objects[manual_rule.translated_destination].id, local.map_network_group_objects[manual_rule.translated_destination].id, null)
               translated_destination_port_id    = try(local.map_services[manual_rule.translated_destination_port].id, local.map_service_groups[manual_rule.translated_destination_port].id, null) 
               translated_source_id              = try(local.map_network_objects[manual_rule.translated_source].id, local.map_network_group_objects[manual_rule.translated_source].id, null)
               translated_source_port_id         = try(local.map_services[manual_rule.translated_source_port].id, local.map_service_groups[manual_rule.translated_source_port].id, null)  
-              unidirectional                    = try(manual_rule.unidirectional, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.unidirectional)
+              unidirectional                    = try(manual_rule.unidirectional, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.unidirectional, null)
             }]
           }]
       ]
