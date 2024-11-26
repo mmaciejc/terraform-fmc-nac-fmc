@@ -335,7 +335,7 @@ locals {
             name                      = item_value.name
             domain_name               = domain.name
             description               = try(item_value.description, null)
-            base_policy_id            = local.map_intrusion_policy[item_value.base_policy].id
+            base_policy_id            = try(data.fmc_intrusion_policy.intrusion_policy[item_value.base_policy].id, null)
             inspection_mode           = try(item_value.inspection_mode, null)
           }]
       ]
