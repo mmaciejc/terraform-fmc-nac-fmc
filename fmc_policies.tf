@@ -81,7 +81,7 @@ locals {
               section       = try(category.section, null)
             } ]
 
-            default_action_intrusion_policy_id  = try(local.map_intrusion_policy[each.value.base_intrusion_policy].id, local.map_intrusion_policy[local.defaults.fmc.domains.policies.access_policies.base_intrusion_policy].id, null)
+            default_action_intrusion_policy_id  = try(local.map_intrusion_policy[item_value.base_intrusion_policy].id, local.map_intrusion_policy[local.defaults.fmc.domains.policies.access_policies.base_intrusion_policy].id, null)
             default_action_log_begin            = try(item_value.log_begin, local.defaults.fmc.domains.policies.access_policies.log_begin, null)
             default_action_log_end              = try(item_value.log_end, local.defaults.fmc.domains.policies.access_policies.log_end, null)
             default_action_send_events_to_fmc   = try(item_value.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.send_events_to_fmc, null)
