@@ -87,8 +87,8 @@ locals {
             default_action_send_events_to_fmc   = try(item_value.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.send_events_to_fmc, null)
             default_action_send_syslog          = try(item_value.enable_syslog, local.defaults.fmc.domains.policies.access_policies.enable_syslog, null)
             
-            #default_action_snmp_config_id       = TODO snmp_alert
-            #default_action_syslog_config_id     = TODO syslog_alert
+            default_action_snmp_config_id       = null # snmp_alert
+            default_action_syslog_config_id     = null # syslog_alert
             default_action_syslog_severity      = try(item_value.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
 
             description                         = try(item_value.description, null)
@@ -128,7 +128,7 @@ locals {
                 } ]
 
                 enabled               = try(rule.enabled, local.defaults.fmc.domains.policies.access_policies.access_rules.enabled, null)
-                #file_policy_id = 
+                file_policy_id        = null #file_policy
                 intrusion_policy_id  = try(local.map_intrusion_policy[rule.intrusion_policy].id, local.defaults.fmc.domains.policies.access_policies.access_rules.intrusion_policy, null)
                 log_begin             = try(rule.log_connection_begin, local.defaults.fmc.domains.policies.access_policies.access_rules.log_connection_begin, null)
                 log_end               = try(rule.log_connection_end, local.defaults.fmc.domains.policies.access_policies.access_rules.log_connection_end, null)
@@ -136,7 +136,7 @@ locals {
                 section               = try(rule.section, local.defaults.fmc.domains.policies.access_policies.access_rules.section, null)
                 send_events_to_fmc    = try(rule.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.access_rules.send_events_to_fmc, null)
                 send_syslog           = try(rule.enable_syslog, local.defaults.fmc.domains.policies.access_policies.access_rules.enable_syslog, null)
-                #snmp_config_id        = snmp_alert
+                snmp_config_id        = null #snmp_alert
                 source_dynamic_objects = [ for source_dynamic_object in try(rule.source_dynamic_objects, []) : {
                   id    = local.map_dynamic_objects[source_dynamic_object].id
                   type  = local.map_dynamic_objects[source_dynamic_object].type
@@ -165,7 +165,7 @@ locals {
                 #source_sgt_objects = [ for source_sgt in try(rule.source_sgts, []) : {
                 #  id = local.map_sgts[source_sgt].id
                 #} ]
-                #syslog_config_id = syslog_alert
+                syslog_config_id = null #syslog_alert
                 syslog_severity      = try(item_value.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
                 url_categories = [ for url_category in try(rule.url_categories, []) : {
                   id          = try(local.map_url_categories[url_category.category].id) 

@@ -354,6 +354,59 @@ data "fmc_security_zones" "security_zones" {
   items   = each.value.items
   domain  = each.key
 }
+##########################################################
+##########################################################
+###    Alerts
+##########################################################
+##########################################################
+
+##########################################################
+###    SNMP Alert
+##########################################################
+locals {
+  data_snmp_alerts = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.policies.alerts.snmp, {}) : {
+          "name"        = item_value.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" )
+    } 
+
+}
+
+data "fmc_snmp_alerts" "snmp_alerts" {
+  for_each = local.data_snmp_alerts
+  
+  items   = each.value.items
+  domain  = each.key
+}
+
+##########################################################
+###    Syslog Alert
+##########################################################
+locals {
+  data_syslog_alerts = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for item_value in try(domain.policies.alerts.syslog, {}) : {
+          "name"        = item_value.name
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" )
+    } 
+
+}
+
+data "fmc_syslog_alert" "data_syslog_alerts" {
+  for_each = local.data_snmp_alerts
+  
+  items   = each.value.items
+  domain  = each.key
+}
 
 ##########################################################
 ##########################################################
