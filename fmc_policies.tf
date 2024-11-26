@@ -150,10 +150,10 @@ locals {
                   type  = try(local.map_network_objects[source_network_object].type, local.map_network_group_objects[source_network_object].type, null)
                 } ]
                 source_port_literals = [ for source_port_literal in try(rule.source_port_literals, []) : {
-                  protocol   = local.help_protocol_mapping[destination_port_literal.protocol]
-                  port       = try(destination_port_literal.port, null)
-                  icmp_type   = try(destination_port_literal.icmp_type, null)
-                  icmp_code   = try(destination_port_literal.icmp_code, null)
+                  protocol   = local.help_protocol_mapping[source_port_literal.protocol]
+                  port       = try(source_port_literal.port, null)
+                  icmp_type   = try(source_port_literal.icmp_type, null)
+                  icmp_code   = try(source_port_literal.icmp_code, null)
                 } ]                  
                 source_port_objects = [ for source_port_object in try(rule.source_port_objects, []) : {
                   id    = local.map_services[source_port_object].id
