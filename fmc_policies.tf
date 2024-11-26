@@ -169,7 +169,7 @@ locals {
                   reputation  = try(url_category.reputation, null)
                 } ]
                 url_objects = [ for url_object in try(rule.url_objects, []) : {
-                  id = local.map_urls[url_object].id
+                  id = try(local.map_urls[url_object].id, local.map_url_groups[url_object].id)
                 } ]
                 variable_set_id    = try(local.map_variable_sets[rule.variable_set].id, null)
                 vlan_tag_literals = [ for vlan_tag_literal in try(rule.vlan_tag_literals, []) : {
@@ -177,7 +177,7 @@ locals {
                   end_tag   = try(vlan_tag_literal.end_tag, vlan_tag_literal.start_tag)                  
                 } ]
                 vlan_tag_objects  = [ for vlan_tag_object in try(rule.vlan_tag_objects, []) : {
-                  id = local.map_vlan_tags[vlan_tag_object].id
+                  id = try(local.map_vlan_tags[vlan_tag_object].id, local.map_vlan_tag_groups[vlan_tag_object].id)
                 } ]
               }
             ]

@@ -460,10 +460,10 @@ locals {
           # Mandatory
           name            = item.name
           urls            = [ for url_item in try(item.urls, []) : {
-            id    = local.map_urls[url_item].id
+            id            = local.map_urls[url_item].id
           } ]
           literals        = [ for literal_item in try(item.literals, []) : {
-            url   = literal_item
+            url           = literal_item
           } ]
 
           domain_name     = domain.name
@@ -539,17 +539,17 @@ locals {
       "items" = {
         for item in try(domain.objects.vlan_tag_groups, {}) : item.name => {
           # Mandatory
-          name            = item.name
-          vlan_tags       = [ for vlan_tag_item in try(item.vlan_tags, []) : {
-            id    = local.map_vlan_tags[vlan_tag_item].id
+          name              = item.name
+          vlan_tags         = [ for vlan_tag_item in try(item.vlan_tags, []) : {
+            id          = local.map_vlan_tags[vlan_tag_item].id
           } ]
-          literals         = [ for literal_item in try(item.literals, {}) : {
+          literals          = [ for literal_item in try(item.literals, {}) : {
             start_tag   = literal_item.start_tag
             end_tag     = try(literal_item.end_tag, literal_item.start_tag)
           } ]
 
-          domain_name     = domain.name
-          description     = try(item.description, null)
+          domain_name       = domain.name
+          description       = try(item.description, null)
         }
       }
     } if length(try(domain.objects.vlan_tag_groups, [])) > 0
@@ -890,7 +890,9 @@ locals {
         }])
       ]) : item.name => item if contains(keys(item), "name" )
     },  
-    {
+  )
+
+  map_url_groups = merge({
       for item in flatten([
         for domain_key, domain_value in local.resource_url_groups : 
           flatten([ for item_key, item_value in domain_value.items : { 
@@ -913,7 +915,8 @@ locals {
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
   )
-  
+
+
 }
 ######
 ### map_vlan_tags - vlan_tags data + resource
@@ -940,8 +943,10 @@ locals {
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name" )
-    },  
-    {
+    },
+  )
+  
+  map_vlan_tag_groups = merge({
       for item in flatten([
         for domain_key, domain_value in local.resource_vlan_tag_groups : 
           flatten([ for item_key, item_value in domain_value.items : { 
@@ -964,7 +969,7 @@ locals {
       ]) : item.name => item if contains(keys(item), "name" )
     },  
   )
-  
+
 }
 
 ######
