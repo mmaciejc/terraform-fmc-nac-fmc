@@ -377,12 +377,12 @@ locals {
 
 }
 
-data "fmc_snmp_alerts" "snmp_alerts" {
-  for_each = local.data_snmp_alerts
+#data "fmc_snmp_alerts" "snmp_alerts" {
+#  for_each = local.data_snmp_alerts
   
-  items   = each.value.items
-  domain  = each.key
-}
+#  items   = each.value.items
+#  domain  = each.key
+#}
 
 ##########################################################
 ###    Syslog Alert
@@ -401,12 +401,12 @@ locals {
 
 }
 
-data "fmc_syslog_alert" "data_syslog_alerts" {
-  for_each = local.data_snmp_alerts
+#data "fmc_syslog_alert" "data_syslog_alerts" {
+#  for_each = local.data_snmp_alerts
   
-  items   = each.value.items
-  domain  = each.key
-}
+#  items   = each.value.items
+#  domain  = each.key
+#}
 
 ##########################################################
 ##########################################################
