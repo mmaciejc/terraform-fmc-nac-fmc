@@ -975,32 +975,32 @@ locals {
 ######
 ### map_sgts - security group tags data + resource
 ######
-locals {
-  map_sgts = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_sgts : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_sgts.sgts[domain_key].items[item_key].id
-            type        = fmc_sgts.sgts[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },    
-    {
-      for item in flatten([
-        for domain_key, domain_value in local.data_sgts : 
-          flatten([ for element in keys(domain_value.items): {
-          name        = element
-          id          = data.fmc_sgts.sgts[domain_key].items[element].id
-          type        = data.fmc_sgts.sgts[domain_key].items[element].type
-          domain_name = domain_key
-        }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },  
-  )
-  
-}
+#locals {
+#  map_sgts = merge({
+#      for item in flatten([
+#        for domain_key, domain_value in local.resource_sgts : 
+#          flatten([ for item_key, item_value in domain_value.items : { 
+#            name        = item_key
+#            id          = fmc_sgts.sgts[domain_key].items[item_key].id
+#            type        = fmc_sgts.sgts[domain_key].items[item_key].type
+#            domain_name = domain_key
+#          }])
+#        ]) : item.name => item if contains(keys(item), "name" )
+#    },    
+#    {
+#      for item in flatten([
+#        for domain_key, domain_value in local.data_sgts : 
+#          flatten([ for element in keys(domain_value.items): {
+#          name        = element
+#          id          = data.fmc_sgts.sgts[domain_key].items[element].id
+#          type        = data.fmc_sgts.sgts[domain_key].items[element].type
+#          domain_name = domain_key
+#        }])
+#      ]) : item.name => item if contains(keys(item), "name" )
+#    },  
+#  )
+#  
+#}
 
 
 ######

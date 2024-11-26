@@ -162,6 +162,9 @@ locals {
                 source_zones = [ for source_zone in try(rule.source_zones, []) : {
                   id = local.map_security_zones[source_zone].id
                 } ]
+                #source_sgt_objects = [ for source_sgt in try(rule.source_sgts, []) : {
+                #  id = local.map_sgts[source_sgt].id
+                #} ]
                 #syslog_config_id = syslog_alert
                 syslog_severity      = try(item_value.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
                 url_categories = [ for url_category in try(rule.url_categories, []) : {
