@@ -402,7 +402,7 @@ locals {
 
 }
 
-data "fmc_ftd_nat_policy" "fmc_ftd_nat_policy" {
+data "fmc_ftd_nat_policy" "ftd_nat_policy" {
   for_each = local.data_ftd_nat_policy
 
   name    = each.value.name
