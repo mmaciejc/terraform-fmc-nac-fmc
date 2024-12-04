@@ -27,3 +27,9 @@ variable "write_default_values_file" {
   type        = string
   default     = ""
 }
+
+variable "manage_overlapping_ip" {
+  description = "Enables support for overlapping IP between VRFs"
+  type        = bool
+  default     = false
+}

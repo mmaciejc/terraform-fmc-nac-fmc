@@ -101,6 +101,7 @@ locals {
   }
 
 }
+
 ####################
 # Superseded by bulk
 ####################
@@ -556,9 +557,7 @@ locals {
   }
 
 }
-output "resource_vlan_tag_groups" {
-  value       = local.resource_vlan_tag_groups 
-}
+
 resource "fmc_vlan_tag_groups" "vlan_tag_groups" {
   for_each =  local.resource_vlan_tag_groups 
 
@@ -1033,7 +1032,13 @@ locals {
   
 }
 
+
+######
+### FAKE - TODO
+######
+
 locals {
   map_url_categories = {}
   map_variable_sets = {}
+  map_ipv6_dhcp_pools = {}
 }

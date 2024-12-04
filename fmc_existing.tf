@@ -59,8 +59,8 @@ locals {
     for domain in local.data_existing.fmc.domains : domain.name => { 
       "items" = {
         for element in try(domain.objects.hosts, []) : element.name => {}
-        }
-    } 
+        } 
+    } if length(try(domain.objects.hosts, [])) > 0
   }
 
 }
@@ -90,7 +90,7 @@ locals {
       "items" = {
         for element in try(domain.objects.networks, []) : element.name => {}
       }
-    } 
+    } if length(try(domain.objects.networks, [])) > 0
   }
 
 }
@@ -116,7 +116,7 @@ locals {
       "items" = {
         for element in try(domain.objects.ranges, []) : element.name => {}
       }
-    } 
+    } if length(try(domain.objects.ranges, [])) > 0
   }
 
 }
@@ -135,7 +135,7 @@ locals {
       "items" = {
         for element in try(domain.objects.fqdns, []) : element.name => {}
       }
-    } 
+    } if length(try(domain.objects.fqdns, [])) > 0
   }
 
 }
@@ -157,7 +157,7 @@ locals {
       "items" = {
         for element in try(domain.objects.ports, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.ports, [])) > 0
   }
 
 }
@@ -176,7 +176,7 @@ locals {
       "items" = {
         for element in try(domain.objects.icmpv4s, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.icmpv4s, [])) > 0
   }
 
 }
@@ -195,7 +195,7 @@ locals {
       "items" = {
         for element in try(domain.objects.port_groups, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.port_groups, [])) > 0
   }
 
 }
@@ -217,7 +217,7 @@ locals {
       "items" = {
         for element in try(domain.objects.dynamic_objects, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.dynamic_objects, [])) > 0
   }
 
 }
@@ -239,7 +239,7 @@ locals {
       "items" = {
         for element in try(domain.objects.urls, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.urls, [])) > 0
   }
 
 }
@@ -258,8 +258,8 @@ locals {
       "items" = {
         for element in try(domain.objects.url_groups, []) : element.name => {}
         }
-    } 
-  }
+    } if length(try(domain.objects.url_groups, [])) > 0
+  } 
 
 }
 
@@ -280,7 +280,7 @@ locals {
       "items" = {
         for element in try(domain.objects.vlan_tags, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.vlan_tags, [])) > 0
   }
 
 }
@@ -299,7 +299,7 @@ locals {
       "items" = {
         for element in try(domain.objects.vlan_tag_groups, []) : element.name => {}
         }
-    } 
+    } if length(try(domain.objects.vlan_tag_groups, [])) > 0
   }
 
 }
@@ -321,8 +321,8 @@ locals {
       "items" = {
         for element in try(domain.objects.sgts, []) : element.name => {}
         }
-    } 
-  }
+    } if length(try(domain.objects.sgts, [])) > 0
+  } 
 
 }
 
@@ -343,8 +343,8 @@ locals {
       "items" = {
         for element in try(domain.objects.security_zones, []) : element.name => {}
         }
-    } 
-  }
+    } if length(try(domain.objects.security_zones, [])) > 0
+  } 
 
 }
 
@@ -486,8 +486,6 @@ data "fmc_intrusion_policy" "intrusion_policy" {
   domain  = each.value.domain_name    
 }
 
-# Legacy part - to be modified
-
 ##########################################################
 ###    DEVICE
 ##########################################################
@@ -497,81 +495,202 @@ locals {
     for item in flatten([
       for domain in try(local.data_existing.fmc.domains, {}) : [ 
         for item_value in try(domain.devices.devices, {}) : {
-          "name"        = item_value.name
-          "id"        = try(item_value.id, null)
+          "name"        = try(item_value.name, null)
+          "id"          = try(item_value.id, null)
           "domain_name" = domain.name
         }
       ]
-      ]) : item.name => item if contains(keys(item), "domain_name" ) && contains(keys(item), "id") # name not supported in provider yet, then id can be removed
+      ]) : item.name => item if contains(keys(item), "name" ) #The device name is unique across the different domains.
     } 
 
 }
 
-data "fmc_device" "device" {
+data "fmc_device" "module" {
   for_each = local.data_device
 
-  id      = each.value.id
-  #name   = each.value.name  # not supported in provider yet
+  id     = each.value.id
+  name   = each.value.name  
   domain = each.value.domain_name
 }
 
-############################################################################################
-# OLD code!
+##########################################################
+###    Physical Interface
+##########################################################
 
-##########################################################
-###    PHYSICAL INTERFACE - to be modified
-##########################################################
 locals {
-  map_interfaces = merge(concat(
-    flatten([
-      for domain in local.domains : [
-        for device in try(domain.devices.devices, []) : {
-          for physicalinterface in try(device.physical_interfaces, []) : "${device.name}/${physicalinterface.interface}" => {
-            key               = "${device.name}/${physicalinterface.interface}"
-            device_id         = local.map_devices[device.name].id
-            device_name       = device.name
-            data              = physicalinterface
-            physicalinterface = physicalinterface.interface
-            #id                = fmc_device_physical_interface.physical_interface["${device.name}/${physicalinterface.interface}"].id
-            resource          = true
-          }
-        }
+
+  data_physical_interface = {
+    for item in flatten([
+      for domain in local.data_existing.fmc.domains : [
+        for item_value_1 in try(domain.devices.devices, []) : [ 
+          for item_value_2 in try(item_value_1.vrfs, []) : [ 
+            for item_value_3 in try(item_value_2.physical_interfaces, []) : [ 
+              merge(item_value_3, 
+                {
+                  "device_name" = item_value_1.name
+                  "domain_name" = domain.name
+                })
+            ]
+          ]
+        ]
       ]
-    ]),
-    flatten([
-      for device in try(local.data_existing.fmc.domains[0].devices.devices, []) : {
-        for physicalinterface in try(device.physical_interfaces, []) : "${device.name}/${physicalinterface.interface}" => {
-          key               = "${device.name}/${physicalinterface.interface}"
-          device_id         = local.map_devices[device.name].id
-          physicalinterface = physicalinterface.interface
-          resource          = false
-        }
-      }
-    ]),
-    flatten([
-      for domain in local.domains : [
-        for cluster in try(domain.devices.clusters, []) : {
-          for device in try(cluster.devices, []) : "${device.name}/${cluster.ccl_interface}" => {
-            key               = "${device.name}/${cluster.ccl_interface}"
-            device_id         = local.map_devices[device.name].id
-            physicalinterface = cluster.ccl_interface
-            resource          = false
-          }
-        }
-      ]
-    ])
-    )...
-  )
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains.
+  }
+
 }
 
-data "fmc_device_physical_interface" "physical_interface" {
-  for_each = local.map_interfaces
+data "fmc_device_physical_interface" "module" {
+  for_each = local.data_physical_interface
 
-  device_id = each.value.device_id
-  name      = each.value.physicalinterface
+  name        = each.value.name
+  device_id   = data.fmc_device.module[each.value.device_name].id
+  domain      = each.value.domain_name
 
-  depends_on = [
-    fmc_device.device,
-    data.fmc_device.device
-  ]
+  depends_on = [ 
+      data.fmc_device.module
+   ]
+}
+
+##########################################################
+###    Ether Channel Interface
+##########################################################
+
+locals {
+
+  data_etherchannel_interface = {
+    for item in flatten([
+      for domain in local.data_existing.fmc.domains : [
+        for item_value_1 in try(domain.devices.devices, []) : [ 
+          for item_value_2 in try(item_value_1.vrfs, []) : [ 
+            for item_value_3 in try(item_value_2.etherchannel_interfaces, []) : [ 
+              merge(item_value_3, 
+                {
+                  "device_name" = item_value_1.name
+                  "domain_name" = domain.name
+                })
+            ]
+          ]
+        ]
+      ]
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains.
+  }
+
+}
+
+data "fmc_device_etherchannel_interface" "module" {
+  for_each = local.data_etherchannel_interface
+
+  name          = each.value.name
+  device_id     = data.fmc_device.module[each.value.device_name].id
+  domain        = each.value.domain_name
+
+  depends_on = [ 
+      data.fmc_device.module
+   ]
+}
+
+##########################################################
+###    Sub-Interface
+##########################################################
+
+locals {
+  data_sub_interface = { for item in flatten([
+      for domain in local.data_existing.fmc.domains : [
+        for item_value_1 in try(domain.devices.devices, []) : [
+          for item_value_2 in try(item_value_1.vrfs, []) : [ 
+            for item_value_3 in try(item_value_2.sub_interfaces, []) : [ 
+              merge(item_value_3, 
+                {
+                  "device_name" = item_value_1.name
+                  "domain_name" = domain.name
+                })
+            ]
+          ]
+        ]
+      ]
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains. We want to search by index=Sub-Interface_id
+  }
+
+}
+
+data "fmc_device_subinterface" "module" {
+  for_each = local.data_sub_interface
+
+    name        = each.value.name
+    device_id   = data.fmc_device.module[each.value.device_name].id
+    domain      = each.value.domain_name
+
+    depends_on = [ 
+        data.fmc_device.module
+    ]
+}
+
+##########################################################
+###    VRF
+##########################################################
+locals {
+
+  data_vrf = {
+    for item in flatten([
+      for domain in local.data_existing.fmc.domains : [
+        for item_value_1 in try(domain.devices.devices, []) : [ 
+          for item_value_2 in try(item_value_1.vrfs, []) : [ 
+            merge(item_value_2, 
+              {
+                "device_name" = item_value_1.name
+                "domain_name" = domain.name
+              })
+          ]
+        ]
+      ]
+      ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains.
+  }
+
+}
+
+data "fmc_device_vrf" "module" {
+  for_each = local.data_vrf
+
+    name        = each.value.name
+    device_id   = data.fmc_device.module[each.value.device_name].id
+    domain      = each.value.domain_name
+
+    depends_on = [ 
+        data.fmc_device.module
+    ]
+}
+
+##########################################################
+###    BGP - General Settings
+##########################################################
+locals {
+
+  data_bgp_general_settings = {
+    for item in flatten([
+      for domain in local.data_existing.fmc.domains : [
+        for item_value_1 in try(domain.devices.devices, []) : [ 
+          for item_value_2 in try(item_value_1.bgp_general_settings, []) : [ 
+            merge(item_value_2, 
+              {
+                "device_name" = item_value_1.name
+                "domain_name" = domain.name
+              })
+          ]
+        ]
+      ]
+      ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains.
+  }
+
+}
+
+data "fmc_device_bgp_general_settings" "module" {
+  for_each = local.data_bgp_general_settings
+
+    name        = each.value.name
+    device_id   = data.fmc_device.module[each.value.device_name].id
+    domain      = each.value.domain_name
+
+    depends_on = [ 
+        data.fmc_device.module
+    ]
 }
