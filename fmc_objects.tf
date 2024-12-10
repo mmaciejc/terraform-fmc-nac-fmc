@@ -617,24 +617,30 @@ locals {
   resource_security_zones = { 
     for domain in local.domains : domain.name => { 
       "items" = {
-        for item in try(domain.objects.security_zones, []) : item.name => item if !contains(try(keys(local.data_security_zones[domain.name].items), []), item.name)
+        for security_zone in try(domain.objects.security_zones, []) : security_zone.name => 
+        { 
+          # Mandatory 
+          "interface_type"  = security_zone.interface_type
+          # Optional
+          "description"     = try(security_zone.description, null)
+        } if !contains(try(keys(local.data_security_zones[domain.name].items), []), security_zone.name)
         } 
-    } if length(try(domain.objects.security_zones, [])) > 0
+      # Optional
+      "domain_name"     = domain.name
+    } if length(try(domain.objects.security_zones, [])) > 0 
+    
   }
 
 }
 
-resource "fmc_security_zones" "security_zones" {
+resource "fmc_security_zones" "module" {
   for_each = local.resource_security_zones
-
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      interface_mode     = try(item_value.interface_type, local.defaults.fmc.domains.objects.security_zones.interface_type)
-    }
-  }
+  
+  # Mandatory 
+    items =   each.value.items
 
   # Optional
-  domain = try(each.value.domain_name, null)
+    domain = try(each.value.domain_name, null)
 }
 
 ##########################################################
@@ -1011,8 +1017,8 @@ locals {
         for domain_key, domain_value in local.resource_security_zones : 
           flatten([ for item_key, item_value in domain_value.items : { 
             name        = item_key
-            id          = fmc_security_zones.security_zones[domain_key].items[item_key].id
-            type        = fmc_security_zones.security_zones[domain_key].items[item_key].type
+            id          = fmc_security_zones.module[domain_key].items[item_key].id
+            type        = fmc_security_zones.module[domain_key].items[item_key].type
             domain_name = domain_key
           }])
         ]) : item.name => item if contains(keys(item), "name" )
@@ -1022,8 +1028,8 @@ locals {
         for domain_key, domain_value in local.data_security_zones : 
           flatten([ for element in keys(domain_value.items): {
           name        = element
-          id          = data.fmc_security_zones.security_zones[domain_key].items[element].id
-          type        = data.fmc_security_zones.security_zones[domain_key].items[element].type
+          id          = data.fmc_security_zones.module[domain_key].items[element].id
+          type        = data.fmc_security_zones.module[domain_key].items[element].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name" )

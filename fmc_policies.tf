@@ -216,8 +216,8 @@ resource "fmc_access_control_policy" "access_control_policy" {
   domain                                  = each.value.domain_name
 
   depends_on = [ 
-    data.fmc_security_zones.security_zones,
-    fmc_security_zones.security_zones,
+    data.fmc_security_zones.module,
+    fmc_security_zones.module,
     data.fmc_hosts.hosts,
     fmc_hosts.hosts,
     data.fmc_networks.networks,
@@ -316,8 +316,8 @@ resource "fmc_ftd_nat_policy" "ftd_nat_policy" {
   domain            = try(each.value.domain_name, null)
 
   depends_on = [ 
-    data.fmc_security_zones.security_zones,
-    fmc_security_zones.security_zones,
+    data.fmc_security_zones.module,
+    fmc_security_zones.module,
     data.fmc_hosts.hosts,
     fmc_hosts.hosts,
     data.fmc_networks.networks,

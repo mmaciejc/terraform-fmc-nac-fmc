@@ -9,6 +9,7 @@ defaults:
             deploy_force: false
             vrfs:
               Global:
+                bgp:
                 physical_interfaces:
                   enabled: true
                   mode: "NONE"

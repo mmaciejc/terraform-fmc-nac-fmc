@@ -348,11 +348,12 @@ locals {
 
 }
 
-data "fmc_security_zones" "security_zones" {
+data "fmc_security_zones" "module" {
   for_each = local.data_security_zones
-  
-  items   = each.value.items
-  domain  = each.key
+  # Mandatory
+    items   = each.value.items
+  # Optional
+    domain  = each.key
 }
 ##########################################################
 ##########################################################
@@ -514,6 +515,34 @@ data "fmc_device" "module" {
 }
 
 ##########################################################
+###    DEVICE HA
+##########################################################
+locals {
+
+ data_device_ha_pair = { 
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [ 
+        for ha_pair in try(domain.devices.ha_pairs, {}) : {
+          "name"        = try(ha_pair.name, null)
+          "id"          = try(ha_pair.id, null)
+          "domain_name" = domain.name
+        }
+      ]
+      ]) : item.name => item if contains(keys(item), "name" ) #The device name is unique across the different domains.
+    } 
+
+}
+
+data "fmc_device_ha_pair" "module" {
+  for_each = local.data_device_ha_pair
+
+  id     = each.value.id
+  name   = each.value.name  
+  domain = each.value.domain_name
+}
+
+
+##########################################################
 ###    Physical Interface
 ##########################################################
 
@@ -665,30 +694,28 @@ data "fmc_device_vrf" "module" {
 ##########################################################
 locals {
 
-  data_bgp_general_settings = {
+  data_bgp_general_setting = {
     for item in flatten([
       for domain in local.data_existing.fmc.domains : [
-        for item_value_1 in try(domain.devices.devices, []) : [ 
-          for item_value_2 in try(item_value_1.bgp_general_settings, []) : [ 
-            merge(item_value_2, 
-              {
-                "device_name" = item_value_1.name
+        for device in try(domain.devices.devices, []) : [ 
+            {
+                "as_number"   = device.bgp_general_settings.as_number 
+                "device_name" = device.name
                 "domain_name" = domain.name
-              })
-          ]
-        ]
+              }
+        ] if contains(keys(device), "bgp_general_settings")
       ]
-      ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains.
+      ]) : "${item.device_name}:BGP" => item if contains(keys(item), "device_name") 
   }
 
 }
 
 data "fmc_device_bgp_general_settings" "module" {
-  for_each = local.data_bgp_general_settings
+  for_each = local.data_bgp_general_setting
 
-    name        = each.value.name
-    device_id   = data.fmc_device.module[each.value.device_name].id
-    domain      = each.value.domain_name
+    as_number       = each.value.as_number
+    device_id       = data.fmc_device.module[each.value.device_name].id
+    domain          = each.value.domain_name
 
     depends_on = [ 
         data.fmc_device.module
