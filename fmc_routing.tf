@@ -17,12 +17,10 @@
 #  local.resource_vrf 
 #  local.resource_ipv4_static_route 
 #  local.resource_vrf_ipv4_static_route 
+#  local.resource_bgp_general_setting 
 #  local.resource_bgp_global 
 #
 ###
-
-
-
 
 ##########################################################
 ###    VRF
@@ -57,7 +55,7 @@ locals {
                     "interface_logical_name"  = try(interface.logical_name, data.fmc_device_subinterface.module["${device.name}:${interface.name}"].logical_name, null)
                     "interface_name"          = interface.name
               }],              
-              ) # Checking all interfaces under this VRF and assigning reuired attributes
+              ) 
             }
           ]
         ]
@@ -77,6 +75,8 @@ resource "fmc_device_vrf" "module" {
   # Optional
     description = each.value.description
     interfaces  = each.value.interfaces
+
+    domain      = each.value.domain_name
 
   depends_on = [ 
     fmc_device.module,
@@ -168,11 +168,11 @@ resource "fmc_device_ipv4_static_route" "module" {
     domain    = each.value.domain_name
 
   depends_on = [ 
-    data.fmc_hosts.hosts,
-    fmc_hosts.hosts,
-    data.fmc_networks.networks,
-    fmc_networks.networks,
-    fmc_network_groups.network_groups,
+    data.fmc_hosts.module,
+    fmc_hosts.module,
+    data.fmc_networks.module,
+    fmc_networks.module,
+    fmc_network_groups.module,
     data.fmc_device.module,
     fmc_device.module,
     data.fmc_device_physical_interface.module,
@@ -196,11 +196,11 @@ resource "fmc_device_vrf_ipv4_static_route" "module" {
     domain    = each.value.domain_name
 
   depends_on = [ 
-    data.fmc_hosts.hosts,
-    fmc_hosts.hosts,
-    data.fmc_networks.networks,
-    fmc_networks.networks,
-    fmc_network_groups.network_groups,
+    data.fmc_hosts.module,
+    fmc_hosts.module,
+    data.fmc_networks.module,
+    fmc_networks.module,
+    fmc_network_groups.module,
     data.fmc_device.module,
     fmc_device.module,
     data.fmc_device_physical_interface.module,
@@ -214,16 +214,39 @@ resource "fmc_device_vrf_ipv4_static_route" "module" {
 ##########################################################
 locals {
 
-  bgp_general_setting = {
+  resource_bgp_general_setting = {
     for item in flatten([
         for domain in local.domains : [
             for device in try(domain.devices.devices, []) : {
-                "device_name"   = device.name
-                "device_id"     = local.map_devices[device.name].id
-                #"name"          = bgp_general_settings.name
-                "as_number"     = device.bgp_general_settings.as_number
-                "router_id"     = try(device.bgp_general_settings.router_id, null)
-                "domain_name"   = domain.name
+              # Mandatory
+                "device_name"       = device.name
+                "device_id"         = local.map_devices[device.name].id
+                "as_number"         = device.bgp_general_settings.as_number
+              # Optional
+                "aggregate_timer"                       = try(device.bgp_general_settings.aggregate_timer, null)
+                "as_number_in_path_attribute"           = try(device.bgp_general_settings.as_number_in_path_attribute, null)
+                "compare_med_from_different_neighbors"  = try(device.bgp_general_settings.compare_med_from_different_neighbors, null)
+                "compare_router_id_in_path"             = try(device.bgp_general_settings.compare_router_id_in_path, null)
+                "default_local_preference"              = try(device.bgp_general_settings.default_local_preference, null)
+                "domain_name"                           = domain.name
+                "enforce_first_peer_as"                 = try(device.bgp_general_settings.enforce_first_peer_as, null)
+                "graceful_restart"                      = try(device.bgp_general_settings.graceful_restart, null)
+                "graceful_restart_restart_time"         = try(device.bgp_general_settings.graceful_restart_restart_time, null)
+                "graceful_restart_stale_path_time"      = try(device.bgp_general_settings.graceful_restart_stale_path_time, null)
+                "hold_time"                             = try(device.bgp_general_settings.hold_time, null)
+                "keepalive_interval"                    = try(device.bgp_general_settings.keepalive_interval, null)
+                "log_neighbor_changes"                  = try(device.bgp_general_settings.log_neighbor_changes, null)
+                "min_hold_time"                         = try(device.bgp_general_settings.min_hold_time, null)
+                "missing_med_as_best"                   = try(device.bgp_general_settings.missing_med_as_best, null)
+                "next_hop_address_tracking"             = try(device.bgp_general_settings.next_hop_address_tracking, null)
+                "next_hop_delay_interval"               = try(device.bgp_general_settings.next_hop_delay_interval, null)
+                "pick_best_med"                         = try(device.bgp_general_settings.pick_best_med, null)
+                "reset_session_upon_failover"           = try(device.bgp_general_settings.reset_session_upon_failover, null)
+                "router_id"                             = try(device.bgp_general_settings.router_id, null)
+                "scanning_interval"                     = try(device.bgp_general_settings.scanning_interval, null)
+                "tcp_path_mtu_discovery"                = try(device.bgp_general_settings.tcp_path_mtu_discovery, null)
+                "use_dot_notation"                      = try(device.bgp_general_settings.use_dot_notation, null)
+
             } if contains(keys(device), "bgp_general_settings")
         ]
     ]) : "${item.device_name}:BGP" => item if contains(keys(item), "device_name") && !contains(try(keys(local.data_bgp_general_setting), []), "${item.device_name}:BGP")
@@ -232,11 +255,35 @@ locals {
 }
 
 resource "fmc_device_bgp_general_settings" "module" {
-  for_each = local.bgp_general_setting    
+  for_each = local.resource_bgp_general_setting    
+  # Mandatory
+    device_id                             = each.value.device_id
+    as_number                             = each.value.as_number
+  # Optional
+    aggregate_timer                       = each.value.aggregate_timer
+    as_number_in_path_attribute           = each.value.as_number_in_path_attribute
+    compare_med_from_different_neighbors  = each.value.compare_med_from_different_neighbors
+    compare_router_id_in_path             = each.value.compare_router_id_in_path
+    default_local_preference              = each.value.default_local_preference
+    enforce_first_peer_as                 = each.value.enforce_first_peer_as
+    graceful_restart                      = each.value.graceful_restart
+    graceful_restart_restart_time         = each.value.graceful_restart_restart_time
+    graceful_restart_stale_path_time      = each.value.graceful_restart_stale_path_time
+    hold_time                             = each.value.hold_time
+    keepalive_interval                    = each.value.keepalive_interval
+    log_neighbor_changes                  = each.value.log_neighbor_changes
+    min_hold_time                         = each.value.min_hold_time
+    missing_med_as_best                   = each.value.missing_med_as_best
+    next_hop_address_tracking             = each.value.next_hop_address_tracking
+    next_hop_delay_interval               = each.value.next_hop_delay_interval
+    pick_best_med                         = each.value.pick_best_med
+    reset_session_upon_failover           = each.value.reset_session_upon_failover
+    router_id                             = each.value.router_id
+    scanning_interval                     = each.value.scanning_interval
+    tcp_path_mtu_discovery                = each.value.tcp_path_mtu_discovery
+    use_dot_notation                      = each.value.use_dot_notation
 
-  device_id     = each.value.device_id
-  as_number     = each.value.as_number
-  router_id     = each.value.router_id
+    domain                                = each.value.domain_name
 
     depends_on = [ 
         data.fmc_device.module,
@@ -366,7 +413,7 @@ locals {
 resource "fmc_device_bgp" "module" {
   for_each = local.resource_bgp_global
   # Mandatory
-    device_id                             = each.value.device_id
+    device_id                                 = each.value.device_id
   
   # Optional
     ipv4_aggregate_addresses                  = each.value.ipv4_aggregate_addresses
@@ -394,12 +441,12 @@ resource "fmc_device_bgp" "module" {
       fmc_device.module,
       data.fmc_device_bgp_general_settings.module,
       fmc_device_bgp_general_settings.module,
-      data.fmc_hosts.hosts,
-      fmc_hosts.hosts,
-      data.fmc_networks.networks,
-      fmc_networks.networks,
-      data.fmc_ranges.ranges,
-      fmc_ranges.ranges,
-      fmc_network_groups.network_groups,     
+      data.fmc_hosts.module,
+      fmc_hosts.module,
+      data.fmc_networks.module,
+      fmc_networks.module,
+      data.fmc_ranges.module,
+      fmc_ranges.module,
+      fmc_network_groups.module,     
     ]
 }

@@ -4,7 +4,7 @@ terraform {
   required_providers {
     fmc = {
       source = "netascode/fmc"
-      version = "6.6.6"
+      version = "0.0.1"
     }
     utils = {
       source  = "netascode/utils"
@@ -12,7 +12,7 @@ terraform {
     }
     local = {
       source  = "hashicorp/local"
-      version = ">= 2.3.0"
+      version = ">= 2.5.2"
     }
   }
 }

@@ -5,13 +5,16 @@
 ###
 #  Resources
 ####
-# resource "fmc_access_control_policy" "access_control_policy" 
+# resource "fmc_access_control_policy" "module" 
+# resource "fmc_ftd_nat_policy" "module" 
+# resource "fmc_intrusion_policy" "module" 
 #
 ###  
 #  Local variables
 ###
-# local.resource_access_control_policy  => for building dynamic data source
-# local.map_access_control_policy       => to collect all access control policies objects by name that can be used later in the module
+#  local.resource_access_control_policy
+#  local.resource_ftd_nat_policy
+#  local.resource_intrusion_policy
 #
 ###
 ##########################################################
@@ -71,31 +74,31 @@ locals {
   resource_access_control_policy = {
     for item in flatten([
       for domain in local.domains : [
-        for item_value in try(domain.policies.access_policies, []) : [ 
+        for access_policy in try(domain.policies.access_policies, []) : [ 
           {
-            name                                = item_value.name
-            default_action                      = try(item_value.default_action, local.defaults.fmc.domains.policies.access_policies.default_action)
+            name                                = access_policy.name
+            default_action                      = try(access_policy.default_action, local.defaults.fmc.domains.policies.access_policies.default_action)
             
-            categories                          = [ for category in try(item_value.categories, []) : {
+            categories                          = [ for category in try(access_policy.categories, []) : {
               name          = category.name
               section       = try(category.section, null)
             } ]
 
-            default_action_intrusion_policy_id  = try(local.map_intrusion_policy[item_value.base_intrusion_policy].id, local.map_intrusion_policy[local.defaults.fmc.domains.policies.access_policies.base_intrusion_policy].id, null)
-            default_action_log_begin            = try(item_value.log_begin, local.defaults.fmc.domains.policies.access_policies.log_begin, null)
-            default_action_log_end              = try(item_value.log_end, local.defaults.fmc.domains.policies.access_policies.log_end, null)
-            default_action_send_events_to_fmc   = try(item_value.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.send_events_to_fmc, null)
-            default_action_send_syslog          = try(item_value.enable_syslog, local.defaults.fmc.domains.policies.access_policies.enable_syslog, null)
+            default_action_intrusion_policy_id  = try(local.map_intrusion_policy[access_policy.base_intrusion_policy].id, local.map_intrusion_policy[local.defaults.fmc.domains.policies.access_policies.base_intrusion_policy].id, null)
+            default_action_log_begin            = try(access_policy.log_begin, local.defaults.fmc.domains.policies.access_policies.log_begin, null)
+            default_action_log_end              = try(access_policy.log_end, local.defaults.fmc.domains.policies.access_policies.log_end, null)
+            default_action_send_events_to_fmc   = try(access_policy.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.send_events_to_fmc, null)
+            default_action_send_syslog          = try(access_policy.enable_syslog, local.defaults.fmc.domains.policies.access_policies.enable_syslog, null)
             
             default_action_snmp_config_id       = null # snmp_alert
             default_action_syslog_config_id     = null # syslog_alert
-            default_action_syslog_severity      = try(item_value.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
+            default_action_syslog_severity      = try(access_policy.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
 
-            description                         = try(item_value.description, null)
+            description                         = try(access_policy.description, null)
             domain_name                         = domain.name
 
 
-            rules = [ for rule in try(item_value.access_rules, []) : {
+            rules = [ for rule in try(access_policy.access_rules, []) : {
                 name                    = rule.name
                 action                  = rule.action
                 category_name           = try(rule.category, null)
@@ -166,7 +169,7 @@ locals {
                 #  id = local.map_sgts[source_sgt].id
                 #} ]
                 syslog_config_id = null #syslog_alert
-                syslog_severity      = try(item_value.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
+                syslog_severity      = try(rule.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
                 url_categories = [ for url_category in try(rule.url_categories, []) : {
                   id          = try(local.map_url_categories[url_category.category].id) 
                   reputation  = try(url_category.reputation, null)
@@ -192,7 +195,7 @@ locals {
   
 }
 
-resource "fmc_access_control_policy" "access_control_policy" {
+resource "fmc_access_control_policy" "module" {
   for_each = local.resource_access_control_policy
 
   # Mandatory
@@ -218,19 +221,19 @@ resource "fmc_access_control_policy" "access_control_policy" {
   depends_on = [ 
     data.fmc_security_zones.module,
     fmc_security_zones.module,
-    data.fmc_hosts.hosts,
-    fmc_hosts.hosts,
-    data.fmc_networks.networks,
-    fmc_networks.networks,
-    data.fmc_ranges.ranges,
-    fmc_ranges.ranges,
-    fmc_network_groups.network_groups,
-    data.fmc_dynamic_objects.dynamic_objects,
-    fmc_dynamic_objects.dynamic_objects,
-    data.fmc_ports.ports,
-    fmc_ports.ports,
-    data.fmc_intrusion_policy.intrusion_policy,
-    fmc_intrusion_policy.intrusion_policy,
+    data.fmc_hosts.module,
+    fmc_hosts.module,
+    data.fmc_networks.module,
+    fmc_networks.module,
+    data.fmc_ranges.module,
+    fmc_ranges.module,
+    fmc_network_groups.module,
+    data.fmc_dynamic_objects.module,
+    fmc_dynamic_objects.module,
+    data.fmc_ports.module,
+    fmc_ports.module,
+    data.fmc_intrusion_policy.module,
+    fmc_intrusion_policy.module,
    ]  
 
 }
@@ -242,13 +245,13 @@ locals {
   resource_ftd_nat_policy = {
     for item in flatten([
       for domain in local.domains : [
-        for item_value in try(domain.policies.ftd_nat_policies, []) : [ 
+        for ftd_nat_policy in try(domain.policies.ftd_nat_policies, []) : [ 
           {
-            name                                = item_value.name
-            description                         = try(item_value.description, null)
+            name                                = ftd_nat_policy.name
+            description                         = try(ftd_nat_policy.description, null)
             domain_name                         = domain.name
 
-            auto_nat_rules = [ for auto_rule in try(item_value.ftd_auto_nat_rules, []) : {
+            auto_nat_rules = [ for auto_rule in try(ftd_nat_policy.ftd_auto_nat_rules, []) : {
                 # Mandatory
                 nat_type                                      = auto_rule.nat_type     
                 # Optional         
@@ -268,7 +271,7 @@ locals {
                 translated_port                               = try(auto_rule.translated_port, null)
             }]
 
-            manual_nat_rules = [ for manual_rule in try(item_value.ftd_manual_nat_rules, []) : {
+            manual_nat_rules = [ for manual_rule in try(ftd_nat_policy.ftd_manual_nat_rules, []) : {
               # Mandatory
               nat_type                          = manual_rule.nat_type
               section                           = upper(manual_rule.section)
@@ -302,7 +305,7 @@ locals {
 
 }
 
-resource "fmc_ftd_nat_policy" "ftd_nat_policy" {
+resource "fmc_ftd_nat_policy" "module" {
   for_each = local.resource_ftd_nat_policy
 
   # Mandatory
@@ -318,15 +321,15 @@ resource "fmc_ftd_nat_policy" "ftd_nat_policy" {
   depends_on = [ 
     data.fmc_security_zones.module,
     fmc_security_zones.module,
-    data.fmc_hosts.hosts,
-    fmc_hosts.hosts,
-    data.fmc_networks.networks,
-    fmc_networks.networks,
-    data.fmc_ranges.ranges,
-    fmc_ranges.ranges,
-    fmc_network_groups.network_groups,
-    data.fmc_ports.ports,
-    fmc_ports.ports,
+    data.fmc_hosts.module,
+    fmc_hosts.module,
+    data.fmc_networks.module,
+    fmc_networks.module,
+    data.fmc_ranges.module,
+    fmc_ranges.module,
+    fmc_network_groups.module,
+    data.fmc_ports.module,
+    fmc_ports.module,
    ]    
 }
             
@@ -337,13 +340,13 @@ locals {
   resource_intrusion_policy = {
     for item in flatten([
       for domain in local.domains : [
-        for item_value in try(domain.policies.intrusion_policies, []) : [ 
+        for intrusion_policy in try(domain.policies.intrusion_policies, []) : [ 
           {
-            name                      = item_value.name
+            name                      = intrusion_policy.name
             domain_name               = domain.name
-            description               = try(item_value.description, null)
-            base_policy_id            = try(data.fmc_intrusion_policy.intrusion_policy[item_value.base_policy].id, null)
-            inspection_mode           = try(item_value.inspection_mode, null)
+            description               = try(intrusion_policy.description, null)
+            base_policy_id            = try(data.fmc_intrusion_policy.module[intrusion_policy.base_policy].id, null)
+            inspection_mode           = try(intrusion_policy.inspection_mode, null)
           }]
       ]
     ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_intrusion_policy), []), item.name)
@@ -351,7 +354,7 @@ locals {
 
 }
 
-resource "fmc_intrusion_policy" "intrusion_policy" {
+resource "fmc_intrusion_policy" "module" {
   for_each = local.resource_intrusion_policy
     
     # Mandatory
@@ -365,7 +368,7 @@ resource "fmc_intrusion_policy" "intrusion_policy" {
     domain            = try(each.value.domain_name, null)
 
   depends_on = [ 
-    data.fmc_intrusion_policy.intrusion_policy,
+    data.fmc_intrusion_policy.module,
    ]      
 }
 
@@ -379,21 +382,21 @@ resource "fmc_intrusion_policy" "intrusion_policy" {
 locals {
   map_access_control_policy = merge({
       for item in flatten([
-        for item_key, item_value in local.resource_access_control_policy : { 
-          name = item_key
-          id   = try(fmc_access_control_policy.access_control_policy[item_key].id, null)
-          type = try(fmc_access_control_policy.access_control_policy[item_key].type, null)
-          domain_name = item_value.domain_name
+        for access_control_policy_key, access_control_policy_value in local.resource_access_control_policy : { 
+          name = access_control_policy_key
+          id   = try(fmc_access_control_policy.module[access_control_policy_key].id, null)
+          type = try(fmc_access_control_policy.module[access_control_policy_key].type, null)
+          domain_name = access_control_policy_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
     {
       for item in flatten([
-        for item_key, item_value in local.data_access_control_policy : { 
-          name = item_key
-          id   = try(data.fmc_access_control_policy.access_control_policy[item_key].id, null)
-          type = try(data.fmc_access_control_policy.access_control_policy[item_key].type, null)
-          domain_name = item_value.domain_name
+        for access_control_policy_key, access_control_policy_value in local.data_access_control_policy : { 
+          name = access_control_policy_key
+          id   = try(data.fmc_access_control_policy.module[access_control_policy_key].id, null)
+          type = try(data.fmc_access_control_policy.module[access_control_policy_key].type, null)
+          domain_name = access_control_policy_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
@@ -406,21 +409,21 @@ locals {
 locals {
   map_ftd_nat_policy = merge({
       for item in flatten([
-        for item_key, item_value in local.resource_ftd_nat_policy : { 
-          name = item_key
-          id   = try(fmc_ftd_nat_policy.ftd_nat_policy[item_key].id, null)
-          type = try(fmc_ftd_nat_policy.ftd_nat_policy[item_key].type, null)
-          domain_name = item_value.domain_name
+        for ftd_nat_policy_key, ftd_nat_policy_value in local.resource_ftd_nat_policy : { 
+          name = ftd_nat_policy_key
+          id   = try(fmc_ftd_nat_policy.module[ftd_nat_policy_key].id, null)
+          type = try(fmc_ftd_nat_policy.module[ftd_nat_policy_key].type, null)
+          domain_name = ftd_nat_policy_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
     {
       for item in flatten([
-        for item_key, item_value in local.data_ftd_nat_policy : { 
-          name = item_key
-          id   = try(data.fmc_ftd_nat_policy.ftd_nat_policy[item_key].id, null)
-          type = try(data.fmc_ftd_nat_policy.ftd_nat_policy[item_key].type, null)
-          domain_name = item_value.domain_name
+        for ftd_nat_policy_key, ftd_nat_policy_value in local.data_ftd_nat_policy : { 
+          name = ftd_nat_policy_key
+          id   = try(data.fmc_ftd_nat_policy.module[ftd_nat_policy_key].id, null)
+          type = try(data.fmc_ftd_nat_policy.module[ftd_nat_policy_key].type, null)
+          domain_name = ftd_nat_policy_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
@@ -433,21 +436,21 @@ locals {
 locals {
   map_intrusion_policy = merge({
       for item in flatten([
-        for item_key, item_value in local.resource_intrusion_policy : { 
-          name = item_key
-          id   = try(fmc_intrusion_policy.intrusion_policy[item_key].id, null)
-          type = try(fmc_intrusion_policy.intrusion_policy[item_key].type, null)
-          domain_name = item_value.domain_name
+        for intrusion_policy_key, intrusion_policy_value in local.resource_intrusion_policy : { 
+          name = intrusion_policy_key
+          id   = try(fmc_intrusion_policy.module[intrusion_policy_key].id, null)
+          type = try(fmc_intrusion_policy.module[intrusion_policy_key].type, null)
+          domain_name = intrusion_policy_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
     {
       for item in flatten([
-        for item_key, item_value in local.data_intrusion_policy : { 
-          name = item_key
-          id   = try(data.fmc_intrusion_policy.intrusion_policy[item_key].id, null)
-          type = try(data.fmc_intrusion_policy.intrusion_policy[item_key].type, null)
-          domain_name = item_value.domain_name
+        for intrusion_policy_key, intrusion_policy_value in local.data_intrusion_policy : { 
+          name = intrusion_policy_key
+          id   = try(data.fmc_intrusion_policy.module[intrusion_policy_key].id, null)
+          type = try(data.fmc_intrusion_policy.module[intrusion_policy_key].type, null)
+          domain_name = intrusion_policy_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name" )
     }, 

@@ -10,7 +10,7 @@ terraform.tfvars
 terraform.tfstate.backup
 tflint.hcl
 generated_*.tf
-bin
+providers
 # Env files
 .envrc
 .env

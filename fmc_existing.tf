@@ -65,7 +65,7 @@ locals {
 
 }
 
-data "fmc_hosts" "hosts" {
+data "fmc_hosts" "module" {
   for_each = local.data_hosts
   
   items   = each.value.items
@@ -102,7 +102,7 @@ locals {
 #  domain  = each.value.domain_name
 #}
 
-data "fmc_networks" "networks" {
+data "fmc_networks" "module" {
   for_each = local.data_networks
   
   items   = each.value.items
@@ -121,7 +121,7 @@ locals {
 
 }
 
-data "fmc_ranges" "ranges" {
+data "fmc_ranges" "module" {
   for_each = local.data_ranges
   
   items   = each.value.items
@@ -140,7 +140,7 @@ locals {
 
 }
 
-data "fmc_fqdn_objects" "fqdns" {
+data "fmc_fqdn_objects" "module" {
   for_each = local.data_fqdns
   
   items   = each.value.items
@@ -162,7 +162,7 @@ locals {
 
 }
 
-data "fmc_ports" "ports" {
+data "fmc_ports" "module" {
   for_each = local.data_ports
   
   items   = each.value.items
@@ -181,7 +181,7 @@ locals {
 
 }
 
-data "fmc_icmpv4_objects" "icmpv4s" {
+data "fmc_icmpv4_objects" "module" {
   for_each = local.data_icmpv4s
   
   items   = each.value.items
@@ -200,7 +200,7 @@ locals {
 
 }
 
-data "fmc_port_groups" "port_groups" {
+data "fmc_port_groups" "module" {
   for_each = local.data_port_groups
   
   items   = each.value.items
@@ -222,7 +222,7 @@ locals {
 
 }
 
-data "fmc_dynamic_objects" "dynamic_objects" {
+data "fmc_dynamic_objects" "module" {
   for_each = local.data_dynamic_objects
   
   items   = each.value.items
@@ -244,7 +244,7 @@ locals {
 
 }
 
-data "fmc_urls" "urls" {
+data "fmc_urls" "module" {
   for_each = local.data_urls
   
   items   = each.value.items
@@ -263,7 +263,7 @@ locals {
 
 }
 
-data "fmc_url_groups" "url_groups" {
+data "fmc_url_groups" "module" {
   for_each = local.data_url_groups
   
   items   = each.value.items
@@ -285,7 +285,7 @@ locals {
 
 }
 
-data "fmc_vlan_tags" "vlan_tags" {
+data "fmc_vlan_tags" "module" {
   for_each = local.data_vlan_tags
   
   items   = each.value.items
@@ -304,7 +304,7 @@ locals {
 
 }
 
-data "fmc_vlan_tag_groups" "vlan_tag_groups" {
+data "fmc_vlan_tag_groups" "module" {
   for_each = local.data_vlan_tag_groups
   
   items   = each.value.items
@@ -326,7 +326,7 @@ locals {
 
 }
 
-#data "fmc_sgts" "sgts" {
+#data "fmc_sgts" "module" {
 #  for_each = local.data_sgts
   
 #  items   = each.value.items
@@ -378,7 +378,7 @@ locals {
 
 }
 
-#data "fmc_snmp_alerts" "snmp_alerts" {
+#data "fmc_snmp_alerts" "module" {
 #  for_each = local.data_snmp_alerts
   
 #  items   = each.value.items
@@ -402,7 +402,7 @@ locals {
 
 }
 
-#data "fmc_syslog_alert" "data_syslog_alerts" {
+#data "fmc_syslog_alert" "module" {
 #  for_each = local.data_snmp_alerts
   
 #  items   = each.value.items
@@ -432,7 +432,7 @@ locals {
 
 }
 
-data "fmc_access_control_policy" "access_control_policy" {
+data "fmc_access_control_policy" "module" {
   for_each = local.data_access_control_policy
 
   name    = each.value.name
@@ -456,7 +456,7 @@ locals {
 
 }
 
-data "fmc_ftd_nat_policy" "ftd_nat_policy" {
+data "fmc_ftd_nat_policy" "module" {
   for_each = local.data_ftd_nat_policy
 
   name    = each.value.name
@@ -480,7 +480,7 @@ locals {
 
 }
 
-data "fmc_intrusion_policy" "intrusion_policy" {
+data "fmc_intrusion_policy" "module" {
   for_each = local.data_intrusion_policy
 
   name    = each.value.name
