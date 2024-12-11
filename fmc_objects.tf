@@ -94,9 +94,13 @@ locals {
 
   resource_hosts = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.hosts, []) : item.name => item if !contains(try(keys(local.data_hosts[domain.name].items), []), item.name)
+      items = {
+        for host in try(domain.objects.hosts, []) : host.name => {
+          ip            = host.ip
+          description   = try(host.description, local.defaults.fmc.domains[domain.name].objects.hosts.description, null)
+        } if !contains(try(keys(local.data_hosts[domain.name].items), []), host.name)
         } 
+      domain_name       = domain.name
     } if length(try(domain.objects.hosts, [])) > 0
   }
 
@@ -119,15 +123,11 @@ locals {
 resource "fmc_hosts" "module" {
   for_each =  local.resource_hosts
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      ip            = item_value.ip 
-      # Optional
-      description   = try(item_value.description, local.defaults.fmc.domains.objects.hosts.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -137,9 +137,13 @@ locals {
 
   resource_networks = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.networks, []) : item.name => item if !contains(try(local.data_networks[domain.name].itmes, []), item.name)
+      items = {
+        for network in try(domain.objects.networks, []) : network.name => {
+          prefix        = network.prefix
+          description   = try(network.description, local.defaults.fmc.domains[domain.name].objects.network.description, null)          
+        } if !contains(try(local.data_networks[domain.name].itmes, []), network.name)
       }
+      domain_name       = domain.name
     } if length(try(domain.objects.networks, [])) > 0
   } 
 
@@ -148,15 +152,11 @@ locals {
 resource "fmc_networks" "module" {
   for_each =  local.resource_networks
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      prefix        = item_value.prefix 
-      # Optional
-      description   = try(item_value.description, local.defaults.fmc.domains.objects.networks.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -166,26 +166,27 @@ locals {
 
   resource_ranges = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.ranges, []) : item.name => item if !contains(try(local.data_ranges[domain.name].itmes, []), item.name)
-      }
+      items = {
+        for range in try(domain.objects.ranges, []) : range.name => {
+          ip_range      = range.ip_range
+          description   = try(range.description, local.defaults.fmc.domains[domain.name].objects.ranges.description, null)
+        } if !contains(try(keys(local.data_ranges[domain.name].items), []), range.name)
+        } 
+      domain_name       = domain.name
     } if length(try(domain.objects.ranges, [])) > 0
-  } 
+  }
+
 
 }
 
 resource "fmc_ranges" "module" {
   for_each =  local.resource_ranges
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      ip_range    = item_value.ip_range 
-      # Optional
-      description = try(item_value.description, local.defaults.fmc.domains.objects.ranges.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -195,27 +196,26 @@ locals {
 
   resource_fqdns = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.fqdns, []) : item.name => item if !contains(try(local.data_fqdns[domain.name].itmes, []), item.name)
-      }
+      items = {
+        for fqdn in try(domain.objects.fqdns, []) : fqdn.name => {
+          fqdn          = fqdn.fqdn
+          description   = try(fqdn.description, local.defaults.fmc.domains[domain.name].objects.fqdns.description, null)
+        } if !contains(try(keys(local.data_fqdns[domain.name].items), []), fqdn.name)
+        } 
+      domain_name       = domain.name
     } if length(try(domain.objects.fqdns, [])) > 0
-  } 
+  }
 
 }
 
 resource "fmc_fqdn_objects" "module" {
   for_each =  local.resource_fqdns
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      fqdn            = item_value.fqdn 
-      # Optional
-      dns_resolution  = try(item_value.dns_resolution, local.defaults.fmc.domains.objects.fqdns.dns_resolution, null)
-      description     = try(item_value.description, local.defaults.fmc.domains.objects.fqdns.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -230,7 +230,7 @@ locals {
 
   resource_network_groups = {
     for domain in local.domains : domain.name => { 
-      "items" = {
+      items = {
         for item in try(domain.objects.network_groups, {}) : item.name => {
           # Mandatory
           name            = item.name
@@ -241,10 +241,10 @@ locals {
             value   = literal_item
             }] 
           network_groups  = [ for object_item in try(item.objects, []) : object_item if !contains(local.help_network_objects, object_item) ]         
-          domain_name     = domain.name
           description     = try(item.description, null)
         }
-      }
+      } # no data source yet
+    domain_name     = domain.name
     } if length(try(domain.objects.network_groups, [])) > 0
   }
 
@@ -253,30 +253,25 @@ locals {
 resource "fmc_network_groups" "module" {
   for_each =  local.resource_network_groups 
 
-  # Optional  
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory - one from below
-      objects         = try(item_value.objects, [])
-      literals        = try(item_value.literals, [])
-      network_groups  = try(item_value.network_groups, [])
-      # Optional
-      description     = item_value.description
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
 
-  domain = try(each.value.domain_name, null)
-  depends_on = [ 
-    data.fmc_hosts.module,
-    fmc_hosts.module,
-    data.fmc_networks.module,
-    fmc_networks.module,
-    data.fmc_ranges.module,
-    fmc_ranges.module,    
-    #fmc_fqdn_objects.module,
-   ]
-  lifecycle {   
-    create_before_destroy = true
-  }
+  # Optional
+    domain  = each.value.domain_name
+
+    depends_on = [ 
+      data.fmc_hosts.module,
+      fmc_hosts.module,
+      data.fmc_networks.module,
+      fmc_networks.module,
+      data.fmc_ranges.module,
+      fmc_ranges.module,    
+      data.fmc_fqdn_objects.module,
+      fmc_fqdn_objects.module,
+    ]
+    lifecycle {   
+      create_before_destroy = true
+    }
 }
 
 ##########################################################
@@ -286,28 +281,26 @@ locals {
 
   resource_ports = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.ports, []) : item.name => item if !contains(try(keys(local.data_ports[domain.name].items), []), item.name)
+      items = {
+        for port in try(domain.objects.ports, []) : port.name => {
+          protocol      = port.protocol
+          port          = try(port.port, null)
+          description   = try(port.description, local.defaults.fmc.domains[domain.name].objects.ports.description, null)
+        } if !contains(try(keys(local.data_icmpv4s[domain.name].items), []), port.name)
         } 
+      domain_name   = domain.name
     } if length(try(domain.objects.ports, [])) > 0
   }
-
 }
 
 resource "fmc_ports" "module" {
   for_each =  local.resource_ports
 
-  # Mandatory 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      protocol    = item_value.protocol
-      port        = item_value.port
-      # Optional
-      description = try(item_value.description, local.defaults.fmc.domains.objects.ports.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -317,9 +310,14 @@ locals {
 
   resource_icmpv4s = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.icmpv4s, []) : item.name => item if !contains(try(keys(local.data_icmpv4s[domain.name].items), []), item.name)
+      items = {
+        for icmpv4 in try(domain.objects.icmpv4s, []) : icmpv4.name => {
+          icmp_type     = try(icmpv4.icmp_type, null)
+          code          = try(icmpv4.code, null)
+          description   = try(icmpv4.description, local.defaults.fmc.domains[domain.name].objects.icmpv4s.description, null)
+        } if !contains(try(keys(local.data_icmpv4s[domain.name].items), []), icmpv4.name)
         } 
+      domain_name   = domain.name
     } if length(try(domain.objects.icmpv4s, [])) > 0
   }
 
@@ -328,16 +326,11 @@ locals {
 resource "fmc_icmpv4_objects" "module" {
   for_each =  local.resource_icmpv4s
 
-  # Mandatory 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Optional
-      icmp_type   = try(item_value.icmp_type, null)
-      code        = try(item_value.code, null)
-      description = try(item_value.description, local.defaults.fmc.domains.objects.icmpv4s.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
 }
 
 ##########################################################
@@ -347,19 +340,18 @@ locals {
 
   resource_port_groups = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.port_groups, {}) : item.name => {
+      items = {
+        for port_group in try(domain.objects.port_groups, {}) : port_group.name => {
           # Mandatory
-          name            = item.name
-          objects         = [ for object_item in try(item.objects, []) : {
+          name            = port_group.name
+          objects         = [ for object_item in try(port_group.objects, []) : {
             id      = local.map_services[object_item].id
             type    = local.map_services[object_item].type            
           } ] 
-
-          domain_name     = domain.name
-          description     = try(item.description, null)
-        }
-      }
+          description     = try(port_group.description, local.defaults.fmc.domains[domain.name].objects.port_groups.description, null)
+        } if !contains(try(keys(local.data_port_groups[domain.name].items), []), port_group.name)
+      } 
+      domain_name     = domain.name
     } if length(try(domain.objects.port_groups, [])) > 0
   }
 
@@ -368,23 +360,18 @@ locals {
 resource "fmc_port_groups" "module" {
   for_each =  local.resource_port_groups 
 
-  # Mandatory 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory 
-      description     = item_value.description
-      objects         = item_value.objects
-      # Optional
-      description     = item_value.description
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
 
-  domain = try(each.value.domain_name, null)
-  depends_on = [ 
-    data.fmc_ports.module,
-    fmc_ports.module,
-    data.fmc_icmpv4_objects.module,
-    fmc_icmpv4_objects.module,
-   ]
+  # Optional
+    domain  = each.value.domain_name
+
+    depends_on = [ 
+      data.fmc_ports.module,
+      fmc_ports.module,
+      data.fmc_icmpv4_objects.module,
+      fmc_icmpv4_objects.module,
+    ]
   lifecycle {   
     create_before_destroy = true
   }
@@ -397,9 +384,14 @@ locals {
 
   resource_dynamic_objects = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.dynamic_objects, []) : item.name => item if !contains(try(keys(local.data_dynamic_objects[domain.name].items), []), item.name)
+      items = {
+        for dynamic_object in try(domain.objects.dynamic_objects, []) : dynamic_object.name => {
+          object_type   = try(dynamic_object.description, local.defaults.fmc.domains[domain.name].objects.dynamic_objects.object_type, null)
+          mappings      = try(dynamic_object.mappings, null)
+          description   = try(dynamic_object.description, local.defaults.fmc.domains[domain.name].objects.dynamic_objects.description, null)
+        } if !contains(try(keys(local.data_dynamic_objects[domain.name].items), []), dynamic_object.name)
         } 
+      domain_name       = domain.name
     } if length(try(domain.objects.dynamic_objects, [])) > 0
   }
 
@@ -408,16 +400,12 @@ locals {
 resource "fmc_dynamic_objects" "module" {
   for_each =  local.resource_dynamic_objects
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      object_type     = item_value.type
-      mappings        = try(item_value.mappings, [])
-      # Optional
-      description = try(item_value.description, local.defaults.fmc.domains.objects.dynamic_objects.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
+
 }
 
 ##########################################################
@@ -427,9 +415,13 @@ locals {
 
   resource_urls = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.urls, []) : item.name => item if !contains(try(keys(local.data_urls[domain.name].items), []), item.name)
+      items = {
+        for url in try(domain.objects.urls, []) : url.name => {
+          url           = url.url
+          description   = try(url.description, local.defaults.fmc.domains[domain.name].objects.urls.description, null)
+        } if !contains(try(keys(local.data_urls[domain.name].items), []), url.name)
         } 
+      domain_name   = domain.name
     } if length(try(domain.objects.urls, [])) > 0
   }
 
@@ -438,15 +430,12 @@ locals {
 resource "fmc_urls" "module" {
   for_each =  local.resource_urls
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      url           = item_value.url
-      # Optional
-      description   = try(item_value.description, local.defaults.fmc.domains.objects.urls.description, null)
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
+
   # Optional
-  domain = try(each.key, null)
+    domain  = each.value.domain_name
+    
 }
 
 ##########################################################
@@ -456,21 +445,20 @@ locals {
 
   resource_url_groups = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
-        for item in try(domain.objects.url_groups, {}) : item.name => {
-          # Mandatory
-          name            = item.name
-          urls            = [ for url_item in try(item.urls, []) : {
+      items = {
+        for url_group in try(domain.objects.url_groups, {}) : url_group.name => {
+          name            = url_group.name
+          urls            = [ for url_item in try(url_group.urls, []) : {
             id            = local.map_urls[url_item].id
           } ]
-          literals        = [ for literal_item in try(item.literals, []) : {
+          literals        = [ for literal_item in try(url_group.literals, []) : {
             url           = literal_item
           } ]
 
-          domain_name     = domain.name
-          description     = try(item.description, null)
-        }
+          description     = try(url_group.description, null)
+        } if !contains(try(keys(local.data_url_groups[domain.name].items), []), url_group.name)
       }
+      domain_name     = domain.name
     } if length(try(domain.objects.url_groups, [])) > 0
   }
 
@@ -479,17 +467,12 @@ locals {
 resource "fmc_url_groups" "module" {
   for_each =  local.resource_url_groups 
 
-  # Mandatory 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory 
-      urls            = item_value.urls
-      literals        = item_value.literals
-      # Optional
-      description     = item_value.description
-    }
-  }
+  # Mandatory
+    items   = each.value.items 
 
-  domain = try(each.value.domain_name, null)
+  # Optional
+    domain  = each.value.domain_name
+
   depends_on = [ 
     data.fmc_urls.module,
     fmc_urls.module,
@@ -502,6 +485,8 @@ resource "fmc_url_groups" "module" {
 ##########################################################
 ###    VLAN Tags (SGTs)
 ##########################################################
+
+# TODO
 locals {
 
   resource_vlan_tags = { 
@@ -537,7 +522,7 @@ locals {
 
   resource_vlan_tag_groups = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
+      items = {
         for item in try(domain.objects.vlan_tag_groups, {}) : item.name => {
           # Mandatory
           name              = item.name
@@ -562,23 +547,24 @@ resource "fmc_vlan_tag_groups" "module" {
   for_each =  local.resource_vlan_tag_groups 
 
   # Mandatory 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory 
-      vlan_tags       = item_value.vlan_tags
-      literals        = item_value.literals
-      # Optional
-      description     = item_value.description
+    items =   { for item_key, item_value in each.value.items : item_key => {
+        # Mandatory 
+        vlan_tags       = item_value.vlan_tags
+        literals        = item_value.literals
+        # Optional
+        description     = item_value.description
+      }
     }
-  }
-
-  domain = try(each.value.domain_name, null)
-  depends_on = [ 
-    data.fmc_vlan_tags.module,
-    fmc_vlan_tags.module,
-   ]
-  lifecycle {   
-    create_before_destroy = true
-  }
+  # Optional 
+    domain = try(each.value.domain_name, null)
+    
+    depends_on = [ 
+      data.fmc_vlan_tags.module,
+      fmc_vlan_tags.module,
+    ]
+    lifecycle {   
+      create_before_destroy = true
+    }
 }
 
 ##########################################################
@@ -616,17 +602,17 @@ locals {
 
   resource_security_zones = { 
     for domain in local.domains : domain.name => { 
-      "items" = {
+      items = {
         for security_zone in try(domain.objects.security_zones, []) : security_zone.name => 
         { 
           # Mandatory 
-          "interface_type"  = security_zone.interface_type
+          interface_type  = try(security_zone.description, local.defaults.fmc.domains[domain.name].objects.security_zones.interface_type, null)
           # Optional
-          "description"     = try(security_zone.description, null)
+          description     = try(security_zone.description, null)
         } if !contains(try(keys(local.data_security_zones[domain.name].items), []), security_zone.name)
         } 
       # Optional
-      "domain_name"     = domain.name
+      domain_name     = domain.name
     } if length(try(domain.objects.security_zones, [])) > 0 
     
   }
@@ -821,6 +807,7 @@ locals {
   )
 
 }
+
 ######
 ### map_service_groups
 ######
@@ -1047,4 +1034,6 @@ locals {
   map_url_categories = {}
   map_variable_sets = {}
   map_ipv6_dhcp_pools = {}
+  map_route_maps = {}
+  map_prefix_lists = {}
 }

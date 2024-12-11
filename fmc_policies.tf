@@ -90,13 +90,12 @@ locals {
             default_action_send_events_to_fmc   = try(access_policy.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.send_events_to_fmc, null)
             default_action_send_syslog          = try(access_policy.enable_syslog, local.defaults.fmc.domains.policies.access_policies.enable_syslog, null)
             
-            default_action_snmp_config_id       = null # snmp_alert
-            default_action_syslog_config_id     = null # syslog_alert
+            default_action_snmp_config_id       = try(local.map_snmp_alerts[access_policy.snmp_alert].id, null)
+            default_action_syslog_config_id     = try(local.map_syslog_alerts[access_policy.syslog_alert].id, null) 
             default_action_syslog_severity      = try(access_policy.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
 
             description                         = try(access_policy.description, null)
             domain_name                         = domain.name
-
 
             rules = [ for rule in try(access_policy.access_rules, []) : {
                 name                    = rule.name
@@ -121,6 +120,7 @@ locals {
                   port       = try(destination_port_literal.port, null)
                   icmp_type   = try(destination_port_literal.icmp_type, null)
                   icmp_code   = try(destination_port_literal.icmp_code, null)
+                  type        = destination_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
                 } ]                 
                 destination_port_objects = [ for destination_port_object in try(rule.destination_port_objects, []) : {
                   id    = local.map_services[destination_port_object].id
@@ -131,7 +131,7 @@ locals {
                 } ]
 
                 enabled               = try(rule.enabled, local.defaults.fmc.domains.policies.access_policies.access_rules.enabled, null)
-                file_policy_id        = null #file_policy
+                file_policy_id        = try(local.map_file_policies[rule.file_policy].id, null) 
                 intrusion_policy_id  = try(local.map_intrusion_policy[rule.intrusion_policy].id, local.defaults.fmc.domains.policies.access_policies.access_rules.intrusion_policy, null)
                 log_begin             = try(rule.log_connection_begin, local.defaults.fmc.domains.policies.access_policies.access_rules.log_connection_begin, null)
                 log_end               = try(rule.log_connection_end, local.defaults.fmc.domains.policies.access_policies.access_rules.log_connection_end, null)
@@ -139,7 +139,7 @@ locals {
                 section               = try(rule.section, local.defaults.fmc.domains.policies.access_policies.access_rules.section, null)
                 send_events_to_fmc    = try(rule.send_events_to_fmc, local.defaults.fmc.domains.policies.access_policies.access_rules.send_events_to_fmc, null)
                 send_syslog           = try(rule.enable_syslog, local.defaults.fmc.domains.policies.access_policies.access_rules.enable_syslog, null)
-                snmp_config_id        = null #snmp_alert
+                snmp_config_id        = try(local.map_snmp_alerts[rule.snmp_alert].id, null)
                 source_dynamic_objects = [ for source_dynamic_object in try(rule.source_dynamic_objects, []) : {
                   id    = local.map_dynamic_objects[source_dynamic_object].id
                   type  = local.map_dynamic_objects[source_dynamic_object].type
@@ -153,10 +153,11 @@ locals {
                   type  = try(local.map_network_objects[source_network_object].type, local.map_network_group_objects[source_network_object].type, null)
                 } ]
                 source_port_literals = [ for source_port_literal in try(rule.source_port_literals, []) : {
-                  protocol   = local.help_protocol_mapping[source_port_literal.protocol]
-                  port       = try(source_port_literal.port, null)
+                  protocol    = local.help_protocol_mapping[source_port_literal.protocol]
+                  port        = try(source_port_literal.port, null)
                   icmp_type   = try(source_port_literal.icmp_type, null)
                   icmp_code   = try(source_port_literal.icmp_code, null)
+                  type        = source_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
                 } ]                  
                 source_port_objects = [ for source_port_object in try(rule.source_port_objects, []) : {
                   id    = local.map_services[source_port_object].id
@@ -168,7 +169,7 @@ locals {
                 #source_sgt_objects = [ for source_sgt in try(rule.source_sgts, []) : {
                 #  id = local.map_sgts[source_sgt].id
                 #} ]
-                syslog_config_id = null #syslog_alert
+                syslog_config_id = try(local.map_syslog_alerts[rule.syslog_alert].id, null) 
                 syslog_severity      = try(rule.syslog_severity, local.defaults.fmc.domains.policies.access_policies.syslog_severity, null)
                 url_categories = [ for url_category in try(rule.url_categories, []) : {
                   id          = try(local.map_url_categories[url_category.category].id) 
@@ -316,7 +317,7 @@ resource "fmc_ftd_nat_policy" "module" {
   manual_nat_rules  = each.value.manual_nat_rules
   auto_nat_rules    = each.value.auto_nat_rules
 
-  domain            = try(each.value.domain_name, null)
+  domain            = each.value.domain_name
 
   depends_on = [ 
     data.fmc_security_zones.module,
@@ -365,7 +366,7 @@ resource "fmc_intrusion_policy" "module" {
     description       = each.value.description
     inspection_mode   = each.value.inspection_mode
 
-    domain            = try(each.value.domain_name, null)
+    domain            = each.value.domain_name
 
   depends_on = [ 
     data.fmc_intrusion_policy.module,
@@ -455,4 +456,71 @@ locals {
       ]) : item.name => item if contains(keys(item), "name" )
     }, 
   )
+}
+
+######
+### map_snmp_alerts
+######
+locals {
+  map_snmp_alerts = merge(
+    #{
+    #  for item in flatten([
+    #    for domain_key, domain_value in local.resource_snmp_alerts : 
+    #      flatten([ for item_key, item_value in domain_value.items : { 
+    #        name        = item_key
+    #        id          = fmc_snmp_alerts.module[domain_key].items[item_key].id
+    #        #type = fmc_urls.urls[domain_key].items[item_key].type
+    #        domain_name = domain_key
+    #      }])
+    #    ]) : item.name => item if contains(keys(item), "name" )
+    #},    
+    {
+      for item in flatten([
+        for domain_key, domain_value in local.data_snmp_alerts : 
+          flatten([ for element in keys(domain_value.items): {
+          name        = element
+          id          = data.fmc_snmp_alerts.module[domain_key].items[element].id
+          #type        = data.fmc_snmp_alerts.module[domain_key].items[element].type
+          domain_name = domain_key
+        }])
+      ]) : item.name => item if contains(keys(item), "name" )
+    },  
+  )
+
+}
+
+######
+### map_snmp_alerts
+######
+locals {
+  map_syslog_alerts = merge(
+    #{
+    #  for item in flatten([
+    #    for domain_key, domain_value in local.resource_sysylog_alerts : 
+    #      flatten([ for item_key, item_value in domain_value.items : { 
+    #        name        = item_key
+    #        id          = fmc_syslog_alerts.module[domain_key].items[item_key].id
+    #        #type = fmc_urls.urls[domain_key].items[item_key].type
+    #        domain_name = domain_key
+    #      }])
+    #    ]) : item.name => item if contains(keys(item), "name" )
+    #},    
+    {
+      for item in flatten([
+        for domain_key, domain_value in local.data_syslog_alerts : 
+          flatten([ for element in keys(domain_value.items): {
+          name        = element
+          id          = data.fmc_syslog_alerts.module[domain_key].items[element].id
+          #type        = data.fmc_syslog_alerts.module[domain_key].items[element].type
+          domain_name = domain_key
+        }])
+      ]) : item.name => item if contains(keys(item), "name" )
+    },  
+  )
+
+}
+
+### FAKE - TODO
+locals {
+  map_file_policies = {}
 }
