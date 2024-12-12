@@ -129,6 +129,18 @@ resource "fmc_device_bfd" "module" {
     hop_type               = each.value.hop_type
     slow_timer             = each.value.slow_timer
     bfd_template_id        = each.value.bfd_template_id
+
+  depends_on = [ 
+    data.fmc_device.module,
+    fmc_device.module,
+    fmc_device_physical_interface.module,
+    data.fmc_device_physical_interface.module,
+    fmc_device_etherchannel_interface.module,
+    data.fmc_device_etherchannel_interface.module,
+    fmc_device_subinterface.module,
+    data.fmc_device_subinterface.module
+   ]
+
 }
 
 ##########################################################
