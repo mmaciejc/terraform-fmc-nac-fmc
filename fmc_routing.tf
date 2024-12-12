@@ -138,7 +138,11 @@ resource "fmc_device_bfd" "module" {
     fmc_device_etherchannel_interface.module,
     data.fmc_device_etherchannel_interface.module,
     fmc_device_subinterface.module,
-    data.fmc_device_subinterface.module
+    data.fmc_device_subinterface.module,
+    data.fmc_device_bgp_general_settings.module,
+    fmc_device_bgp_general_settings.module,
+    data.fmc_device_bgp.module,
+    fmc_device_bgp.module
    ]
 
 }
