@@ -359,42 +359,42 @@ data "fmc_security_zones" "module" {
 ###    ACCESS POLICY - STANDARD + EXTENDED
 ##########################################################
 locals {
-  data_standard_acls = { 
+  data_standard_acl = { 
     for item in flatten([
       for domain in try(local.data_existing.fmc.domains, {}) : [ 
-        for standard_acl in try(domain.objects.standard_acls, {}) : {
-          name        = standard_acl.name
+        for element in try(domain.objects.standard_acls, {}) : {
+          name        = element.name
           domain_name = domain.name
         }
       ]
-      ]) : item.name => item if contains(keys(item), "name" )
+      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name" )
     } 
 
 }
 
 data "fmc_standard_acl" "module" {
-  for_each = local.data_standard_acls
+  for_each = local.data_standard_acl
 
     name    = each.value.name
     domain  = each.value.domain_name    
 }
 
 locals {
-  data_extended_acls = { 
+  data_extended_acl = { 
     for item in flatten([
       for domain in try(local.data_existing.fmc.domains, {}) : [ 
-        for extended_acl in try(domain.objects.extended_acls, {}) : {
-          name        = extended_acl.name
+        for element in try(domain.objects.extended_acls, {}) : {
+          name        = element.name
           domain_name = domain.name
         }
       ]
-      ]) : item.name => item if contains(keys(item), "name" )
+      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name" )
     } 
 
 }
 
 data "fmc_extended_acl" "module" {
-  for_each = local.data_extended_acls
+  for_each = local.data_extended_acl
 
     name    = each.value.name
     domain  = each.value.domain_name    

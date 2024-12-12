@@ -2,13 +2,13 @@
 defaults:
   fmc:
     domains:
-      Global:
+      "Global":
         devices:
           devices:
             deploy_ignore_warning: false
             deploy_force: false
             vrfs:
-              Global:
+              "Global":
                 bgp:
                 physical_interfaces:
                   enabled: true

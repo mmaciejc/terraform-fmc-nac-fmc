@@ -630,6 +630,32 @@ resource "fmc_security_zones" "module" {
 }
 
 ##########################################################
+###    STANDARS/EXTENDED ACL
+##########################################################
+locals {
+
+  resource_standard_acl = {
+    for item in flatten([
+      for domain in local.domains : [ 
+        for standard_acl in try(domain.objects.standard_acls, {}) : {
+          name        = standard_acl.name
+          entries     = [ for entry in standard_acl.entries : {
+            action          = entry.action
+            literals        = try(entry.literals, []) 
+            objects         = [ for obcject in try(entry.objects, []) : {
+              id    = try(local.map_network_objects[obcject].id, local.map_network_group_objects[obcject].id, null)
+            } ]
+          } ]
+          domain_name = domain.name
+        }
+      ]
+      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name" ) && !contains(try(keys(local.data_standard_acl), {}), "${item.domain_name}:${item.name}") 
+    } 
+
+  resource_extended_acl = { }
+}
+
+##########################################################
 ###    Create maps for combined set of _data and _resources network objects 
 ##########################################################
 ######
