@@ -728,6 +728,33 @@ data "fmc_device_vrf" "module" {
 }
 
 ##########################################################
+###    BFD
+##########################################################
+locals {
+
+  data_bfd_template = {
+    for item in flatten([
+      for domain in local.data_existing.fmc.domains : [
+        for bfd_template in try(domain.objects.bfd_templates, []) : [ 
+            merge(bfd_template, 
+              {
+                domain_name = domain.name
+              })
+          ]
+      ]
+      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name") #The device name is unique across the different domains.
+  }
+
+}
+data "fmc_bfd_template" "module" {
+  for_each = local.data_bfd_template
+
+    name        = each.value.name
+    domain      = each.value.domain_name
+
+}
+
+##########################################################
 ###    BGP - General Settings
 ##########################################################
 locals {
@@ -758,4 +785,10 @@ data "fmc_device_bgp_general_settings" "module" {
     depends_on = [ 
       data.fmc_device.module
     ]
+}
+
+
+### FAKE:
+locals {
+  data_bfd = {}
 }

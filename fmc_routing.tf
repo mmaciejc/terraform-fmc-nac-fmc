@@ -90,6 +90,46 @@ resource "fmc_device_vrf" "module" {
    ]
 
 }
+##########################################################
+###    BFDs
+##########################################################
+locals {
+
+  resource_bfd = {
+    for item in flatten([
+      for domain in local.domains : [
+        for device in try(domain.devices.devices, []) : [ 
+          for bfd in try(device.bfds, []) : [ 
+            {
+              device_name = device.name
+              device_id   = local.map_devices[device.name].id
+              domain_name = domain.name              
+
+              interface_logical_name = bfd.interface_logical_name
+              interface_id           = try(local.map_interface_logical_names["${device.name}:${bfd.interface_logical_name}"].id, null)
+              hop_type               = try(bfd.hop_type, null)
+              slow_timer             = try(bfd.slow_timer, null)
+              bfd_template_id        = try(data.fmc_bfd_template.module["${domain.name }:${bfd.bfd_template_name}"].id, null)
+            }
+          ]
+        ]
+      ]
+      ]) : "${item.device_name}:${item.interface_logical_name}" => item if contains(keys(item), "interface_logical_name") && !contains(try(keys(local.data_bfd), []), "${item.device_name}:${item.interface_logical_name}") #The device name is unique across the different domains.
+  }
+
+}
+
+resource "fmc_device_bfd" "module" {
+  for_each = local.resource_bfd
+
+  # Mandatory
+    device_id               = each.value.device_id
+    interface_logical_name = each.value.interface_logical_name
+    interface_id           = each.value.interface_id
+    hop_type               = each.value.hop_type
+    slow_timer             = each.value.slow_timer
+    bfd_template_id        = each.value.bfd_template_id
+}
 
 ##########################################################
 ###    IPv4 STATIC ROUTES
