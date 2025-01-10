@@ -19,7 +19,21 @@
 # local.data_existing => map of existing objects configuration loaded from YAML file (should reflect builtin/read-only objects like SSH, HTTP etc.)
 #
 ###
-
+# Dictionary
+###
+# 
+# Interfaces:
+# resource naming convention: physical_interface, sub_interface, etherchannel_interface
+# name - represents GigabitEthernet0/1, Port-Channel10, TenGigabitEthernet0/1.10
+# logical_name - represents inside, outsida, dmz etc.
+# ether_channel_id - is taken automaticaly from interface name - Port-Channel10 and eq 10
+# sub_interface_id - is taken automaticaly from interface name - TenGigabitEthernet0/1.10 and eq 10
+# interface_name - (in sub_interface) represents physical interface and is taken automaticaly from interface name - TenGigabitEthernet0/1.10 and eq TenGigabitEthernet0/1
+#
+# Netmask:
+# netmask - represents: subnet mask, network mask, netork subnet
+#
+# 
 
 locals {
   fmc           = try(local.model.fmc, {})

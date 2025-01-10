@@ -3,7 +3,7 @@ terraform {
 
   required_providers {
     fmc = {
-      source = "netascode/fmc"
+      source  = "netascode/fmc"
       version = "0.0.1"
     }
     utils = {

@@ -5,102 +5,92 @@
 ###
 #  Resources
 ####
-# resource "fmc_hosts" "hosts"
-# resource "fmc_networks" "networks" 
-# resource "fmc_ranges" "ranges" 
-# resource "fmc_network_groups" "network_groups"
-# resource "fmc_ports" "ports" {
-# resource "fmc_icmpv4_objects"
-# resource "fmc_security_zone" "security_zone" {
-# resource "fmc_dynamic_objects" "dynamic_objects" {
+# resource "fmc_hosts" "module" 
+# resource "fmc_networks" "module" 
+# resource "fmc_ranges" "module" 
+# resource "fmc_fqdn_objects" "module" 
+# resource "fmc_network_groups" "module" 
+# resource "fmc_ports" "module"
+# resource "fmc_icmpv4_objects" "module" 
+# resource "fmc_port_groups" "module" 
+# resource "fmc_dynamic_objects" "module" 
+# resource "fmc_urls" "module" 
+# resource "fmc_url_groups" "module" 
+# resource "fmc_vlan_tags" "module" 
+# resource "fmc_vlan_tag_groups" "module" 
+# resource "fmc_sgts" "module" 
+# resource "fmc_security_zones" "module"
+# resource "fmc_standard_acl" "module" 
+# resource "fmc_extended_acl" "module" 
 #
 ###  
 #  Local variables
 ###
-# local.resource_hosts              => for building dynamic resource - for bulk resource
-# local.resource_networks           => for building dynamic resource - for bulk resource
-# local.resource_ranges           => for building dynamic resource - for bulk resource
-# local.resource_network_groups     => for building dynamic resource - for bulk resource
-# local.resource_ports              => for building dynamic resource - for bulk resource
-# local.resource_icmpv4s            => for building dynamic resource - for bulk resource
-# local.resource_security_zone      => for building dynamic resource - for single resource
-# local.resource_dynamic_objects    => for building dynamic resource - for bulk resource
+# local.resource_hosts              
+# local.resource_networks          
+# local.resource_ranges          
+# local.resource_fqdns 
+# local.resource_network_groups 
+# local.resource_ports 
+# local.resource_icmpv4s 
+# local.resource_port_groups 
+# local.resource_dynamic_objects 
+# local.resource_urls 
+# local.resource_url_groups 
+# local.resource_vlan_tags 
+# local.resource_vlan_tag_groups 
+# local.resource_sgts 
+# local.resource_security_zones 
+# local.resource_standard_acl 
+# local.resource_extended_acl 
 #
-# Mappings 
-#
-# local.map_network_objects         => to collect all network objects by name that can be used in Access Control Policy or IPv4 Static Route
-# local.map_network_group_objects   => as per above - needs to be separate to avoid circular error 
-# local.map_dynamic_objects         => to collect all dynamic objects by name that can be used later in the module
-# local.map_services                => to collect all port and icmpv4 objects by name that can be used later in the module
-# local.map_security_zones          => to collect all security_zone objects by name that can be used later in the module
+# local.map_network_objects 
+# local.map_dynamic_objects 
+# local.map_services 
+# local.map_service_groups 
+# local.map_network_group_objects 
+# local.map_urls 
+# local.map_url_groups 
+# local.map_vlan_tags 
+# local.map_vlan_tag_groups 
+# local.map_sgts 
+# local.map_security_zones 
+# local.map_variable_sets 
+# local.map_standard_acls 
+# local.map_extended_acls 
+# local.map_url_categories 
+# local.map_ipv6_dhcp_pools 
+# local.map_route_maps      
+# local.map_prefix_lists   
 # 
 ###
-
-##########################################################
-###    Example of created local variables
-##########################################################
-
-#  + resource_host   = {
-#      + "10.0.0.1"   = {
-#          + description = " "
-#          + domain_name = "Global"
-#          + ip          = "10.0.0.1"
-#          + name        = "10.0.0.1"
-#        }
-#    }
-
-#  + resource_hosts = {
-#      + Global = {
-#          + items = {
-#              + Test           = {
-#                  + ip   = "1.1.1.1"
-#                  + name = "Test"
-#                }
-#            }
-#        }
-#    }
-
-# 
-# + help_network_objects = [
-#      + "Host_1",
-#    ]
-
-#  + map_network_group_objects = {
-#     + DC_1   = {
-#          + domain_name = "Global"
-#          + id          = "005056B0-2ED4-0ed3-0000-004294968756"
-#          + name        = "DC_1"
-#          + type        = "NetworkGroup"
-#        }
-#    }
 
 ##########################################################
 ###    HOSTS
 ##########################################################
 locals {
 
-#  resource_host = { 
-#    for item in flatten([
-#      for domain in local.domains : [ 
-#        for item_value in try(domain.objects.hosts, []) : [ 
-#          merge(item_value, 
-#            {
-#              "domain_name" = domain.name
-#            })
-#        ]
-#      ]
-#      ]) : item.name => item if contains(keys(item), "name" ) && !contains(try(keys(local.data_host), []), item.name)
-#  }
+  #  resource_host = { 
+  #    for item in flatten([
+  #      for domain in local.domains : [ 
+  #        for item_value in try(domain.objects.hosts, []) : [ 
+  #          merge(item_value, 
+  #            {
+  #              "domain_name" = domain.name
+  #            })
+  #        ]
+  #      ]
+  #      ]) : item.name => item if contains(keys(item), "name" ) && !contains(try(keys(local.data_host), []), item.name)
+  #  }
 
-  resource_hosts = { 
-    for domain in local.domains : domain.name => { 
+  resource_hosts = {
+    for domain in local.domains : domain.name => {
       items = {
         for host in try(domain.objects.hosts, []) : host.name => {
-          ip            = host.ip
-          description   = try(host.description, local.defaults.fmc.domains[domain.name].objects.hosts.description, null)
+          ip          = host.ip
+          description = try(host.description, local.defaults.fmc.domains[domain.name].objects.hosts.description, null)
         } if !contains(try(keys(local.data_hosts[domain.name].items), []), host.name)
-        } 
-      domain_name       = domain.name
+      }
     } if length(try(domain.objects.hosts, [])) > 0
   }
 
@@ -121,13 +111,18 @@ locals {
 #}
 
 resource "fmc_hosts" "module" {
-  for_each =  local.resource_hosts
+  for_each = local.resource_hosts
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
+
+  depends_on = [
+    data.fmc_hosts.module,
+  ]
+
 }
 
 ##########################################################
@@ -135,28 +130,31 @@ resource "fmc_hosts" "module" {
 ##########################################################
 locals {
 
-  resource_networks = { 
-    for domain in local.domains : domain.name => { 
+  resource_networks = {
+    for domain in local.domains : domain.name => {
       items = {
         for network in try(domain.objects.networks, []) : network.name => {
-          prefix        = network.prefix
-          description   = try(network.description, local.defaults.fmc.domains[domain.name].objects.network.description, null)          
+          prefix      = network.prefix
+          description = try(network.description, local.defaults.fmc.domains[domain.name].objects.network.description, null)
         } if !contains(try(local.data_networks[domain.name].itmes, []), network.name)
       }
-      domain_name       = domain.name
     } if length(try(domain.objects.networks, [])) > 0
-  } 
+  }
 
 }
 
 resource "fmc_networks" "module" {
-  for_each =  local.resource_networks
+  for_each = local.resource_networks
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
+
+  depends_on = [
+    data.fmc_networks.module,
+  ]
 }
 
 ##########################################################
@@ -164,29 +162,31 @@ resource "fmc_networks" "module" {
 ##########################################################
 locals {
 
-  resource_ranges = { 
-    for domain in local.domains : domain.name => { 
+  resource_ranges = {
+    for domain in local.domains : domain.name => {
       items = {
         for range in try(domain.objects.ranges, []) : range.name => {
-          ip_range      = range.ip_range
-          description   = try(range.description, local.defaults.fmc.domains[domain.name].objects.ranges.description, null)
+          ip_range    = range.ip_range
+          description = try(range.description, local.defaults.fmc.domains[domain.name].objects.ranges.description, null)
         } if !contains(try(keys(local.data_ranges[domain.name].items), []), range.name)
-        } 
-      domain_name       = domain.name
+      }
     } if length(try(domain.objects.ranges, [])) > 0
   }
-
 
 }
 
 resource "fmc_ranges" "module" {
-  for_each =  local.resource_ranges
+  for_each = local.resource_ranges
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
+
+  depends_on = [
+    data.fmc_ranges.module,
+  ]
 }
 
 ##########################################################
@@ -194,28 +194,31 @@ resource "fmc_ranges" "module" {
 ##########################################################
 locals {
 
-  resource_fqdns = { 
-    for domain in local.domains : domain.name => { 
+  resource_fqdns = {
+    for domain in local.domains : domain.name => {
       items = {
         for fqdn in try(domain.objects.fqdns, []) : fqdn.name => {
-          fqdn          = fqdn.fqdn
-          description   = try(fqdn.description, local.defaults.fmc.domains[domain.name].objects.fqdns.description, null)
+          fqdn        = fqdn.fqdn
+          description = try(fqdn.description, local.defaults.fmc.domains[domain.name].objects.fqdns.description, null)
         } if !contains(try(keys(local.data_fqdns[domain.name].items), []), fqdn.name)
-        } 
-      domain_name       = domain.name
+      }
     } if length(try(domain.objects.fqdns, [])) > 0
   }
 
 }
 
 resource "fmc_fqdn_objects" "module" {
-  for_each =  local.resource_fqdns
+  for_each = local.resource_fqdns
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
+
+  depends_on = [
+    data.fmc_fqdn_objects.module
+  ]
 }
 
 ##########################################################
@@ -224,54 +227,54 @@ resource "fmc_fqdn_objects" "module" {
 
 locals {
 
-  help_network_objects = flatten([ 
-      for item in keys(local.map_network_objects) : item
-    ])
+  help_network_objects = flatten([
+    for item in keys(local.map_network_objects) : item
+  ])
 
   resource_network_groups = {
-    for domain in local.domains : domain.name => { 
+    for domain in local.domains : domain.name => {
       items = {
         for item in try(domain.objects.network_groups, {}) : item.name => {
           # Mandatory
-          name            = item.name
-          objects         = [ for object_item in try(item.objects, []) : {
-            id      = local.map_network_objects[object_item].id
-            } if contains(local.help_network_objects, object_item) ] 
-          literals        = [ for literal_item in try(item.literals, []) : {
-            value   = literal_item
-            }] 
-          network_groups  = [ for object_item in try(item.objects, []) : object_item if !contains(local.help_network_objects, object_item) ]         
-          description     = try(item.description, null)
+          name = item.name
+          objects = [for object_item in try(item.objects, []) : {
+            id = local.map_network_objects[object_item].id
+          } if contains(local.help_network_objects, object_item)]
+          literals = [for literal_item in try(item.literals, []) : {
+            value = literal_item
+          }]
+          network_groups = [for object_item in try(item.objects, []) : object_item if !contains(local.help_network_objects, object_item)]
+          description    = try(item.description, null)
         }
       } # no data source yet
-    domain_name     = domain.name
+      domain_name = domain.name
     } if length(try(domain.objects.network_groups, [])) > 0
   }
 
 }
 
 resource "fmc_network_groups" "module" {
-  for_each =  local.resource_network_groups 
+  for_each = local.resource_network_groups
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.value.domain_name
 
-    depends_on = [ 
-      data.fmc_hosts.module,
-      fmc_hosts.module,
-      data.fmc_networks.module,
-      fmc_networks.module,
-      data.fmc_ranges.module,
-      fmc_ranges.module,    
-      data.fmc_fqdn_objects.module,
-      fmc_fqdn_objects.module,
-    ]
-    lifecycle {   
-      create_before_destroy = true
-    }
+  depends_on = [
+    data.fmc_hosts.module,
+    fmc_hosts.module,
+    data.fmc_networks.module,
+    fmc_networks.module,
+    data.fmc_ranges.module,
+    fmc_ranges.module,
+    data.fmc_fqdn_objects.module,
+    fmc_fqdn_objects.module,
+  ]
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 ##########################################################
@@ -279,28 +282,31 @@ resource "fmc_network_groups" "module" {
 ##########################################################
 locals {
 
-  resource_ports = { 
-    for domain in local.domains : domain.name => { 
+  resource_ports = {
+    for domain in local.domains : domain.name => {
       items = {
         for port in try(domain.objects.ports, []) : port.name => {
-          protocol      = port.protocol
-          port          = try(port.port, null)
-          description   = try(port.description, local.defaults.fmc.domains[domain.name].objects.ports.description, null)
+          protocol    = port.protocol
+          port        = try(port.port, null)
+          description = try(port.description, local.defaults.fmc.domains[domain.name].objects.ports.description, null)
         } if !contains(try(keys(local.data_icmpv4s[domain.name].items), []), port.name)
-        } 
-      domain_name   = domain.name
+      }
     } if length(try(domain.objects.ports, [])) > 0
   }
 }
 
 resource "fmc_ports" "module" {
-  for_each =  local.resource_ports
+  for_each = local.resource_ports
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
+
+  depends_on = [
+    data.fmc_ports.module,
+  ]
 }
 
 ##########################################################
@@ -308,29 +314,32 @@ resource "fmc_ports" "module" {
 ##########################################################
 locals {
 
-  resource_icmpv4s = { 
-    for domain in local.domains : domain.name => { 
+  resource_icmpv4s = {
+    for domain in local.domains : domain.name => {
       items = {
         for icmpv4 in try(domain.objects.icmpv4s, []) : icmpv4.name => {
-          icmp_type     = try(icmpv4.icmp_type, null)
-          code          = try(icmpv4.code, null)
-          description   = try(icmpv4.description, local.defaults.fmc.domains[domain.name].objects.icmpv4s.description, null)
+          icmp_type   = try(icmpv4.icmp_type, null)
+          code        = try(icmpv4.code, null)
+          description = try(icmpv4.description, local.defaults.fmc.domains[domain.name].objects.icmpv4s.description, null)
         } if !contains(try(keys(local.data_icmpv4s[domain.name].items), []), icmpv4.name)
-        } 
-      domain_name   = domain.name
+      }
     } if length(try(domain.objects.icmpv4s, [])) > 0
   }
 
 }
 
 resource "fmc_icmpv4_objects" "module" {
-  for_each =  local.resource_icmpv4s
+  for_each = local.resource_icmpv4s
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
+
+  depends_on = [
+    data.fmc_icmpv4_objects.module,
+  ]
 }
 
 ##########################################################
@@ -338,41 +347,41 @@ resource "fmc_icmpv4_objects" "module" {
 ##########################################################
 locals {
 
-  resource_port_groups = { 
-    for domain in local.domains : domain.name => { 
+  resource_port_groups = {
+    for domain in local.domains : domain.name => {
       items = {
         for port_group in try(domain.objects.port_groups, {}) : port_group.name => {
           # Mandatory
-          name            = port_group.name
-          objects         = [ for object_item in try(port_group.objects, []) : {
-            id      = local.map_services[object_item].id
-            type    = local.map_services[object_item].type            
-          } ] 
-          description     = try(port_group.description, local.defaults.fmc.domains[domain.name].objects.port_groups.description, null)
+          name = port_group.name
+          objects = [for object_item in try(port_group.objects, []) : {
+            id   = local.map_services[object_item].id
+            type = local.map_services[object_item].type
+          }]
+          description = try(port_group.description, local.defaults.fmc.domains[domain.name].objects.port_groups.description, null)
         } if !contains(try(keys(local.data_port_groups[domain.name].items), []), port_group.name)
-      } 
-      domain_name     = domain.name
+      }
     } if length(try(domain.objects.port_groups, [])) > 0
   }
 
 }
 
 resource "fmc_port_groups" "module" {
-  for_each =  local.resource_port_groups 
+  for_each = local.resource_port_groups
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
 
-    depends_on = [ 
-      data.fmc_ports.module,
-      fmc_ports.module,
-      data.fmc_icmpv4_objects.module,
-      fmc_icmpv4_objects.module,
-    ]
-  lifecycle {   
+  depends_on = [
+    data.fmc_ports.module,
+    fmc_ports.module,
+    data.fmc_icmpv4_objects.module,
+    fmc_icmpv4_objects.module,
+    data.fmc_port_groups.module,
+  ]
+  lifecycle {
     create_before_destroy = true
   }
 }
@@ -382,30 +391,32 @@ resource "fmc_port_groups" "module" {
 ##########################################################
 locals {
 
-  resource_dynamic_objects = { 
-    for domain in local.domains : domain.name => { 
+  resource_dynamic_objects = {
+    for domain in local.domains : domain.name => {
       items = {
         for dynamic_object in try(domain.objects.dynamic_objects, []) : dynamic_object.name => {
-          object_type   = try(dynamic_object.description, local.defaults.fmc.domains[domain.name].objects.dynamic_objects.object_type, null)
-          mappings      = try(dynamic_object.mappings, null)
-          description   = try(dynamic_object.description, local.defaults.fmc.domains[domain.name].objects.dynamic_objects.description, null)
+          object_type = try(dynamic_object.description, local.defaults.fmc.domains[domain.name].objects.dynamic_objects.object_type, null)
+          mappings    = try(dynamic_object.mappings, null)
+          description = try(dynamic_object.description, local.defaults.fmc.domains[domain.name].objects.dynamic_objects.description, null)
         } if !contains(try(keys(local.data_dynamic_objects[domain.name].items), []), dynamic_object.name)
-        } 
-      domain_name       = domain.name
+      }
     } if length(try(domain.objects.dynamic_objects, [])) > 0
   }
 
 }
 
 resource "fmc_dynamic_objects" "module" {
-  for_each =  local.resource_dynamic_objects
+  for_each = local.resource_dynamic_objects
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
 
+  depends_on = [
+    data.fmc_dynamic_objects.module,
+  ]
 }
 
 ##########################################################
@@ -413,29 +424,31 @@ resource "fmc_dynamic_objects" "module" {
 ##########################################################
 locals {
 
-  resource_urls = { 
-    for domain in local.domains : domain.name => { 
+  resource_urls = {
+    for domain in local.domains : domain.name => {
       items = {
         for url in try(domain.objects.urls, []) : url.name => {
-          url           = url.url
-          description   = try(url.description, local.defaults.fmc.domains[domain.name].objects.urls.description, null)
+          url         = url.url
+          description = try(url.description, local.defaults.fmc.domains[domain.name].objects.urls.description, null)
         } if !contains(try(keys(local.data_urls[domain.name].items), []), url.name)
-        } 
-      domain_name   = domain.name
+      }
     } if length(try(domain.objects.urls, [])) > 0
   }
 
 }
 
 resource "fmc_urls" "module" {
-  for_each =  local.resource_urls
+  for_each = local.resource_urls
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
-    
+  domain = each.key
+
+  depends_on = [
+    data.fmc_urls.module,
+  ]
 }
 
 ##########################################################
@@ -443,41 +456,41 @@ resource "fmc_urls" "module" {
 ##########################################################
 locals {
 
-  resource_url_groups = { 
-    for domain in local.domains : domain.name => { 
+  resource_url_groups = {
+    for domain in local.domains : domain.name => {
       items = {
         for url_group in try(domain.objects.url_groups, {}) : url_group.name => {
-          name            = url_group.name
-          urls            = [ for url_item in try(url_group.urls, []) : {
-            id            = local.map_urls[url_item].id
-          } ]
-          literals        = [ for literal_item in try(url_group.literals, []) : {
-            url           = literal_item
-          } ]
+          name = url_group.name
+          urls = [for url_item in try(url_group.urls, []) : {
+            id = local.map_urls[url_item].id
+          }]
+          literals = [for literal_item in try(url_group.literals, []) : {
+            url = literal_item
+          }]
 
-          description     = try(url_group.description, null)
+          description = try(url_group.description, null)
         } if !contains(try(keys(local.data_url_groups[domain.name].items), []), url_group.name)
       }
-      domain_name     = domain.name
     } if length(try(domain.objects.url_groups, [])) > 0
   }
 
 }
 
 resource "fmc_url_groups" "module" {
-  for_each =  local.resource_url_groups 
+  for_each = local.resource_url_groups
 
   # Mandatory
-    items   = each.value.items 
+  items = each.value.items
 
   # Optional
-    domain  = each.value.domain_name
+  domain = each.key
 
-  depends_on = [ 
+  depends_on = [
     data.fmc_urls.module,
     fmc_urls.module,
-   ]
-  lifecycle {   
+    data.fmc_url_groups.module,
+  ]
+  lifecycle {
     create_before_destroy = true
   }
 }
@@ -489,30 +502,30 @@ resource "fmc_url_groups" "module" {
 # TODO
 locals {
 
-  resource_vlan_tags = { 
-    for domain in local.domains : domain.name => { 
+  resource_vlan_tags = {
+    for domain in local.domains : domain.name => {
       "items" = {
-        for item in try(domain.objects.vlan_tags, []) : item.name => item if !contains(try(keys(local.data_vlan_tags[domain.name].items), []), item.name)
-        } 
+        for vlan_tag in try(domain.objects.vlan_tags, []) : vlan_tag.name => {
+          start_tag   = vlan_tag.start_tag
+          end_tag     = try(vlan_tag.end_tag, null)
+          description = try(vlan_tag.description, local.defaults.fmc.domains.objects.vlan_tags.description, null)
+        } if !contains(try(keys(local.data_vlan_tags[domain.name].items), []), vlan_tag.name)
+      }
     } if length(try(domain.objects.vlan_tags, [])) > 0
   }
 
 }
 
 resource "fmc_vlan_tags" "module" {
-  for_each =  local.resource_vlan_tags
+  for_each = local.resource_vlan_tags
 
-  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-      start_tag     = item_value.start_tag
-      end_tag       = try(item_value.end_tag, item_value.start_tag)
-
-      # Optional
-      description   = try(item_value.description, local.defaults.fmc.domains.objects.vlan_tags.description, null)
-    }
-  }
+  items = each.value.items
   # Optional
-  domain = try(each.key, null)
+  domain = each.key
+
+  depends_on = [
+    data.fmc_vlan_tags.module,
+  ]
 }
 
 ##########################################################
@@ -520,23 +533,21 @@ resource "fmc_vlan_tags" "module" {
 ##########################################################
 locals {
 
-  resource_vlan_tag_groups = { 
-    for domain in local.domains : domain.name => { 
+  resource_vlan_tag_groups = {
+    for domain in local.domains : domain.name => {
       items = {
-        for item in try(domain.objects.vlan_tag_groups, {}) : item.name => {
+        for vlan_tag_group in try(domain.objects.vlan_tag_groups, {}) : vlan_tag_group.name => {
           # Mandatory
-          name              = item.name
-          vlan_tags         = [ for vlan_tag_item in try(item.vlan_tags, []) : {
-            id          = local.map_vlan_tags[vlan_tag_item].id
-          } ]
-          literals          = [ for literal_item in try(item.literals, {}) : {
-            start_tag   = literal_item.start_tag
-            end_tag     = try(literal_item.end_tag, literal_item.start_tag)
-          } ]
-
-          domain_name       = domain.name
-          description       = try(item.description, null)
-        }
+          name = vlan_tag_group.name
+          vlan_tags = [for vlan_tag_item in try(vlan_tag_group.vlan_tags, []) : {
+            id = local.map_vlan_tags[vlan_tag_item].id
+          }]
+          literals = [for literal_item in try(vlan_tag_group.literals, {}) : {
+            start_tag = literal_item.start_tag
+            end_tag   = try(literal_item.end_tag, literal_item.start_tag)
+          }]
+          description = try(vlan_tag_group.description, null)
+        } if !contains(try(keys(local.data_vlan_tag_groups[domain.name].items), []), vlan_tag_group.name)
       }
     } if length(try(domain.objects.vlan_tag_groups, [])) > 0
   }
@@ -544,27 +555,21 @@ locals {
 }
 
 resource "fmc_vlan_tag_groups" "module" {
-  for_each =  local.resource_vlan_tag_groups 
+  for_each = local.resource_vlan_tag_groups
 
   # Mandatory 
-    items =   { for item_key, item_value in each.value.items : item_key => {
-        # Mandatory 
-        vlan_tags       = item_value.vlan_tags
-        literals        = item_value.literals
-        # Optional
-        description     = item_value.description
-      }
-    }
+  items = each.value.items
   # Optional 
-    domain = try(each.value.domain_name, null)
-    
-    depends_on = [ 
-      data.fmc_vlan_tags.module,
-      fmc_vlan_tags.module,
-    ]
-    lifecycle {   
-      create_before_destroy = true
-    }
+  domain = each.key
+
+  depends_on = [
+    data.fmc_vlan_tags.module,
+    fmc_vlan_tags.module,
+    data.fmc_vlan_tag_groups.module,
+  ]
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 ##########################################################
@@ -572,61 +577,64 @@ resource "fmc_vlan_tag_groups" "module" {
 ##########################################################
 locals {
 
-  resource_sgts = { 
-    for domain in local.domains : domain.name => { 
+  resource_sgts = {
+    for domain in local.domains : domain.name => {
       "items" = {
-        for item in try(domain.objects.sgts, []) : item.name => item if !contains(try(keys(local.data_sgts[domain.name].items), []), item.name)
-        } 
+        for sgt in try(domain.objects.sgts, []) : sgt.name =>
+        {
+          tag         = sgt.tag
+          description = try(sgt.description, null)
+        } if !contains(try(keys(local.data_sgts[domain.name].items), []), sgt.name)
+      }
     } if length(try(domain.objects.sgts, [])) > 0
   }
 
 }
 
-#resource "fmc_sgts" "module" {
-#  for_each = local.resource_sgts
+resource "fmc_sgts" "module" {
+  for_each = local.resource_sgts
 
-#  items =   { for item_key, item_value in each.value.items : item_key => {
-      # Mandatory
-#      interface_mode     = try(item_value.interface_type, local.defaults.fmc.domains.objects.security_zones.interface_type)
-#    }
-#  }
+  # Mandatory 
+  items = each.value.items
+  # Optional 
+  domain = each.key
 
-  # Optional
-#  domain = try(each.value.domain_name, null)
-#}
+  depends_on = [
+    data.fmc_sgts.module,
+  ]
+
+}
 
 ##########################################################
 ###    SECURITY ZONE
 ##########################################################
 locals {
 
-  resource_security_zones = { 
-    for domain in local.domains : domain.name => { 
+  resource_security_zones = {
+    for domain in local.domains : domain.name => {
       items = {
-        for security_zone in try(domain.objects.security_zones, []) : security_zone.name => 
-        { 
+        for security_zone in try(domain.objects.security_zones, []) : security_zone.name =>
+        {
           # Mandatory 
-          interface_type  = try(security_zone.description, local.defaults.fmc.domains[domain.name].objects.security_zones.interface_type, null)
+          interface_type = try(security_zone.description, local.defaults.fmc.domains[domain.name].objects.security_zones.interface_type, null)
           # Optional
-          description     = try(security_zone.description, null)
+          description = try(security_zone.description, null)
         } if !contains(try(keys(local.data_security_zones[domain.name].items), []), security_zone.name)
-        } 
-      # Optional
-      domain_name     = domain.name
-    } if length(try(domain.objects.security_zones, [])) > 0 
-    
+      }
+    } if length(try(domain.objects.security_zones, [])) > 0
+
   }
 
 }
 
 resource "fmc_security_zones" "module" {
   for_each = local.resource_security_zones
-  
+
   # Mandatory 
-    items =   each.value.items
+  items = each.value.items
 
   # Optional
-    domain = try(each.value.domain_name, null)
+  domain = each.key
 }
 
 ##########################################################
@@ -636,25 +644,97 @@ locals {
 
   resource_standard_acl = {
     for item in flatten([
-      for domain in local.domains : [ 
+      for domain in local.domains : [
         for standard_acl in try(domain.objects.standard_acls, {}) : {
-          name        = standard_acl.name
-          entries     = [ for entry in standard_acl.entries : {
-            action          = entry.action
-            literals        = try(entry.literals, []) 
-            objects         = [ for obcject in try(entry.objects, []) : {
-              id    = try(local.map_network_objects[obcject].id, local.map_network_group_objects[obcject].id, null)
-            } ]
-          } ]
+          # Mandatory
+          name = standard_acl.name
+          entries = [for entry in standard_acl.entries : {
+            # Mandatory
+            action = entry.action
+            # Optional
+            literals = [for literal in try(entry.literals, []) : {
+              value = literal
+            }]
+            objects = [for obcject in try(entry.objects, []) : {
+              id = try(local.map_network_objects[obcject].id, local.map_network_group_objects[obcject].id, null)
+            }]
+          }]
+          # Optional
+          description = standard_acl.description
           domain_name = domain.name
         }
       ]
-      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name" ) && !contains(try(keys(local.data_standard_acl), {}), "${item.domain_name}:${item.name}") 
-    } 
+    ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name") && !contains(try(keys(local.data_standard_acl), {}), "${item.domain_name}:${item.name}")
+  }
 
-  resource_extended_acl = { }
 }
 
+
+resource "fmc_standard_acl" "module" {
+  for_each = local.resource_standard_acl
+  # Mandatory 
+  name = each.value.name
+
+  # Optional
+  entries     = each.value.entries
+  description = each.value.description
+  domain      = each.value.domain_name
+
+}
+
+# TODO in schema for literals instead of value use ip/prefix/range/fqdn, type should be autogenerated based on key
+locals {
+  resource_extended_acl = {
+    for item in flatten([
+      for domain in local.domains : [
+        for extended_acl in try(domain.objects.extended_acls, {}) : {
+          # Mandatory
+          name = extended_acl.name
+          entries = [for entry in extended_acl.entries : {
+            # Mandatory
+            action  = entry.action
+            logging = entry.logging
+            # Optional
+            destination_network_literals = [for destination_network_literal in try(entry.destination_network_literals, []) : {
+              value = destination_network_literal.value
+              type  = destination_network_literal.type
+            }]
+            destination_network_objects = [for destination_network_object in try(entry.destination_network_objects, []) : {
+              id = try(local.map_network_objects[destination_network_object].id, local.map_network_group_objects[destination_network_object].id, null)
+            }]
+            destination_port_objects = [for destination_port_object in try(entry.destination_port_objects, []) : {
+              id = try(local.map_services[destination_port_object].id, local.map_service_groups[destination_port_object].id, null)
+            }]
+            log_interval_seconds = try(entry.log_interval_seconds, null)
+            log_level            = try(entry.log_level, null)
+            source_network_literals = [for source_network_literal in try(entry.source_network_literals, []) : {
+              value = source_network_literal.value
+              type  = source_network_literal.type
+            }]
+            source_network_objects = [for source_network_object in try(entry.source_network_objects, []) : {
+              id = try(local.map_network_objects[source_network_object].id, local.map_network_group_objects[source_network_object].id, null)
+            }]
+            source_port_objects = [for source_port_object in try(entry.source_port_objects, []) : {
+              id = try(local.map_services[source_port_object].id, local.map_service_groups[source_port_object].id, null)
+            }]
+          }]
+        }
+      ]
+    ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name") && !contains(try(keys(local.data_extended_acl), {}), "${item.domain_name}:${item.name}")
+  }
+
+}
+
+resource "fmc_extended_acl" "module" {
+  for_each = local.resource_extended_acl
+  # Mandatory 
+  name = each.value.name
+
+  # Optional
+  entries     = each.value.entries
+  description = each.value.description
+  domain      = each.value.domain_name
+}
 ##########################################################
 ###    Create maps for combined set of _data and _resources network objects 
 ##########################################################
@@ -665,92 +745,92 @@ locals {
 locals {
   map_network_objects = merge({
     for item in flatten([
-      for domain_key, domain_value in local.resource_hosts : 
-        flatten([ for item_key, item_value in domain_value.items : { 
-          name        = item_key
-          id          = fmc_hosts.module[domain_key].items[item_key].id
-          type        = fmc_hosts.module[domain_key].items[item_key].type
-          domain_name = domain_key
-        }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },   
+      for domain_key, domain_value in local.resource_hosts :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = fmc_hosts.module[domain_key].items[item_key].id
+        type        = fmc_hosts.module[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_hosts : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_hosts :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_hosts.module[domain_key].items[element].id
           type        = data.fmc_hosts.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
+      ]) : item.name => item if contains(keys(item), "name")
     },
     {
-    for item in flatten([
-      for domain_key, domain_value in local.resource_networks : 
-        flatten([ for item_key, item_value in domain_value.items : { 
+      for item in flatten([
+        for domain_key, domain_value in local.resource_networks :
+        flatten([for item_key, item_value in domain_value.items : {
           name        = item_key
           id          = fmc_networks.module[domain_key].items[item_key].id
           type        = fmc_networks.module[domain_key].items[item_key].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },     
+      ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_networks : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_networks :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_networks.module[domain_key].items[element].id
           type        = data.fmc_networks.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },    
+      ]) : item.name => item if contains(keys(item), "name")
+    },
     {
-    for item in flatten([
-      for domain_key, domain_value in local.resource_ranges : 
-        flatten([ for item_key, item_value in domain_value.items : { 
+      for item in flatten([
+        for domain_key, domain_value in local.resource_ranges :
+        flatten([for item_key, item_value in domain_value.items : {
           name        = item_key
           id          = fmc_ranges.module[domain_key].items[item_key].id
           type        = fmc_ranges.module[domain_key].items[item_key].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },     
+      ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_ranges : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_ranges :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_ranges.module[domain_key].items[element].id
           type        = data.fmc_ranges.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
+      ]) : item.name => item if contains(keys(item), "name")
     },
     {
-    for item in flatten([
-      for domain_key, domain_value in local.resource_fqdns : 
-        flatten([ for item_key, item_value in domain_value.items : { 
+      for item in flatten([
+        for domain_key, domain_value in local.resource_fqdns :
+        flatten([for item_key, item_value in domain_value.items : {
           name        = item_key
           id          = fmc_fqdn_objects.module[domain_key].items[item_key].id
           type        = fmc_fqdn_objects.module[domain_key].items[item_key].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },     
+      ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_fqdns : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_fqdns :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_fqdn_objects.module[domain_key].items[element].id
           type        = data.fmc_fqdn_objects.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },        
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 }
 
@@ -760,26 +840,26 @@ locals {
 locals {
   map_dynamic_objects = merge({
     for item in flatten([
-      for domain_key, domain_value in local.resource_dynamic_objects : 
-        flatten([ for item_key, item_value in domain_value.items : { 
-          name        = item_key
-          id          = fmc_dynamic_objects.module[domain_key].items[item_key].id
-          type        = fmc_dynamic_objects.module[domain_key].items[item_key].type
-          domain_name = domain_key
-        }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },   
+      for domain_key, domain_value in local.resource_dynamic_objects :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = fmc_dynamic_objects.module[domain_key].items[item_key].id
+        type        = fmc_dynamic_objects.module[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_dynamic_objects : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_dynamic_objects :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_dynamic_objects.module[domain_key].items[element].id
           type        = data.fmc_dynamic_objects.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },  
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 }
 ######
@@ -787,49 +867,49 @@ locals {
 ######
 locals {
   map_services = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_ports : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_ports.module[domain_key].items[item_key].id
-            type        = fmc_ports.module[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
+    for item in flatten([
+      for domain_key, domain_value in local.resource_ports :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = fmc_ports.module[domain_key].items[item_key].id
+        type        = fmc_ports.module[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
     },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_ports : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_ports :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_ports.module[domain_key].items[element].id
           type        = data.fmc_ports.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
+      ]) : item.name => item if contains(keys(item), "name")
     },
     {
       for item in flatten([
-        for domain_key, domain_value in local.resource_icmpv4s : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_icmpv4_objects.module[domain_key].items[item_key].id
-            type        = fmc_icmpv4_objects.module[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
+        for domain_key, domain_value in local.resource_icmpv4s :
+        flatten([for item_key, item_value in domain_value.items : {
+          name        = item_key
+          id          = fmc_icmpv4_objects.module[domain_key].items[item_key].id
+          type        = fmc_icmpv4_objects.module[domain_key].items[item_key].type
+          domain_name = domain_key
+        }])
+      ]) : item.name => item if contains(keys(item), "name")
     },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_icmpv4s : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_icmpv4s :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_icmpv4_objects.module[domain_key].items[element].id
           type        = data.fmc_icmpv4_objects.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },    
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 
 }
@@ -839,27 +919,27 @@ locals {
 ######
 locals {
   map_service_groups = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_port_groups : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = try(fmc_port_groups.module[domain_key].items[item_key].id, null)
-            type        = try(fmc_port_groups.module[domain_key].items[item_key].type, null)
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    }, 
+    for item in flatten([
+      for domain_key, domain_value in local.resource_port_groups :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = try(fmc_port_groups.module[domain_key].items[item_key].id, null)
+        type        = try(fmc_port_groups.module[domain_key].items[item_key].type, null)
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_port_groups : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = try(data.fmc_port_groups.module[domain_key].items[item_key].id, null)
-            type        = try(data.fmc_port_groups.module[domain_key].items[item_key].type, null)
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },     
+        for domain_key, domain_value in local.data_port_groups :
+        flatten([for item_key, item_value in domain_value.items : {
+          name        = item_key
+          id          = try(data.fmc_port_groups.module[domain_key].items[item_key].id, null)
+          type        = try(data.fmc_port_groups.module[domain_key].items[item_key].type, null)
+          domain_name = domain_key
+        }])
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 
 }
@@ -869,16 +949,16 @@ locals {
 ######
 locals {
   map_network_group_objects = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_network_groups : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = try(fmc_network_groups.module[domain_key].items[item_key].id, null)
-            type        = "NetworkGroup"
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },       
+    for item in flatten([
+      for domain_key, domain_value in local.resource_network_groups :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = try(fmc_network_groups.module[domain_key].items[item_key].id, null)
+        type        = "NetworkGroup"
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 
 }
@@ -887,51 +967,51 @@ locals {
 ######
 locals {
   map_urls = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_urls : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_urls.module[domain_key].items[item_key].id
-            #type = fmc_urls.urls[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },    
+    for item in flatten([
+      for domain_key, domain_value in local.resource_urls :
+      flatten([for item_key, item_value in domain_value.items : {
+        name = item_key
+        id   = fmc_urls.module[domain_key].items[item_key].id
+        #type = fmc_urls.urls[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_urls : 
-          flatten([ for element in keys(domain_value.items): {
-          name        = element
-          id          = data.fmc_urls.module[domain_key].items[element].id
+        for domain_key, domain_value in local.data_urls :
+        flatten([for element in keys(domain_value.items) : {
+          name = element
+          id   = data.fmc_urls.module[domain_key].items[element].id
           #type        = data.fmc_urls.urls[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },  
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 
   map_url_groups = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_url_groups : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_url_groups.module[domain_key].items[item_key].id
-            #type = fmc_urls.urls[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },    
+    for item in flatten([
+      for domain_key, domain_value in local.resource_url_groups :
+      flatten([for item_key, item_value in domain_value.items : {
+        name = item_key
+        id   = fmc_url_groups.module[domain_key].items[item_key].id
+        #type = fmc_urls.urls[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_url_groups : 
-          flatten([ for element in keys(domain_value.items): {
-          name        = element
-          id          = data.fmc_url_groups.module[domain_key].items[element].id
+        for domain_key, domain_value in local.data_url_groups :
+        flatten([for element in keys(domain_value.items) : {
+          name = element
+          id   = data.fmc_url_groups.module[domain_key].items[element].id
           #type        = data.fmc_urls.urls[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    }, 
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 
 
@@ -941,51 +1021,51 @@ locals {
 ######
 locals {
   map_vlan_tags = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_vlan_tags : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_vlan_tags.module[domain_key].items[item_key].id
-            #type = fmc_vlan_tags.vlan_tags[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },    
+    for item in flatten([
+      for domain_key, domain_value in local.resource_vlan_tags :
+      flatten([for item_key, item_value in domain_value.items : {
+        name = item_key
+        id   = fmc_vlan_tags.module[domain_key].items[item_key].id
+        #type = fmc_vlan_tags.vlan_tags[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_vlan_tags : 
-          flatten([ for element in keys(domain_value.items): {
-          name        = element
-          id          = data.fmc_vlan_tags.module[domain_key].items[element].id
+        for domain_key, domain_value in local.data_vlan_tags :
+        flatten([for element in keys(domain_value.items) : {
+          name = element
+          id   = data.fmc_vlan_tags.module[domain_key].items[element].id
           #type        = data.fmc_vlan_tags.vlan_tags[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
+      ]) : item.name => item if contains(keys(item), "name")
     },
   )
-  
+
   map_vlan_tag_groups = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_vlan_tag_groups : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_vlan_tag_groups.module[domain_key].items[item_key].id
-            #type = fmc_vlan_tags.vlan_tags[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },    
+    for item in flatten([
+      for domain_key, domain_value in local.resource_vlan_tag_groups :
+      flatten([for item_key, item_value in domain_value.items : {
+        name = item_key
+        id   = fmc_vlan_tag_groups.module[domain_key].items[item_key].id
+        #type = fmc_vlan_tags.vlan_tags[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_vlan_tag_groups : 
-          flatten([ for element in keys(domain_value.items): {
-          name        = element
-          id          = data.fmc_vlan_tag_groups.module[domain_key].items[element].id
+        for domain_key, domain_value in local.data_vlan_tag_groups :
+        flatten([for element in keys(domain_value.items) : {
+          name = element
+          id   = data.fmc_vlan_tag_groups.module[domain_key].items[element].id
           #type        = data.fmc_vlan_tags.vlan_tags[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },  
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
 
 }
@@ -993,73 +1073,140 @@ locals {
 ######
 ### map_sgts - security group tags data + resource
 ######
-#locals {
-#  map_sgts = merge({
-#      for item in flatten([
-#        for domain_key, domain_value in local.resource_sgts : 
-#          flatten([ for item_key, item_value in domain_value.items : { 
-#            name        = item_key
-#            id          = fmc_sgts.module[domain_key].items[item_key].id
-#            type        = fmc_sgts.module[domain_key].items[item_key].type
-#            domain_name = domain_key
-#          }])
-#        ]) : item.name => item if contains(keys(item), "name" )
-#    },    
-#    {
-#      for item in flatten([
-#        for domain_key, domain_value in local.data_sgts : 
-#          flatten([ for element in keys(domain_value.items): {
-#          name        = element
-#          id          = data.fmc_sgts.module[domain_key].items[element].id
-#          type        = data.fmc_sgts.module[domain_key].items[element].type
-#          domain_name = domain_key
-#        }])
-#      ]) : item.name => item if contains(keys(item), "name" )
-#    },  
-#  )
-#  
-#}
+locals {
+  map_sgts = merge({
+    for item in flatten([
+      for domain_key, domain_value in local.resource_sgts :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = fmc_sgts.module[domain_key].items[item_key].id
+        type        = fmc_sgts.module[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
+    {
+      for item in flatten([
+        for domain_key, domain_value in local.data_sgts :
+        flatten([for element in keys(domain_value.items) : {
+          name        = element
+          id          = data.fmc_sgts.module[domain_key].items[element].id
+          type        = data.fmc_sgts.module[domain_key].items[element].type
+          domain_name = domain_key
+        }])
+      ]) : item.name => item if contains(keys(item), "name")
+    },
+  )
 
+}
 
 ######
 ### map_security_zones - security zones data + resource
 ######
 locals {
   map_security_zones = merge({
-      for item in flatten([
-        for domain_key, domain_value in local.resource_security_zones : 
-          flatten([ for item_key, item_value in domain_value.items : { 
-            name        = item_key
-            id          = fmc_security_zones.module[domain_key].items[item_key].id
-            type        = fmc_security_zones.module[domain_key].items[item_key].type
-            domain_name = domain_key
-          }])
-        ]) : item.name => item if contains(keys(item), "name" )
-    },    
+    for item in flatten([
+      for domain_key, domain_value in local.resource_security_zones :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = fmc_security_zones.module[domain_key].items[item_key].id
+        type        = fmc_security_zones.module[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
     {
       for item in flatten([
-        for domain_key, domain_value in local.data_security_zones : 
-          flatten([ for element in keys(domain_value.items): {
+        for domain_key, domain_value in local.data_security_zones :
+        flatten([for element in keys(domain_value.items) : {
           name        = element
           id          = data.fmc_security_zones.module[domain_key].items[element].id
           type        = data.fmc_security_zones.module[domain_key].items[element].type
           domain_name = domain_key
         }])
-      ]) : item.name => item if contains(keys(item), "name" )
-    },  
+      ]) : item.name => item if contains(keys(item), "name")
+    },
   )
-  
+
 }
 
+######
+### map_variable_sets - variable_set data only - no support for resource 
+######
+
+locals {
+  map_variable_sets = merge(
+    {
+      for item in flatten([
+        for variable_set_key, variable_set_value in local.data_variable_set : {
+          name        = variable_set_key
+          type        = data.fmc_variable_set.module[variable_set_key].type
+          domain_name = variable_set_value.domain_name
+        }
+      ]) : item.name => item if item.name != null
+    },
+
+  )
+
+}
+
+######
+### map_standard_acls and map_extended_acls 
+######
+locals {
+  map_standard_acls = merge({
+    for item in flatten([
+      for standard_acl_key, standard_acl_value in local.resource_standard_acl : {
+        name        = standard_acl_value.name
+        id          = try(fmc_standard_acl.module[standard_acl_key].id, null)
+        type        = try(fmc_standard_acl.module[standard_acl_key].type, null)
+        domain_name = standard_acl_value.domain_name
+      }
+    ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name")
+    },
+    {
+      for item in flatten([
+        for standard_acl_key, standard_acl_value in local.data_standard_acl : {
+          name        = standard_acl_value.name
+          id          = try(data.fmc_standard_acl.module[standard_acl_key].id, null)
+          type        = try(data.fmc_standard_acl.module[standard_acl_key].type, null)
+          domain_name = standard_acl_value.domain_name
+        }
+      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name")
+    },
+  )
+
+  map_extended_acls = merge({
+    for item in flatten([
+      for extended_acl_key, extended_acl_value in local.resource_extended_acl : {
+        name        = standard_acl_value.name
+        id          = try(fmc_standard_acl.module[standard_acl_key].id, null)
+        type        = try(fmc_standard_acl.module[standard_acl_key].type, null)
+        domain_name = standard_acl_value.domain_name
+      }
+    ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name")
+    },
+    {
+      for item in flatten([
+        for extended_acl_key, extended_acl_value in local.data_extended_acl : {
+          name        = extended_acl_value.name
+          id          = try(data.fmc_standard_acl.module[extended_acl_key].id, null)
+          type        = try(data.fmc_standard_acl.module[extended_acl_key].type, null)
+          domain_name = extended_acl_value.domain_name
+        }
+      ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name")
+    },
+  )
+
+}
 
 ######
 ### FAKE - TODO
 ######
 
 locals {
-  map_url_categories = {}
-  map_variable_sets = {}
+  map_url_categories  = {}
   map_ipv6_dhcp_pools = {}
-  map_route_maps = {}
-  map_prefix_lists = {}
+  map_route_maps      = {}
+  map_prefix_lists    = {}
 }
