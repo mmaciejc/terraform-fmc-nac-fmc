@@ -52,3 +52,10 @@ locals {
   data_existing = try(local.model.existing, {})
 
 }
+
+#provider "fmc" {
+#    fmc_username = "apiadmin"
+#    fmc_password = "C1sco12345"
+#    fmc_url = "http://198.18.130.200"
+#    fmc_insecure_skip_verify = false
+#}
