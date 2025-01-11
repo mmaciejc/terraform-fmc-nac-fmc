@@ -28,15 +28,10 @@
 #  local.map_vrfs 
 #  local.map_interface_names 
 #  local.map_interface_logical_names 
-#  local.map_health_policies 
-#  local.map_device_groups
+#  local.map_health_policies - fake
+#  local.map_device_groups - fake
 #
 ###
-
-##########################################################
-###    Example of created local variables
-##########################################################
-
 
 ##########################################################
 ###    DEVICE

@@ -58,10 +58,10 @@
 # local.map_variable_sets 
 # local.map_standard_acls 
 # local.map_extended_acls 
-# local.map_url_categories 
-# local.map_ipv6_dhcp_pools 
-# local.map_route_maps      
-# local.map_prefix_lists   
+# local.map_url_categories - fake
+# local.map_ipv6_dhcp_pools - fake
+# local.map_route_maps - fake  
+# local.map_prefix_lists - fake   
 # 
 ###
 
@@ -70,6 +70,9 @@
 ##########################################################
 locals {
 
+####################
+# Superseded by bulk
+####################
   #  resource_host = { 
   #    for item in flatten([
   #      for domain in local.domains : [ 
