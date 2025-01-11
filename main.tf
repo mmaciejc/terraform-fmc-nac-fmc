@@ -34,6 +34,17 @@
 # netmask - represents: subnet mask, network mask, netork subnet
 #
 # 
+##########################################################
+###    Example of created local variables
+##########################################################
+
+#  + data_hosts = {
+#      + Global = {
+#          + items = {
+#              + Host_1 = {}
+#            }
+#        }
+#    }
 
 locals {
   fmc           = try(local.model.fmc, {})
