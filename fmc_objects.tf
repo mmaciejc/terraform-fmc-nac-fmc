@@ -1182,10 +1182,10 @@ locals {
   map_extended_acls = merge({
     for item in flatten([
       for extended_acl_key, extended_acl_value in local.resource_extended_acl : {
-        name        = standard_acl_value.name
-        id          = try(fmc_standard_acl.module[standard_acl_key].id, null)
-        type        = try(fmc_standard_acl.module[standard_acl_key].type, null)
-        domain_name = standard_acl_value.domain_name
+        name        = extended_acl_value.name
+        id          = try(fmc_extended_acl.module[extended_acl_key].id, null)
+        type        = try(fmc_extended_acl.module[extended_acl_key].type, null)
+        domain_name = extended_acl_value.domain_name
       }
     ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name")
     },
@@ -1193,8 +1193,8 @@ locals {
       for item in flatten([
         for extended_acl_key, extended_acl_value in local.data_extended_acl : {
           name        = extended_acl_value.name
-          id          = try(data.fmc_standard_acl.module[extended_acl_key].id, null)
-          type        = try(data.fmc_standard_acl.module[extended_acl_key].type, null)
+          id          = try(data.fmc_extended_acl.module[extended_acl_key].id, null)
+          type        = try(data.fmc_extended_acl.module[extended_acl_key].type, null)
           domain_name = extended_acl_value.domain_name
         }
       ]) : "${item.domain_name}:${item.name}" => item if contains(keys(item), "name")
