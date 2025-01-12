@@ -760,10 +760,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_hosts :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_hosts.module[domain_key].items[item_key].id
-          type        = data.fmc_hosts.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_hosts.module[domain_key].items[item].id
+          type        = data.fmc_hosts.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -782,10 +782,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_networks :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_networks.module[domain_key].items[item_key].id
-          type        = data.fmc_networks.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_networks.module[domain_key].items[item].id
+          type        = data.fmc_networks.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -804,10 +804,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_ranges :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_ranges.module[domain_key].items[item_key].id
-          type        = data.fmc_ranges.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_ranges.module[domain_key].items[item].id
+          type        = data.fmc_ranges.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -826,10 +826,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_fqdns :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_fqdn_objects.module[domain_key].items[item_key].id
-          type        = data.fmc_fqdn_objects.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_fqdn_objects.module[domain_key].items[item].id
+          type        = data.fmc_fqdn_objects.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -855,10 +855,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_dynamic_objects :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_dynamic_objects.module[domain_key].items[item_key].id
-          type        = data.fmc_dynamic_objects.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_dynamic_objects.module[domain_key].items[item].id
+          type        = data.fmc_dynamic_objects.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -883,10 +883,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_ports :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_ports.module[domain_key].items[item_key].id
-          type        = data.fmc_ports.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_ports.module[domain_key].items[item].id
+          type        = data.fmc_ports.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -905,10 +905,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_icmpv4s :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_icmpv4_objects.module[domain_key].items[item_key].id
-          type        = data.fmc_icmpv4_objects.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_icmpv4_objects.module[domain_key].items[item].id
+          type        = data.fmc_icmpv4_objects.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -935,10 +935,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_port_groups :
-        flatten([for item_key, item_value in domain_value.items : {
-          name        = item_key
-          id          = try(data.fmc_port_groups.module[domain_key].items[item_key].id, null)
-          type        = try(data.fmc_port_groups.module[domain_key].items[item_key].type, null)
+        flatten([for item in domain_value.items : {
+          name        = item
+          id          = try(data.fmc_port_groups.module[domain_key].items[item].id, null)
+          type        = try(data.fmc_port_groups.module[domain_key].items[item].type, null)
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -983,9 +983,9 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_urls :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name = item_key
-          id   = data.fmc_urls.module[domain_key].items[item_key].id
+        flatten([for item in keys(domain_value.items) : {
+          name = item
+          id   = data.fmc_urls.module[domain_key].items[item].id
           #type        = data.fmc_urls.urls[domain_key].items[item_key].type
           domain_name = domain_key
         }])
@@ -1007,10 +1007,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_url_groups :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name = item_key
-          id   = data.fmc_url_groups.module[domain_key].items[item_key].id
-          #type        = data.fmc_urls.urls[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name = item
+          id   = data.fmc_url_groups.module[domain_key].items[item].id
+          #type        = data.fmc_urls.urls[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -1037,10 +1037,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_vlan_tags :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name = item_key
-          id   = data.fmc_vlan_tags.module[domain_key].items[item_key].id
-          #type        = data.fmc_vlan_tags.vlan_tags[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name = item
+          id   = data.fmc_vlan_tags.module[domain_key].items[item].id
+          #type        = data.fmc_vlan_tags.vlan_tags[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -1061,10 +1061,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_vlan_tag_groups :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name = item_key
-          id   = data.fmc_vlan_tag_groups.module[domain_key].items[item_key].id
-          #type        = data.fmc_vlan_tags.vlan_tags[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name = item
+          id   = data.fmc_vlan_tag_groups.module[domain_key].items[item].id
+          #type        = data.fmc_vlan_tags.vlan_tags[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -1091,10 +1091,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_sgts :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_sgts.module[domain_key].items[item_key].id
-          type        = data.fmc_sgts.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_sgts.module[domain_key].items[item].id
+          type        = data.fmc_sgts.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
@@ -1121,10 +1121,10 @@ locals {
     {
       for item in flatten([
         for domain_key, domain_value in local.data_security_zones :
-        flatten([for item_key, item_value in keys(domain_value.items) : {
-          name        = item_key
-          id          = data.fmc_security_zones.module[domain_key].items[item_key].id
-          type        = data.fmc_security_zones.module[domain_key].items[item_key].type
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_security_zones.module[domain_key].items[item].id
+          type        = data.fmc_security_zones.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")
