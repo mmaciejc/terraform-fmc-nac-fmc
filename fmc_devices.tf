@@ -62,9 +62,9 @@ locals {
 
             domain_name = domain.name
           }
-        ]
+        ] if !contains(try(keys(local.data_device), []), device.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_device), []), item.name) #The device name is unique across the different domains.
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_device), []), item.name) #The device name is unique across the different domains.
   }
 
 }
@@ -153,9 +153,9 @@ locals {
             domain_name = domain.name
 
           }
-        ]
+        ] if !contains(try(keys(local.data_device_ha_pair), []), ha_pair.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_device_ha_pair), []), item.name) #The device name is unique across the different domains.
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_device_ha_pair), []), item.name) #The device name is unique across the different domains.
   }
 
 }
@@ -300,9 +300,9 @@ locals {
             domain_name = domain.name
 
           }
-        ]
+        ] if !contains(try(keys(local.data_device_cluster), []), cluster.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_device_cluster), []), item.name) #The device name is unique across the different domains.
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_device_cluster), []), item.name) #The device name is unique across the different domains.
   }
 
 }
@@ -430,11 +430,11 @@ locals {
                 standby_mac_address                       = try(physical_interface.standby_mac_address, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.standby_mac_address, null)
 
               }
-            ]
+            ] if !contains(try(keys(local.data_physical_interface), []), "${device.name}:${physical_interface.name}")
           ]
         ]
       ]
-    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") && !contains(try(keys(local.data_physical_interface), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_physical_interface), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
   }
 
 }
@@ -618,11 +618,11 @@ locals {
                 standby_mac_address = try(etherchannel_interface.standby_mac_address, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].etherchannel_interfaces.standby_mac_address, null)
 
               }
-            ]
+            ] if !contains(try(keys(local.data_etherchannel_interface), []), "${device.name}:${etherchannel_interface.name}")
           ]
         ]
       ]
-    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") && !contains(try(keys(local.data_physical_interface), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_physical_interface), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
   }
 
 }
@@ -796,11 +796,11 @@ locals {
                 standby_mac_address                       = try(sub_interface.standby_mac_address, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].etherchannel_interfaces.standby_mac_address, null)
 
               }
-            ]
+            ] if !contains(try(keys(local.data_sub_interface), []), "${device.name}:${sub_interface.name}")
           ]
         ]
       ]
-    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") && !contains(try(keys(local.data_sub_interface), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_sub_interface), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
   }
 
 }

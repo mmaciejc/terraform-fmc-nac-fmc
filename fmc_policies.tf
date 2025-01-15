@@ -154,9 +154,9 @@ locals {
               }
             ]
           }
-        ]
+        ] if !contains(try(keys(local.data_access_control_policy), []), access_policy.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_access_control_policy), []), item.name)
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_access_control_policy), []), item.name)
   }
 
 }
@@ -265,9 +265,9 @@ locals {
               translated_source_port_id         = try(local.map_services[manual_rule.translated_source_port].id, local.map_service_groups[manual_rule.translated_source_port].id, null)
               unidirectional                    = try(manual_rule.unidirectional, local.defaults.policies.fmc.domains.ftd_nat_policies.ftd_manual_nat_rules.unidirectional, null)
             }]
-        }]
+        }] if !contains(try(keys(local.data_ftd_nat_policy), []), ftd_nat_policy.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_ftd_nat_policy), []), item.name)
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_ftd_nat_policy), []), item.name)
   }
 
 }
@@ -315,9 +315,9 @@ locals {
             description     = try(intrusion_policy.description, null)
             base_policy_id  = try(data.fmc_intrusion_policy.module[intrusion_policy.base_policy].id, null)
             inspection_mode = try(intrusion_policy.inspection_mode, null)
-        }]
+        }] if !contains(try(keys(local.data_intrusion_policy), []), intrusion_policy.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_intrusion_policy), []), item.name)
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_intrusion_policy), []), item.name)
   }
 
 }
@@ -375,9 +375,9 @@ locals {
               store_files          = try(file_rule.store_files, null)
             }]
 
-        }]
+        }] if !contains(try(keys(local.data_file_policy), []), file_policy.name)
       ]
-    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_file_policy), []), item.name)
+    ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_file_policy), []), item.name)
   }
 
 }

@@ -12,6 +12,8 @@ defaults:
                 bgp:
                 physical_interfaces:
                   enabled: true
+                  speed: "AUTO"
+                  duplex: "AUTO"
                   mode: "NONE"
                 sub_interfaces:
                   mode: "NONE"

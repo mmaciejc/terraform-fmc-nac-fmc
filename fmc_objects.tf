@@ -510,7 +510,7 @@ locals {
       "items" = {
         for vlan_tag in try(domain.objects.vlan_tags, []) : vlan_tag.name => {
           start_tag   = vlan_tag.start_tag
-          end_tag     = try(vlan_tag.end_tag, null)
+          end_tag     = try(vlan_tag.end_tag, vlan_tag.start_tag)
           description = try(vlan_tag.description, local.defaults.fmc.domains.objects.vlan_tags.description, null)
         } if !contains(try(keys(local.data_vlan_tags[domain.name].items), []), vlan_tag.name)
       }

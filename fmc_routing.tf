@@ -58,11 +58,10 @@ locals {
                     interface_name         = interface.name
                 }],
               )
-            }
-          ]
+            } ] if !contains(try(keys(local.data_vrf), []), "${device.name}:${vrf.name}") && vrf.name != "Global"
         ]
       ]
-    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") && !contains(try(keys(local.data_vrf), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
+    ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_vrf), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
   }
 
 }
@@ -113,10 +112,10 @@ locals {
               slow_timer             = try(bfd.slow_timer, null)
               bfd_template_id        = try(data.fmc_bfd_template.module["${domain.name}:${bfd.bfd_template_name}"].id, null)
             }
-          ]
-        ]
+          ] if !contains(try(keys(local.data_bfd), []), "${device.name}:${bfd.interface_logical_name}")
+        ] 
       ]
-    ]) : "${item.device_name}:${item.interface_logical_name}" => item if contains(keys(item), "interface_logical_name") && !contains(try(keys(local.data_bfd), []), "${item.device_name}:${item.interface_logical_name}") #The device name is unique across the different domains.
+    ]) : "${item.device_name}:${item.interface_logical_name}" => item if contains(keys(item), "interface_logical_name") #&& !contains(try(keys(local.data_bfd), []), "${item.device_name}:${item.interface_logical_name}") #The device name is unique across the different domains.
   }
 
 }
@@ -172,8 +171,8 @@ locals {
               metric_value      = ipv4_static_route.metric
               gateway_literal   = try(ipv4_static_route.gateway.literal, null)
               gateway_object_id = try(local.map_network_objects[ipv4_static_route.gateway.object].id, local.map_network_group_objects[ipv4_static_route.gateway.object].id, null)
-            } if vrf.name == "Global"
-          ]
+            } 
+          ] if vrf.name == "Global" 
         ]
       ]
     ]) : "${item.device_name}:Global:${item.name}" => item if contains(keys(item), "name")
@@ -200,8 +199,8 @@ locals {
               metric_value      = ipv4_static_route.metric
               gateway_literal   = try(ipv4_static_route.gateway.literal, null)
               gateway_object_id = try(local.map_network_objects[ipv4_static_route.gateway.object].id, local.map_network_group_objects[ipv4_static_route.gateway.object].id, null)
-            } if vrf.name != "Global"
-          ]
+            } 
+          ] if vrf.name != "Global"
         ]
       ]
     ]) : "${item.device_name}:${item.vrf_name}:${item.name}" => item if contains(keys(item), "name")
@@ -314,9 +313,9 @@ locals {
           tcp_path_mtu_discovery               = try(device.bgp_general_settings.tcp_path_mtu_discovery, null)
           use_dot_notation                     = try(device.bgp_general_settings.use_dot_notation, null)
 
-        } if contains(keys(device), "bgp_general_settings")
+        } if contains(keys(device), "bgp_general_settings") && !contains(try(keys(local.data_bgp_general_setting), []), "${device.name}:BGP")
       ]
-    ]) : "${item.device_name}:BGP" => item if contains(keys(item), "device_name") && !contains(try(keys(local.data_bgp_general_setting), []), "${item.device_name}:BGP")
+    ]) : "${item.device_name}:BGP" => item if contains(keys(item), "device_name") #&& !contains(try(keys(local.data_bgp_general_setting), []), "${item.device_name}:BGP")
   }
 
 }
