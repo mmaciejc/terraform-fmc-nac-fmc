@@ -878,6 +878,34 @@ resource "fmc_device_subinterface" "module" {
 
 }
 
+
+locals {
+  resource_deploy = flatten([
+    for domains in local.domains : [
+      for device in try(domains.devices.devices, []) : {
+        device                = [ local.map_devices[device.name].id ]
+        ignore_warning  = try(device.ignore_warning, local.defaults.fmc.domains[domain.name].devices.devices.deploy_ignore_warning, null)
+        deployment_note = try(device.deployment_note, local.defaults.fmc.domains[domain.name].devices.devices.deployment_note, null)
+        version    = try(device.version, local.defaults.fmc.domains[domain.name].devices.devices.version, null)
+      } if try(device.deploy, false) && var.manage_deployment
+    ]
+  ])
+}
+
+output "resource_deploy" {
+  value       = local.resource_deploy 
+}
+
+resource "fmc_ftd_deploy" "module" {
+  for_each = local.resource_deploy
+  # Mandatory  
+  device_list = each.value.device
+  # Optional      
+  ignore_warning = each.value.ignore_warning
+  deployment_note   = each.value.deployment_note
+
+}
+
 ##########################################################
 ###    Create maps for combined set of _data and _resources devices  
 ##########################################################
