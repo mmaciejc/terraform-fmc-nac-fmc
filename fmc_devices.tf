@@ -898,7 +898,7 @@ locals {
   }
 }
 
-resource "fmc_deploy" "module" {
+resource "fmc_ftd_deploy" "module" {
   for_each = local.resource_deploy
   # Mandatory  
   device_list = each.value.device_list
@@ -906,6 +906,23 @@ resource "fmc_deploy" "module" {
   ignore_warning = each.value.ignore_warning
   deployment_note   = each.value.deployment_note
   domain = each.value.domain_name
+
+  depends_on = [
+    fmc_device.module,
+    data.fmc_device.module,
+    fmc_device_physical_interface.module,
+    data.fmc_device_physical_interface.module,
+    fmc_device_etherchannel_interface.module,
+    data.fmc_device_etherchannel_interface.module,
+    fmc_device_subinterface.module,
+    data.fmc_device_subinterface.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
+    fmc_device_ha_pair_monitoring.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,
+    fmc_policy_assignment.access_control_policy,
+  ]
 
 }
 

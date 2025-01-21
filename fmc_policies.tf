@@ -442,6 +442,17 @@ resource "fmc_policy_assignment" "access_control_policy" {
   policy_type             = each.value.policy_type
   after_destroy_policy_id = each.value.after_destroy_policy_id
   targets                 = each.value.targets
+
+  depends_on = [
+    fmc_device.module,
+    data.fmc_device.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,
+    fmc_access_control_policy.module,
+    data.fmc_access_control_policy.module,
+  ]
 }
 
 ##########################################################
