@@ -878,31 +878,34 @@ resource "fmc_device_subinterface" "module" {
 
 }
 
+##########################################################
+###    Deploy
+##########################################################
 
 locals {
-  resource_deploy = flatten([
-    for domains in local.domains : [
-      for device in try(domains.devices.devices, []) : {
-        device                = [ local.map_devices[device.name].id ]
+  resource_deploy = {
+  for item in flatten([
+    for domain in local.domains : [
+      for device in try(domain.devices.devices, []) : {
+        device_list                = [ local.map_devices[device.name].id ]
         ignore_warning  = try(device.ignore_warning, local.defaults.fmc.domains[domain.name].devices.devices.deploy_ignore_warning, null)
         deployment_note = try(device.deployment_note, local.defaults.fmc.domains[domain.name].devices.devices.deployment_note, null)
         version    = try(device.version, local.defaults.fmc.domains[domain.name].devices.devices.version, null)
+        domain_name = domain.name
       } if try(device.deploy, false) && var.manage_deployment
     ]
-  ])
+  ]) : item.domain_name => item
+  }
 }
 
-output "resource_deploy" {
-  value       = local.resource_deploy 
-}
-
-resource "fmc_ftd_deploy" "module" {
+resource "fmc_deploy" "module" {
   for_each = local.resource_deploy
   # Mandatory  
-  device_list = each.value.device
+  device_list = each.value.device_list
   # Optional      
   ignore_warning = each.value.ignore_warning
   deployment_note   = each.value.deployment_note
+  domain = each.value.domain_name
 
 }
 
@@ -927,10 +930,10 @@ locals {
     {
       for item in flatten([
         for device_key, device_value in local.data_device : {
-          name        = device_key
-          id          = data.fmc_device.module[device_key].id
-          type        = data.fmc_device.module[device_key].type
-          domain_name = device_value.domain_name
+          name          = device_key
+          id            = data.fmc_device.module[device_key].id
+          type          = data.fmc_device.module[device_key].type
+          domain_name   = device_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name")
     },

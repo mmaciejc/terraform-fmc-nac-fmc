@@ -33,3 +33,9 @@ variable "manage_overlapping_ip" {
   type        = bool
   default     = false
 }
+
+variable "after_destroy_policy_name" {
+  description = "The name of Access Policy to be assigned after policy assignment destroy"
+  type        = string
+  default     = null
+}

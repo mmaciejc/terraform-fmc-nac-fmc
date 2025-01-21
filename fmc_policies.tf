@@ -408,6 +408,42 @@ resource "fmc_file_policy" "module" {
   ]
 }
 
+###
+# POLICY ASSIGNMENT
+###
+locals {
+  resource_policy_assignments_acp = { for item in flatten([
+    for acp_policy_key, acp_policy_value in local.map_access_control_policies : {
+      policy_id = acp_policy_value.id
+      policy_name = acp_policy_key
+      policy_type = "AccessPolicy"
+      after_destroy_policy_id = try(local.map_access_control_policies[var.after_destroy_policy_name].id, null)
+      targets = flatten([ 
+        for domain in local.domains : [
+          for device in try(domain.devices.devices, []) : [
+            {
+            id = local.map_devices[device.name].id
+            type = "Device"
+            } 
+          ] if device.access_policy == acp_policy_key
+        ]
+
+      ] )
+    }
+  ]) : item.policy_name => item if length(item.targets) > 0
+  }
+
+}
+
+resource "fmc_policy_assignment" "access_control_policy" {
+  for_each = local.resource_policy_assignments_acp
+
+  policy_id               = each.value.policy_id
+  policy_type             = each.value.policy_type
+  after_destroy_policy_id = each.value.after_destroy_policy_id
+  targets                 = each.value.targets
+}
+
 ##########################################################
 ###    Create maps for combined set of _data and _resources network objects 
 ##########################################################
