@@ -423,9 +423,10 @@ locals {
           for device in try(domain.devices.devices, []) : [
             {
             id = local.map_devices[device.name].id
+            after_destroy_policy_id = local.local.map_access_control_policies[after_destroy_policy_name].id
             type = "Device"
             } 
-          ] if device.access_policy == acp_policy_key
+          ] if device.access_policy_name == acp_policy_key
         ]
 
       ] )
