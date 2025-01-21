@@ -888,7 +888,7 @@ locals {
     for domain in local.domains : [
       for device in try(domain.devices.devices, []) : {
         device_list                = [ local.map_devices[device.name].id ]
-        ignore_warning  = try(device.ignore_warning, local.defaults.fmc.domains[domain.name].devices.devices.deploy_ignore_warning, null)
+        ignore_warning  = try(device.ignore_deploy_warning, local.defaults.fmc.domains[domain.name].devices.devices.ignore_deploy_warning, null)
         deployment_note = try(device.deployment_note, local.defaults.fmc.domains[domain.name].devices.devices.deployment_note, null)
         version    = try(device.version, local.defaults.fmc.domains[domain.name].devices.devices.version, null)
         domain_name = domain.name
