@@ -883,29 +883,28 @@ resource "fmc_device_subinterface" "module" {
 ##########################################################
 
 locals {
-  resource_deploy = {
-  for item in flatten([
-    for domain in local.domains : [
-      for device in try(domain.devices.devices, []) : {
-        device_list                = [ local.map_devices[device.name].id ]
-        ignore_warning  = try(device.ignore_deploy_warning, local.defaults.fmc.domains[domain.name].devices.devices.ignore_deploy_warning, null)
-        deployment_note = try(device.deployment_note, local.defaults.fmc.domains[domain.name].devices.devices.deployment_note, null)
-        version    = try(device.version, local.defaults.fmc.domains[domain.name].devices.devices.version, null)
-        domain_name = domain.name
-      } if try(device.deploy, false) && var.manage_deployment
-    ]
-  ]) : item.domain_name => item
+  resource_deploy = { for item in flatten([
+    for domain in local.domains : {
+      domain_name = domain.name
+      ignore_warning = try(local.fmc.system.deploy.ignore_warning, null)
+      #version    = null
+      deployment_note = try(local.fmc.system.deploy.deployment_note, null)
+      domain_name = domain.name
+      device_id_list = flatten([ for device in try(domain.devices.devices, []) : [ local.map_devices[device.name].id ] if try(device.deploy, false) && var.manage_deployment 
+        ])
+    }
+  ]) : item.domain_name => item if length(item.device_id_list) > 0
   }
 }
 
-resource "fmc_ftd_deploy" "module" {
+resource "fmc_device_deploy" "module" {
   for_each = local.resource_deploy
   # Mandatory  
-  device_list = each.value.device_list
+  device_id_list = each.value.device_id_list
   # Optional      
-  ignore_warning = each.value.ignore_warning
+  ignore_warning    = each.value.ignore_warning
   deployment_note   = each.value.deployment_note
-  domain = each.value.domain_name
+  domain            = each.value.domain_name
 
   depends_on = [
     fmc_device.module,
