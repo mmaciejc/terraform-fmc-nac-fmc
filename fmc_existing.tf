@@ -409,6 +409,28 @@ data "fmc_tunnel_zones" "module" {
   items  = each.value.items
   domain = each.key
 }
+
+##########################################################
+###    Time Ranges
+##########################################################
+locals {
+
+  data_time_ranges = {
+    for domain in local.data_existing.fmc.domains : domain.name => {
+      items = {
+        for time_range in try(domain.objects.time_ranges, []) : time_range.name => {}
+      }
+    } if length(try(domain.objects.time_ranges, [])) > 0
+  }
+
+}
+
+data "fmc_time_ranges" "module" {
+  for_each = local.data_time_ranges
+
+  items  = each.value.items
+  domain = each.key
+}
 ##########################################################
 ###    Variable Set
 ##########################################################
@@ -697,6 +719,30 @@ locals {
 
 data "fmc_file_policy" "module" {
   for_each = local.data_file_policy
+
+  name   = each.value.name
+  domain = each.value.domain_name
+}
+
+##########################################################
+###    Prefilter Policy
+##########################################################
+locals {
+  data_prefilter_policy = {
+    for item in flatten([
+      for domain in try(local.data_existing.fmc.domains, {}) : [
+        for prefilter_policy in try(domain.policies.prefilter_policies, {}) : {
+          name        = prefilter_policy.name
+          domain_name = domain.name
+        }
+      ]
+    ]) : item.name => item if contains(keys(item), "name")
+  }
+
+}
+
+data "fmc_prefilter_policy" "module" {
+  for_each = local.data_prefilter_policy
 
   name   = each.value.name
   domain = each.value.domain_name

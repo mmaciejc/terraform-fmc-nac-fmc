@@ -788,6 +788,49 @@ resource "fmc_extended_acl" "module" {
   description = each.value.description
   domain      = each.value.domain_name
 }
+
+##########################################################
+###    TIME RANGES
+##########################################################
+locals {
+
+  resource_time_ranges = {
+    for domain in local.domains : domain.name => {
+      items = {
+        for time_range in try(domain.objects.time_ranges, []) : time_range.name =>
+        {
+          start_time     = try(time_range.start_time, null)
+          end_time       = try(time_range.end_time, null)
+          recurrence_list = [for recurrence in try(time_range.recurrences, []) : {
+            recurrence_type = recurrence.recurrence_type
+            daily_days      = try(recurrence.daily_days, null)
+            daily_end_time = try(recurrence.daily_end_time, null)
+            daily_start_time = try(recurrence.daily_start_time, null)
+            range_end_day = try(recurrence.range_end_day, null)
+            range_end_time = try(recurrence.range_end_time, null)
+            range_start_day = try(recurrence.range_start_day, null)
+            range_start_time = try(recurrence.range_start_time, null)
+            }]
+
+          description = try(time_range.description, null)
+        } if !contains(try(keys(local.data_time_ranges[domain.name].items), []), time_range.name)
+      }
+    } if length(try(domain.objects.time_ranges, [])) > 0
+
+  }
+
+}
+
+resource "fmc_time_ranges" "module" {
+  for_each = local.resource_time_ranges
+
+  # Mandatory 
+  items = each.value.items
+
+  # Optional
+  domain = each.key
+}
+
 ##########################################################
 ###    Create maps for combined set of _data and _resources network objects 
 ##########################################################
@@ -1174,6 +1217,36 @@ locals {
           name        = item
           id          = data.fmc_tunnel_zones.module[domain_key].items[item].id
           type        = data.fmc_tunnel_zones.module[domain_key].items[item].type
+          domain_name = domain_key
+        }])
+      ]) : item.name => item if contains(keys(item), "name")
+    },
+  )
+
+}
+
+######
+### map_time_ranges - Time Ranges data + resource
+######
+locals {
+  map_time_ranges = merge({
+    for item in flatten([
+      for domain_key, domain_value in local.resource_time_ranges :
+      flatten([for item_key, item_value in domain_value.items : {
+        name        = item_key
+        id          = fmc_time_ranges.module[domain_key].items[item_key].id
+        type        = fmc_time_ranges.module[domain_key].items[item_key].type
+        domain_name = domain_key
+      }])
+    ]) : item.name => item if contains(keys(item), "name")
+    },
+    {
+      for item in flatten([
+        for domain_key, domain_value in local.data_time_ranges :
+        flatten([for item in keys(domain_value.items) : {
+          name        = item
+          id          = data.fmc_time_ranges.module[domain_key].items[item].id
+          type        = data.fmc_time_ranges.module[domain_key].items[item].type
           domain_name = domain_key
         }])
       ]) : item.name => item if contains(keys(item), "name")

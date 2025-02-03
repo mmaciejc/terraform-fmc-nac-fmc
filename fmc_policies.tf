@@ -50,7 +50,7 @@ locals {
           {
             name           = access_policy.name
             default_action = try(access_policy.default_action, local.defaults.fmc.domains[domain.name].policies.access_policies.default_action)
-
+            prefilter_policy_id = try(local.map_prefilter_policies[access_policy.prefilter_policy].id, null)
             categories = [for category in try(access_policy.categories, []) : {
               name    = category.name
               section = try(category.section, null)
@@ -95,8 +95,8 @@ locals {
                 type      = destination_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
               }]
               destination_port_objects = [for destination_port_object in try(rule.destination_port_objects, []) : {
-                id   = local.map_services[destination_port_object].id
-                type = local.map_services[destination_port_object].type
+                id   = try(local.map_services[destination_port_object].id, local.map_service_groups[destination_port_object].id)
+                type = try(local.map_services[destination_port_object].type, local.map_service_groups[destination_port_object].type)
               }]
               destination_zones = [for destination_zone in try(rule.destination_zones, []) : {
                 id = local.map_security_zones[destination_zone].id
@@ -132,8 +132,9 @@ locals {
                 type      = source_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
               }]
               source_port_objects = [for source_port_object in try(rule.source_port_objects, []) : {
-                id   = local.map_services[source_port_object].id
-                type = local.map_services[source_port_object].type
+                id   = try(local.map_services[source_port_object].id, local.map_service_groups[source_port_object].id)
+                type = try(local.map_services[source_port_object].type, local.map_service_groups[source_port_object].type)
+
               }]
               source_zones = [for source_zone in try(rule.source_zones, []) : {
                 id = local.map_security_zones[source_zone].id
@@ -151,6 +152,7 @@ locals {
                 id = try(local.map_urls[url_object].id, local.map_url_groups[url_object].id)
               }]
               variable_set_id = try(local.map_variable_sets[rule.variable_set].id, null)
+              time_range_id = try(local.map_time_ranges[rule.time_range].id, null)
               vlan_tag_literals = [for vlan_tag_literal in try(rule.vlan_tag_literals, []) : {
                 start_tag = vlan_tag_literal.start_tag
                 end_tag   = try(vlan_tag_literal.end_tag, vlan_tag_literal.start_tag)
@@ -172,9 +174,9 @@ resource "fmc_access_control_policy" "module" {
   for_each = local.resource_access_control_policy
 
   # Mandatory
-  name           = each.key
-  default_action = each.value.default_action
-
+  name                = each.key
+  default_action      = each.value.default_action
+  prefilter_policy_id = each.value.prefilter_policy_id
   # Optional
   default_action_intrusion_policy_id = each.value.default_action_intrusion_policy_id
   default_action_log_begin           = each.value.default_action_log_begin
@@ -208,6 +210,10 @@ resource "fmc_access_control_policy" "module" {
     data.fmc_intrusion_policy.module,
     fmc_intrusion_policy.module,
     data.fmc_access_control_policy.module,
+    fmc_file_policy.module,
+    data.fmc_file_policy.module,
+    fmc_prefilter_policy.module,
+    data.fmc_prefilter_policy.module,
   ]
 
 }
@@ -444,10 +450,8 @@ locals {
             default_action_syslog_severity  = try(prefilter_policy.syslog_severity, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.syslog_severity, null)
 
             description = try(prefilter_policy.description, null)
-            domain_name = domain.name
 
-
-            rules = [for rule in try(prefilter_policy.access_rules, []) : {
+            rules = [for rule in try(prefilter_policy.rules, []) : {
               name          = rule.name
               action        = rule.action
               rule_type     = rule.rule_type
@@ -469,26 +473,25 @@ locals {
               destination_port_literals = [for destination_port_literal in try(rule.destination_port_literals, []) : {
                 protocol  = local.help_protocol_mapping[destination_port_literal.protocol]
                 port      = try(destination_port_literal.port, null)
-                icmp_type = try(destination_port_literal.icmp_type, null)
-                icmp_code = try(destination_port_literal.icmp_code, null)
-                type      = destination_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
+                #type      = destination_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
               }]
               destination_port_objects = [for destination_port_object in try(rule.destination_port_objects, []) : {
-                id   = local.map_services[destination_port_object].id
-                type = local.map_services[destination_port_object].type
+                id   = try(local.map_services[destination_port_object].id, local.map_service_groups[destination_port_object].id)
+                type = try(local.map_services[destination_port_object].type, local.map_service_groups[destination_port_object].type)
+
               }]
 
               enabled = try(rule.enabled, null)
               encapsulation_ports = try(rule.encapsulation_ports, null)
 
-              enabled             = try(rule.enabled, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.enabled, null)
-              encapsulation_ports = try(rule.encapsulation_ports, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.encapsulation_ports, null)
-              log_begin           = try(rule.log_connection_begin, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.log_connection_begin, null)
-              log_end             = try(rule.log_connection_end, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.log_connection_end, null)
-              log_files           = try(rule.log_files, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.log_files, null)
-              section             = try(rule.section, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.section, null)
-              send_events_to_fmc  = try(rule.send_events_to_fmc, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.send_events_to_fmc, null)
-              send_syslog         = try(rule.enable_syslog, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.access_rules.enable_syslog, null)
+              enabled             = try(rule.enabled, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.enabled, null)
+              encapsulation_ports = try(rule.encapsulation_ports, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.encapsulation_ports, null)
+              log_begin           = try(rule.log_connection_begin, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.log_connection_begin, null)
+              log_end             = try(rule.log_connection_end, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.log_connection_end, null)
+              log_files           = try(rule.log_files, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.log_files, null)
+              section             = try(rule.section, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.section, null)
+              send_events_to_fmc  = try(rule.send_events_to_fmc, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.send_events_to_fmc, null)
+              send_syslog         = try(rule.enable_syslog, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.rules.enable_syslog, null)
               snmp_config_id      = try(local.map_snmp_alerts[rule.snmp_alert].id, null)
               source_interfaces = [for source_interface in try(rule.source_interfaces, []) : {
                 id = local.map_security_zones[source_interface].id
@@ -504,20 +507,16 @@ locals {
               source_port_literals = [for source_port_literal in try(rule.source_port_literals, []) : {
                 protocol  = local.help_protocol_mapping[source_port_literal.protocol]
                 port      = try(source_port_literal.port, null)
-                icmp_type = try(source_port_literal.icmp_type, null)
-                icmp_code = try(source_port_literal.icmp_code, null)
-                type      = source_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
+                #type      = source_port_literal.protocol == "ICMP" ? "ICMPv4PortLiteral" : "PortLiteral"
               }]
               source_port_objects = [for source_port_object in try(rule.source_port_objects, []) : {
-                id   = local.map_services[source_port_object].id
-                type = local.map_services[source_port_object].type
+                id   = try(local.map_services[source_port_object].id, local.map_service_groups[source_port_object].id)
+                type = try(local.map_services[source_port_object].type, local.map_service_groups[source_port_object].type)
               }]
               syslog_config_id = try(local.map_syslog_alerts[rule.syslog_alert].id, null)
               syslog_severity  = try(rule.syslog_severity, local.defaults.fmc.domains[domain.name].policies.prefilter_policies.syslog_severity, null)
-              tunnel_zone_id = [for tunnel_zone in try(rule.tunnel_zones, []) : {
-                id   = local.map_tunnel_zones[tunnel_zone].id
-                type = local.map_tunnel_zones[tunnel_zone].type
-              }]
+              tunnel_zone_id = try(local.map_tunnel_zones[rule.tunnel_zone].id, null)
+              time_range_id = try(local.map_time_ranges[rule.time_range].id, null)
               vlan_tag_literals = [for vlan_tag_literal in try(rule.vlan_tag_literals, []) : {
                 start_tag = vlan_tag_literal.start_tag
                 end_tag   = try(vlan_tag_literal.end_tag, vlan_tag_literal.start_tag)
@@ -526,11 +525,47 @@ locals {
                 id = try(local.map_vlan_tags[vlan_tag_object].id, local.map_vlan_tag_groups[vlan_tag_object].id)
               }]
             }]
+          domain_name = domain.name
         }] if !contains(try(keys(local.data_tunnel_zones), []), prefilter_policy.name)
       ]
     ]) : item.name => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_file_policy), []), item.name)
   }
 
+}
+
+resource "fmc_prefilter_policy" "module" {
+  for_each = local.resource_prefilter_policy
+  name                              = each.key
+  description                       = each.value.description
+  default_action                    = each.value.default_action
+  default_action_log_begin          = each.value.default_action_log_begin
+  default_action_log_end            = each.value.default_action_log_end
+  default_action_send_events_to_fmc = each.value.default_action_send_events_to_fmc
+  default_action_syslog_config_id   = each.value.default_action_syslog_config_id
+  default_action_snmp_config_id     = each.value.default_action_snmp_config_id
+
+  rules      = each.value.rules
+
+  domain = each.value.domain_name
+
+  depends_on = [
+    data.fmc_security_zones.module,
+    fmc_security_zones.module,
+    data.fmc_hosts.module,
+    fmc_hosts.module,
+    data.fmc_networks.module,
+    fmc_networks.module,
+    data.fmc_ranges.module,
+    fmc_ranges.module,
+    fmc_network_groups.module,
+    data.fmc_dynamic_objects.module,
+    fmc_dynamic_objects.module,
+    data.fmc_ports.module,
+    fmc_ports.module,
+    data.fmc_intrusion_policy.module,
+    fmc_intrusion_policy.module,
+    data.fmc_access_control_policy.module,
+  ]
 }
 ##########################################################
 ###    Create maps for combined set of _data and _resources network objects 
@@ -643,6 +678,34 @@ locals {
     },
   )
 }
+
+######
+### map_prefilter_policies 
+######
+locals {
+  map_prefilter_policies = merge({
+    for item in flatten([
+      for prefilter_policy_key, prefilter_policy_value in local.resource_prefilter_policy : {
+        name        = prefilter_policy_key
+        id          = try(fmc_prefilter_policy.module[prefilter_policy_key].id, null)
+        type        = try(fmc_prefilter_policy.module[prefilter_policy_key].type, null)
+        domain_name = prefilter_policy_value.domain_name
+      }
+    ]) : item.name => item if contains(keys(item), "name")
+    },
+    {
+      for item in flatten([
+        for prefilter_policy_key, prefilter_policy_value in local.data_prefilter_policy : {
+          name        = prefilter_policy_key
+          id          = try(data.fmc_prefilter_policy.module[prefilter_policy_key].id, null)
+          type        = try(data.fmc_prefilter_policy.module[prefilter_policy_key].type, null)
+          domain_name = prefilter_policy_value.domain_name
+        }
+      ]) : item.name => item if contains(keys(item), "name")
+    },
+  )
+}
+
 
 ######
 ### map_snmp_alerts

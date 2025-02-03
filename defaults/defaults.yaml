@@ -29,7 +29,7 @@ defaults:
             vni_prefix: 10.10.4.0/27
         policies:  
           prefilter_policies:
-            action: "ANALYZE_TUNNELS"
+            default_action: ANALYZE_TUNNELS
           access_policies:
             default_action: "BLOCK"
             log_begin: false
@@ -69,7 +69,7 @@ defaults:
             inspect_archives: false
             threat_score: DISABLED              
           network_analysis_policies:
-            snort_engine: "SNORT2"                
+            snort_engine: "SNORT2"
         objects:
           fqdns:
             dns_resolution: "IPV4_AND_IPV6"
