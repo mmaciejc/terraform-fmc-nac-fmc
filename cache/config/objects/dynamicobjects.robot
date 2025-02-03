@@ -1,0 +1,31 @@
+*** Settings ***
+Documentation    Verify Dynamic Objects
+Suite Setup      Login FMC
+Default Tags     fmc    day1    config    dynamicobjects
+Resource    ../../fmc_common.resource
+
+*** Test Cases ***
+
+Get All DynamicObjects - Domain Global
+    ${DynObjs}=    Get All Objects By Name    /api/fmc_config/v1/domain/${FMC_DOMAIN_MAP['Global']}/object/dynamicobjects?
+    Set Global Variable    ${DynObjs}
+
+Verify DynObjs - APIC_MAFDCETEN001_APP_DIGSILENT-IIS-NET_EPG_DIGSILENT-IIS-NET
+    Run Keyword If    'APIC_MAFDCETEN001_APP_DIGSILENT-IIS-NET_EPG_DIGSILENT-IIS-NET' not in @{DynObjs}    Fail    Item not found on FMC
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_DIGSILENT-IIS-NET_EPG_DIGSILENT-IIS-NET']}   $.name           APIC_MAFDCETEN001_APP_DIGSILENT-IIS-NET_EPG_DIGSILENT-IIS-NET
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_DIGSILENT-IIS-NET_EPG_DIGSILENT-IIS-NET']}   $.description     
+
+Verify DynObjs - APIC_MAFDCETEN001_APP_DRILLING-PROGRAM-APPLICATION-SERVER_EPG_DRILLING-PROGRAM-APPLICATION-SERVER
+    Run Keyword If    'APIC_MAFDCETEN001_APP_DRILLING-PROGRAM-APPLICATION-SERVER_EPG_DRILLING-PROGRAM-APPLICATION-SERVER' not in @{DynObjs}    Fail    Item not found on FMC
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_DRILLING-PROGRAM-APPLICATION-SERVER_EPG_DRILLING-PROGRAM-APPLICATION-SERVER']}   $.name           APIC_MAFDCETEN001_APP_DRILLING-PROGRAM-APPLICATION-SERVER_EPG_DRILLING-PROGRAM-APPLICATION-SERVER
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_DRILLING-PROGRAM-APPLICATION-SERVER_EPG_DRILLING-PROGRAM-APPLICATION-SERVER']}   $.description     
+
+Verify DynObjs - APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_APP
+    Run Keyword If    'APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_APP' not in @{DynObjs}    Fail    Item not found on FMC
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_APP']}   $.name           APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_APP
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_APP']}   $.description     
+
+Verify DynObjs - APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_TEST
+    Run Keyword If    'APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_TEST' not in @{DynObjs}    Fail    Item not found on FMC
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_TEST']}   $.name           APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_TEST
+    Should Be Equal Value Json String    ${DynObjs['APIC_MAFDCETEN001_APP_EDTL-MOBILIZATION_EPG_EDTL-MOBILIZATION_TEST']}   $.description     

@@ -58,7 +58,7 @@ locals {
                     interface_name         = interface.name
                 }],
               )
-            } ] if !contains(try(keys(local.data_vrf), []), "${device.name}:${vrf.name}") && vrf.name != "Global"
+          }] if !contains(try(keys(local.data_vrf), []), "${device.name}:${vrf.name}") && vrf.name != "Global"
         ]
       ]
     ]) : "${item.device_name}:${item.name}" => item if contains(keys(item), "name") #&& !contains(try(keys(local.data_vrf), []), "${item.device_name}:${item.name}") #The device name is unique across the different domains.
@@ -113,7 +113,7 @@ locals {
               bfd_template_id        = try(data.fmc_bfd_template.module["${domain.name}:${bfd.bfd_template_name}"].id, null)
             }
           ] if !contains(try(keys(local.data_bfd), []), "${device.name}:${bfd.interface_logical_name}")
-        ] 
+        ]
       ]
     ]) : "${item.device_name}:${item.interface_logical_name}" => item if contains(keys(item), "interface_logical_name") #&& !contains(try(keys(local.data_bfd), []), "${item.device_name}:${item.interface_logical_name}") #The device name is unique across the different domains.
   }
@@ -168,11 +168,11 @@ locals {
               destination_networks = [for destination_network in ipv4_static_route.selected_networks : {
                 id = try(local.map_network_objects[destination_network].id, local.map_network_group_objects[destination_network].id)
               }]
-              metric_value      = ipv4_static_route.metric
-              gateway_literal   = try(ipv4_static_route.gateway.literal, null)
-              gateway_object_id = try(local.map_network_objects[ipv4_static_route.gateway.object].id, local.map_network_group_objects[ipv4_static_route.gateway.object].id, null)
-            } 
-          ] if vrf.name == "Global" 
+              metric_value           = ipv4_static_route.metric
+              gateway_host_literal   = try(ipv4_static_route.gateway.literal, null)
+              gateway_host_object_id = try(local.map_network_objects[ipv4_static_route.gateway.object].id, local.map_network_group_objects[ipv4_static_route.gateway.object].id, null)
+            }
+          ] if vrf.name == "Global"
         ]
       ]
     ]) : "${item.device_name}:Global:${item.name}" => item if contains(keys(item), "name")
@@ -196,10 +196,10 @@ locals {
               destination_networks = [for destination_network in ipv4_static_route.selected_networks : {
                 id = try(local.map_network_objects[destination_network].id, local.map_network_group_objects[destination_network].id)
               }]
-              metric_value      = ipv4_static_route.metric
-              gateway_literal   = try(ipv4_static_route.gateway.literal, null)
-              gateway_object_id = try(local.map_network_objects[ipv4_static_route.gateway.object].id, local.map_network_group_objects[ipv4_static_route.gateway.object].id, null)
-            } 
+              metric_value           = ipv4_static_route.metric
+              gateway_host_literal   = try(ipv4_static_route.gateway.literal, null)
+              gateway_host_object_id = try(local.map_network_objects[ipv4_static_route.gateway.object].id, local.map_network_group_objects[ipv4_static_route.gateway.object].id, null)
+            }
           ] if vrf.name != "Global"
         ]
       ]
@@ -217,8 +217,8 @@ resource "fmc_device_ipv4_static_route" "module" {
   interface_id           = each.value.interface_id
   destination_networks   = each.value.destination_networks
   metric_value           = each.value.metric_value
-  gateway_literal        = each.value.gateway_literal
-  gateway_object_id      = each.value.gateway_object_id
+  gateway_host_literal   = each.value.gateway_host_literal
+  gateway_host_object_id = each.value.gateway_host_object_id
 
   # Optional
   domain = each.value.domain_name
@@ -250,8 +250,8 @@ resource "fmc_device_vrf_ipv4_static_route" "module" {
   interface_id           = each.value.interface_id
   destination_networks   = each.value.destination_networks
   metric_value           = each.value.metric_value
-  gateway_literal        = each.value.gateway_literal
-  gateway_object_id      = each.value.gateway_object_id
+  gateway_host_literal   = each.value.gateway_host_literal
+  gateway_host_object_id = each.value.gateway_host_object_id
 
   # Optional
   domain = each.value.domain_name

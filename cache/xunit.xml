@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Cache" tests="2" errors="0" failures="1" skipped="0" time="4.693" timestamp="2025-01-30T17:07:33.104000">
+<testsuite name="Config" tests="2" errors="0" failures="1" skipped="0" time="3.978" timestamp="2025-01-30T17:07:33.517000">
+<testsuite name="Objects" tests="2" errors="0" failures="1" skipped="0" time="3.978" timestamp="2025-01-30T17:07:33.517000">
+<testsuite name="Hosts" tests="2" errors="0" failures="1" skipped="0" time="3.976" timestamp="2025-01-30T17:07:33.518000">
+<testcase classname="Cache.Config.Objects.Hosts" name="Get All Hosts - Domain Global" time="0.186">
+</testcase>
+<testcase classname="Cache.Config.Objects.Hosts" name="Verify Host - Host_1" time="0.039">
+<failure message="192.168.0.15 != 192.168.0.13" type="AssertionError"/>
+</testcase>
+<properties>
+<property name="Documentation" value="Verify hosts"/>
+</properties>
+</testsuite>
+</testsuite>
+</testsuite>
+<properties>
+<property name="Documentation" value="[https://pabot.org/?ref=log|Pabot] result from 1 executions."/>
+</properties>
+</testsuite>

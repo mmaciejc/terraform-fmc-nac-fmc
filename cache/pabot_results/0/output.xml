@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.11.10 on darwin)" generated="20250130 17:07:33.505" rpa="false" schemaversion="4">
+<suite id="s1" name="Cache" source="/Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache">
+<suite id="s1-s1" name="Config" source="/Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/config">
+<suite id="s1-s1-s1" name="Objects" source="/Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/config/objects">
+<suite id="s1-s1-s1-s1" name="Hosts" source="/Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/config/objects/hosts.robot">
+<kw name="Login FMC" library="fmc_common" type="SETUP">
+<kw name="Run Only Once" library="pabot.PabotLib">
+<arg>Get FMC Token</arg>
+<doc>Runs a keyword only once in one of the parallel processes. Optional arguments of the keyword needs to be serializeable in order to
+create an unique lockname.
+Sample request sequence [keyword, keyword 'x', keyword, keyword 5, keyword 'x', keyword 5]
+results in execution of [keyword, keyword 'x', keyword 5]
+[https://pabot.org/PabotLib.html?ref=log#run-only-once|Open online docs.]</doc>
+<kw name="Get FMC Token" library="fmc_common">
+<kw name="Create List" library="BuiltIn">
+<var>${auth}</var>
+<arg>%{FMC_USERNAME}</arg>
+<arg>%{FMC_PASSWORD}</arg>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20250130 17:07:33.647" level="INFO">${auth} = ['apiadmin', 'C1sco12345']</msg>
+<status status="PASS" starttime="20250130 17:07:33.646" endtime="20250130 17:07:33.647"/>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<var>${verify}</var>
+<arg>"%{FMC_INSECURE_SKIP_VERIFY}" == "False"</arg>
+<arg>True</arg>
+<arg>False</arg>
+<doc>Sets variable based on the given condition.</doc>
+<msg timestamp="20250130 17:07:33.647" level="INFO">${verify} = False</msg>
+<status status="PASS" starttime="20250130 17:07:33.647" endtime="20250130 17:07:33.647"/>
+</kw>
+<kw name="Set Log Level" library="BuiltIn">
+<var>${log_level}</var>
+<arg>NONE</arg>
+<doc>Sets the log threshold to the specified level and returns the old level.</doc>
+<status status="PASS" starttime="20250130 17:07:33.647" endtime="20250130 17:07:33.647"/>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>fmc_login</arg>
+<arg>https://%{FMC_HOST}</arg>
+<arg>auth=${auth}</arg>
+<arg>verify=${verify}</arg>
+<arg>disable_warnings=1</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" starttime="20250130 17:07:33.647" endtime="20250130 17:07:33.647"/>
+</kw>
+<kw name="Set Log Level" library="BuiltIn">
+<arg>${log_level}</arg>
+<doc>Sets the log threshold to the specified level and returns the old level.</doc>
+<msg timestamp="20250130 17:07:33.647" level="INFO">Log level changed from NONE to INFO.</msg>
+<status status="PASS" starttime="20250130 17:07:33.647" endtime="20250130 17:07:33.648"/>
+</kw>
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<var>${response}</var>
+<arg>1x</arg>
+<arg>10s</arg>
+<arg>POST On Session</arg>
+<arg>fmc_login</arg>
+<arg>/api/fmc_platform/v1/auth/generatetoken</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<kw name="POST On Session" library="RequestsLibrary">
+<arg>fmc_login</arg>
+<arg>/api/fmc_platform/v1/auth/generatetoken</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<msg timestamp="20250130 17:07:37.249" level="INFO">POST Request : url=https://10.62.158.200/api/fmc_platform/v1/auth/generatetoken 
+ path_url=/api/fmc_platform/v1/auth/generatetoken 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0', 'Authorization': 'Basic YXBpYWRtaW46QzFzY28xMjM0NQ=='} 
+ body=None 
+ </msg>
+<msg timestamp="20250130 17:07:37.250" level="INFO">POST Response : url=https://10.62.158.200/api/fmc_platform/v1/auth/generatetoken 
+ status=204, reason=204 
+ headers={'Date': 'Thu, 30 Jan 2025 16:04:21 GMT', 'Server': 'Apache', 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains', 'Cache-Control': 'no-store', 'Accept-Ranges': 'bytes', 'Vary': 'Accept-Charset,Accept-Encoding,Accept-Language,Accept', 'X-auth-access-token': 'aabb57df-d341-4450-95b0-434c5e201e44', 'X-auth-refresh-token': 'fba143a7-eb42-4f1b-9ccb-ae809b3db53b', 'USER_UUID': '95f33752-dedb-11ef-a182-eb79d9664fdd', 'DOMAIN_ID': '111', 'DOMAIN_UUID': 'e276abec-e0f2-11e3-8169-6d9ed49b625f', 'global': 'e276abec-e0f2-11e3-8169-6d9ed49b625f', 'DOMAINS': '[{"name":"Global","uuid":"e276abec-e0f2-11e3-8169-6d9ed49b625f"}]', 'X-Frame-Options': 'SAMEORIGIN', 'X-UA-Compatible': 'IE=edge', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '1; mode=block', 'Referrer-Policy': 'same-origin', 'Content-Security-Policy': "base-uri 'self'; frame-ancestors 'self'", 'X-Content-Type-Options': 'nosniff', 'Keep-Alive': 'timeout=5, max=100', 'Connection': 'Keep-Alive'} 
+ body=None 
+ </msg>
+<status status="PASS" starttime="20250130 17:07:33.648" endtime="20250130 17:07:37.250"/>
+</kw>
+<msg timestamp="20250130 17:07:37.251" level="INFO">${response} = &lt;Response [204]&gt;</msg>
+<status status="PASS" starttime="20250130 17:07:33.648" endtime="20250130 17:07:37.251"/>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${fmc_domain_map}</var>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20250130 17:07:37.253" level="INFO">${fmc_domain_map} = {}</msg>
+<status status="PASS" starttime="20250130 17:07:37.251" endtime="20250130 17:07:37.253"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${domain_list}</var>
+<arg>json.loads('''${response.headers['DOMAINS']}''')</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20250130 17:07:37.254" level="INFO">${domain_list} = [{'name': 'Global', 'uuid': 'e276abec-e0f2-11e3-8169-6d9ed49b625f'}]</msg>
+<status status="PASS" starttime="20250130 17:07:37.253" endtime="20250130 17:07:37.254"/>
+</kw>
+<for flavor="IN">
+<var>${element}</var>
+<value>@{domain_list}</value>
+<iter>
+<var name="${element}">{'name': 'Global', 'uuid': 'e276abec-e0f2-11e3-8169-6d9ed49b625f'}</var>
+<kw name="Set To Dictionary" library="Collections">
+<arg>${fmc_domain_map}</arg>
+<arg>${element['name']}</arg>
+<arg>${element['uuid']}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" starttime="20250130 17:07:37.255" endtime="20250130 17:07:37.256"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:37.255" endtime="20250130 17:07:37.256"/>
+</iter>
+<status status="PASS" starttime="20250130 17:07:37.254" endtime="20250130 17:07:37.257"/>
+</for>
+<kw name="Set Parallel Value For Key" library="pabot.PabotLib">
+<arg>fmc_token</arg>
+<arg>${response.headers['X-auth-access-token']}</arg>
+<doc>Set a globally available key and value that can be accessed
+from all the pabot processes.
+[https://pabot.org/PabotLib.html?ref=log#set-parallel-value-for-key|Open online docs.]</doc>
+<status status="PASS" starttime="20250130 17:07:37.257" endtime="20250130 17:07:37.259"/>
+</kw>
+<kw name="Set Parallel Value For Key" library="pabot.PabotLib">
+<arg>fmc_domain_map</arg>
+<arg>${fmc_domain_map}</arg>
+<doc>Set a globally available key and value that can be accessed
+from all the pabot processes.
+[https://pabot.org/PabotLib.html?ref=log#set-parallel-value-for-key|Open online docs.]</doc>
+<status status="PASS" starttime="20250130 17:07:37.260" endtime="20250130 17:07:37.261"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:33.646" endtime="20250130 17:07:37.261"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:33.645" endtime="20250130 17:07:37.263"/>
+</kw>
+<kw name="Get Parallel Value For Key" library="pabot.PabotLib">
+<var>${fmc_token}</var>
+<arg>fmc_token</arg>
+<doc>Get the value for a key. If there is no value for the key then empty
+string is returned.
+[https://pabot.org/PabotLib.html?ref=log#get-parallel-value-for-key|Open online docs.]</doc>
+<msg timestamp="20250130 17:07:37.264" level="INFO">${fmc_token} = aabb57df-d341-4450-95b0-434c5e201e44</msg>
+<status status="PASS" starttime="20250130 17:07:37.263" endtime="20250130 17:07:37.265"/>
+</kw>
+<kw name="Get Parallel Value For Key" library="pabot.PabotLib">
+<var>${fmc_domain_map}</var>
+<arg>fmc_domain_map</arg>
+<doc>Get the value for a key. If there is no value for the key then empty
+string is returned.
+[https://pabot.org/PabotLib.html?ref=log#get-parallel-value-for-key|Open online docs.]</doc>
+<msg timestamp="20250130 17:07:37.266" level="INFO">${fmc_domain_map} = {'Global': 'e276abec-e0f2-11e3-8169-6d9ed49b625f'}</msg>
+<status status="PASS" starttime="20250130 17:07:37.265" endtime="20250130 17:07:37.266"/>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>fmc</arg>
+<arg>https://%{FMC_HOST}</arg>
+<arg>headers={"content-type": "application/json", "X-auth-access-token":"${fmc_token}"}</arg>
+<arg>disable_warnings=1</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20250130 17:07:37.267" level="INFO">Creating Session using : alias=fmc, url=https://10.62.158.200, headers={'content-type': 'application/json', 'X-auth-access-token': 'aabb57df-d341-4450-95b0-434c5e201e44'},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20250130 17:07:37.267" endtime="20250130 17:07:37.267"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${FMC_DOMAIN_MAP}</arg>
+<arg>${fmc_domain_map}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20250130 17:07:37.268" level="INFO">${FMC_DOMAIN_MAP} = {'Global': 'e276abec-e0f2-11e3-8169-6d9ed49b625f'}</msg>
+<status status="PASS" starttime="20250130 17:07:37.267" endtime="20250130 17:07:37.268"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:33.644" endtime="20250130 17:07:37.268"/>
+</kw>
+<test id="s1-s1-s1-s1-t1" name="Get All Hosts - Domain Global" line="9">
+<kw name="Get All Objects By Name" library="fmc_common">
+<var>${HOSTS}</var>
+<arg>/api/fmc_config/v1/domain/${FMC_DOMAIN_MAP['Global']}/object/hosts?</arg>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${r}</var>
+<arg>fmc</arg>
+<arg>url=${url}expanded=true&amp;limit=10000</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20250130 17:07:37.440" level="INFO">GET Request : url=https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts?expanded=true&amp;limit=10000 
+ path_url=/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts?expanded=true&amp;limit=10000 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'content-type': 'application/json', 'X-auth-access-token': 'aabb57df-d341-4450-95b0-434c5e201e44'} 
+ body=None 
+ </msg>
+<msg timestamp="20250130 17:07:37.441" level="INFO">GET Response : url=https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts?expanded=true&amp;limit=10000 
+ status=200, reason=200 
+ headers={'Date': 'Thu, 30 Jan 2025 16:04:25 GMT', 'Server': 'Apache', 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains', 'Cache-Control': 'no-store', 'Accept-Ranges': 'bytes', 'Vary': 'Accept-Charset,Accept-Encoding,Accept-Language,Accept', 'Content-Encoding': 'gzip', 'X-Frame-Options': 'SAMEORIGIN', 'X-UA-Compatible': 'IE=edge', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '1; mode=block', 'Referrer-Policy': 'same-origin', 'Content-Security-Policy': "base-uri 'self'; frame-ancestors 'self'", 'X-Content-Type-Options': 'nosniff', 'Keep-Alive': 'timeout=5, max=100', 'Connection': 'Keep-Alive', 'Transfer-Encoding': 'chunked', 'Content-Type': 'application/json'} 
+ body={"links":{"self":"https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts?offset=0&amp;limit=1000&amp;expanded=true"},"items":[{"links":{"self":"https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/dde11d62-288b-4b4c-92e0-1dad0496f14b","parent":"https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networkaddresses"},"type":"Host","value":"::/0","overridable":false,"id":"dde11d62-288b-4b4c-92e0-1dad0496f14b","name":"any-ipv6","metadata":{"readOnly":{"state":true,"reason":"SYSTEM"},"timestamp":1738212155488,"lastUser":{"name":"apiadmin"},"domain":{"name":"Global","id":"e276abec-e0f2-11e3-8169-6d9ed49b625f","type":"Domain"},"ipType":"V_6","parentType":"NetworkAddress"}},{"links":{"self":"https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/005056B0-DCB6-0ed3-0000-004294968696","parent":"https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networkaddresses"},"type":"Host","value":"192.168.0.15","overridable":false,"description":" ","id":"005056B0-DCB6-0ed3-0000-004294968696","name":"Host_1","metadata":{"timestamp":1738252690711,"lastUser":{"name":"apiadmin"},"domain":{"name":"Global","id":"e276abec-e0f2-11e3-8169-6d9ed49b625f","type":"Domain"},"ipType":"V_4","parentType":"NetworkAddress"}}],"paging":{"offset":0,"limit":1000,"count":2,"pages":1}} 
+ </msg>
+<msg timestamp="20250130 17:07:37.441" level="INFO">${r} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20250130 17:07:37.269" endtime="20250130 17:07:37.441"/>
+</kw>
+<if>
+<branch type="IF" condition="'items' not in @{r.json()}">
+<kw name="Create List" library="BuiltIn">
+<var>@{objects}</var>
+<doc>Returns a list containing given items.</doc>
+<status status="NOT RUN" starttime="20250130 17:07:37.443" endtime="20250130 17:07:37.444"/>
+</kw>
+<status status="NOT RUN" starttime="20250130 17:07:37.442" endtime="20250130 17:07:37.444"/>
+</branch>
+<branch type="ELSE">
+<kw name="Create List" library="BuiltIn">
+<var>@{objects}</var>
+<arg>@{r.json()['items']}</arg>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20250130 17:07:37.445" level="INFO">@{objects} = [ {'links': {'self': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/dde11d62-288b-4b4c-92e0-1dad0496f14b', 'parent': 'https://10.62.158.200/api/fmc_c...</msg>
+<status status="PASS" starttime="20250130 17:07:37.445" endtime="20250130 17:07:37.445"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:37.444" endtime="20250130 17:07:37.445"/>
+</branch>
+<status status="PASS" starttime="20250130 17:07:37.441" endtime="20250130 17:07:37.446"/>
+</if>
+<while condition="'next' in @{r.json()['paging']}">
+<iter>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${r}</var>
+<arg>fmc</arg>
+<arg>url=${r.json()['paging']['next'][0]}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" starttime="20250130 17:07:37.447" endtime="20250130 17:07:37.447"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${objects}</arg>
+<arg>@{r.json()['items']}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20250130 17:07:37.447" endtime="20250130 17:07:37.448"/>
+</kw>
+<status status="NOT RUN" starttime="20250130 17:07:37.446" endtime="20250130 17:07:37.448"/>
+</iter>
+<status status="NOT RUN" starttime="20250130 17:07:37.446" endtime="20250130 17:07:37.448"/>
+</while>
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${objects_by_name}</var>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20250130 17:07:37.448" level="INFO">${objects_by_name} = {}</msg>
+<status status="PASS" starttime="20250130 17:07:37.448" endtime="20250130 17:07:37.449"/>
+</kw>
+<for flavor="IN">
+<var>${element}</var>
+<value>@{objects}</value>
+<iter>
+<var name="${element}">{'links': {'self': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/dde11d62-288b-4b4c-92e0-1dad0496f14b', 'parent': 'https://10.62.158.200/api/fmc_con...</var>
+<if>
+<branch type="IF" condition="&quot;${key}&quot; == &quot;${None}&quot;">
+<kw name="Set To Dictionary" library="Collections">
+<arg>${objects_by_name}</arg>
+<arg>${element['name']}</arg>
+<arg>${element}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" starttime="20250130 17:07:37.450" endtime="20250130 17:07:37.451"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:37.449" endtime="20250130 17:07:37.451"/>
+</branch>
+<branch type="ELSE">
+<kw name="Set To Dictionary" library="Collections">
+<arg>${objects_by_name}</arg>
+<arg>${element['${key}']}</arg>
+<arg>${element}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="NOT RUN" starttime="20250130 17:07:37.451" endtime="20250130 17:07:37.451"/>
+</kw>
+<status status="NOT RUN" starttime="20250130 17:07:37.451" endtime="20250130 17:07:37.451"/>
+</branch>
+<status status="PASS" starttime="20250130 17:07:37.449" endtime="20250130 17:07:37.451"/>
+</if>
+<status status="PASS" starttime="20250130 17:07:37.449" endtime="20250130 17:07:37.451"/>
+</iter>
+<iter>
+<var name="${element}">{'links': {'self': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/005056B0-DCB6-0ed3-0000-004294968696', 'parent': 'https://10.62.158.200/api/fmc_con...</var>
+<if>
+<branch type="IF" condition="&quot;${key}&quot; == &quot;${None}&quot;">
+<kw name="Set To Dictionary" library="Collections">
+<arg>${objects_by_name}</arg>
+<arg>${element['name']}</arg>
+<arg>${element}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" starttime="20250130 17:07:37.452" endtime="20250130 17:07:37.452"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:37.452" endtime="20250130 17:07:37.452"/>
+</branch>
+<branch type="ELSE">
+<kw name="Set To Dictionary" library="Collections">
+<arg>${objects_by_name}</arg>
+<arg>${element['${key}']}</arg>
+<arg>${element}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="NOT RUN" starttime="20250130 17:07:37.453" endtime="20250130 17:07:37.453"/>
+</kw>
+<status status="NOT RUN" starttime="20250130 17:07:37.452" endtime="20250130 17:07:37.453"/>
+</branch>
+<status status="PASS" starttime="20250130 17:07:37.451" endtime="20250130 17:07:37.453"/>
+</if>
+<status status="PASS" starttime="20250130 17:07:37.451" endtime="20250130 17:07:37.453"/>
+</iter>
+<status status="PASS" starttime="20250130 17:07:37.449" endtime="20250130 17:07:37.453"/>
+</for>
+<msg timestamp="20250130 17:07:37.453" level="INFO">${HOSTS} = {'any-ipv6': {'links': {'self': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/dde11d62-288b-4b4c-92e0-1dad0496f14b', 'parent': 'https://10.62.158.20...</msg>
+<status status="PASS" starttime="20250130 17:07:37.269" endtime="20250130 17:07:37.453"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${HOSTS}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20250130 17:07:37.454" level="INFO">${HOSTS} = {'any-ipv6': {'links': {'self': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/dde11d62-288b-4b4c-92e0-1dad0496f14b', 'parent': 'https://10.62.158.20...</msg>
+<status status="PASS" starttime="20250130 17:07:37.453" endtime="20250130 17:07:37.454"/>
+</kw>
+<tag>config</tag>
+<tag>day1</tag>
+<tag>fmc</tag>
+<tag>hosts</tag>
+<status status="PASS" starttime="20250130 17:07:37.268" endtime="20250130 17:07:37.454"/>
+</test>
+<test id="s1-s1-s1-s1-t2" name="Verify Host - Host_1" line="13">
+<kw name="Run Keyword If" library="BuiltIn">
+<arg>'Host_1' not in @{HOSTS}</arg>
+<arg>Fail</arg>
+<arg>Item not found on FMC</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" starttime="20250130 17:07:37.455" endtime="20250130 17:07:37.457"/>
+</kw>
+<kw name="Should Be Equal Value Json String" library="fmc_common">
+<arg>${HOSTS['Host_1']}</arg>
+<arg>$.name</arg>
+<arg>Host_1</arg>
+<kw name="Get Value From Json" library="JSONLibrary">
+<var>${r_value}</var>
+<arg>${json}</arg>
+<arg>${json_path}</arg>
+<doc>Get Value From JSON using JSONPath</doc>
+<msg timestamp="20250130 17:07:37.478" level="INFO">${r_value} = ['Host_1']</msg>
+<status status="PASS" starttime="20250130 17:07:37.457" endtime="20250130 17:07:37.478"/>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<arg>"${value}" != "${EMPTY}"</arg>
+<arg>Should Be Equal As Strings</arg>
+<arg>${r_value}[0]</arg>
+<arg>${value}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${r_value}[0]</arg>
+<arg>${value}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20250130 17:07:37.479" endtime="20250130 17:07:37.479"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:37.478" endtime="20250130 17:07:37.479"/>
+</kw>
+<status status="PASS" starttime="20250130 17:07:37.457" endtime="20250130 17:07:37.479"/>
+</kw>
+<kw name="Should Be Equal Value Json String" library="fmc_common">
+<arg>${HOSTS['Host_1']}</arg>
+<arg>$.value</arg>
+<arg>192.168.0.13</arg>
+<kw name="Get Value From Json" library="JSONLibrary">
+<var>${r_value}</var>
+<arg>${json}</arg>
+<arg>${json_path}</arg>
+<doc>Get Value From JSON using JSONPath</doc>
+<msg timestamp="20250130 17:07:37.492" level="INFO">${r_value} = ['192.168.0.15']</msg>
+<status status="PASS" starttime="20250130 17:07:37.480" endtime="20250130 17:07:37.492"/>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<arg>"${value}" != "${EMPTY}"</arg>
+<arg>Should Be Equal As Strings</arg>
+<arg>${r_value}[0]</arg>
+<arg>${value}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${r_value}[0]</arg>
+<arg>${value}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20250130 17:07:37.492" level="FAIL">192.168.0.15 != 192.168.0.13</msg>
+<status status="FAIL" starttime="20250130 17:07:37.492" endtime="20250130 17:07:37.493"/>
+</kw>
+<status status="FAIL" starttime="20250130 17:07:37.492" endtime="20250130 17:07:37.493"/>
+</kw>
+<status status="FAIL" starttime="20250130 17:07:37.479" endtime="20250130 17:07:37.493"/>
+</kw>
+<kw name="Should Be Equal Value Json String" library="fmc_common">
+<arg>${HOSTS['Host_1']}</arg>
+<arg>$.description</arg>
+<status status="NOT RUN" starttime="20250130 17:07:37.493" endtime="20250130 17:07:37.493"/>
+</kw>
+<tag>config</tag>
+<tag>day1</tag>
+<tag>fmc</tag>
+<tag>hosts</tag>
+<status status="FAIL" starttime="20250130 17:07:37.455" endtime="20250130 17:07:37.494">192.168.0.15 != 192.168.0.13</status>
+</test>
+<doc>Verify hosts</doc>
+<status status="FAIL" starttime="20250130 17:07:33.518" endtime="20250130 17:07:37.494"/>
+</suite>
+<status status="FAIL" starttime="20250130 17:07:33.517" endtime="20250130 17:07:37.495"/>
+</suite>
+<status status="FAIL" starttime="20250130 17:07:33.517" endtime="20250130 17:07:37.495"/>
+</suite>
+<status status="FAIL" starttime="20250130 17:07:33.511" endtime="20250130 17:07:37.496"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="1" skip="0">config</stat>
+<stat pass="1" fail="1" skip="0">day1</stat>
+<stat pass="1" fail="1" skip="0">fmc</stat>
+<stat pass="1" fail="1" skip="0">hosts</stat>
+</tag>
+<suite>
+<stat pass="1" fail="1" skip="0" id="s1" name="Cache">Cache</stat>
+<stat pass="1" fail="1" skip="0" id="s1-s1" name="Config">Cache.Config</stat>
+<stat pass="1" fail="1" skip="0" id="s1-s1-s1" name="Objects">Cache.Config.Objects</stat>
+<stat pass="1" fail="1" skip="0" id="s1-s1-s1-s1" name="Hosts">Cache.Config.Objects.Hosts</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

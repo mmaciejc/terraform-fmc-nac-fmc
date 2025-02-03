@@ -31,9 +31,12 @@
 # interface_name - (in sub_interface) represents physical interface and is taken automaticaly from interface name - TenGigabitEthernet0/1.10 and eq TenGigabitEthernet0/1
 #
 # Netmask:
-# netmask - represents: subnet mask, network mask, netork subnet
+# netmask - represents: subnet mask, network mask, network subnet, network prefix: 255.255.255.0 or 24
 #
-# 
+# Network:
+# prefix - represents network with prefix: 10.0.0.0/24 or IP address with prefix 10.0.0.1/24
+#
+#
 ##########################################################
 ###    Example of created local variables
 ##########################################################
@@ -54,7 +57,7 @@ locals {
 }
 
 provider "fmc" {
-    username = "apiadmin"
-    password = "C1sco12345"
-    url = "https://10.62.158.200"
+  username = "apiadmin"
+  password = "C1sco12345"
+  url      = "https://10.62.158.200"
 }

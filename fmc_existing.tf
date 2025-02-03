@@ -388,7 +388,27 @@ data "fmc_security_zones" "module" {
   items  = each.value.items
   domain = each.key
 }
+##########################################################
+###    Tunnel Zone
+##########################################################
+locals {
 
+  data_tunnel_zones = {
+    for domain in local.data_existing.fmc.domains : domain.name => {
+      items = {
+        for tunnel_zone in try(domain.objects.tunnel_zones, []) : tunnel_zone.name => {}
+      }
+    } if length(try(domain.objects.tunnel_zones, [])) > 0
+  }
+
+}
+
+data "fmc_tunnel_zones" "module" {
+  for_each = local.data_tunnel_zones
+
+  items  = each.value.items
+  domain = each.key
+}
 ##########################################################
 ###    Variable Set
 ##########################################################
@@ -539,7 +559,47 @@ data "fmc_syslog_alerts" "module" {
   items  = each.value.items
   domain = each.key
 }
+##########################################################
+##########################################################
+###    File Types / Categories
+##########################################################
+##########################################################
 
+locals {
+  data_file_types = {
+    for domain in try(local.data_existing.fmc.domains, {}) : domain.name => {
+      items = {
+        for file_type in try(domain.objects.file_types, {}) : file_type.name => {}
+      }
+    } if length(try(domain.objects.file_types, [])) > 0
+  }
+
+}
+
+data "fmc_file_types" "module" {
+  for_each = local.data_file_types
+
+  items  = each.value.items
+  domain = each.key
+}
+
+locals {
+  data_file_categories = {
+    for domain in try(local.data_existing.fmc.domains, {}) : domain.name => {
+      items = {
+        for file_category in try(domain.objects.file_categories, {}) : file_category.name => {}
+      }
+    } if length(try(domain.objects.file_categories, [])) > 0
+  }
+
+}
+
+data "fmc_file_categories" "module" {
+  for_each = local.data_file_categories
+
+  items  = each.value.items
+  domain = each.key
+}
 ##########################################################
 ##########################################################
 ###    Policies

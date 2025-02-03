@@ -45,10 +45,11 @@ locals {
         for device in try(domain.devices.devices, []) : [
           {
             name                 = device.name      # MyDeviceName
-            host_name            = device.host_name # IP or FQDN
+            host_name            = device.host # IP or FQDN
             license_capabilities = device.licenses
             registration_key     = device.registration_key
-            access_policy_id     = local.map_access_control_policies[device.access_policy].id
+
+            access_policy_id = local.map_access_control_policies[device.access_policy].id
 
             device_group_id  = try(local.map_device_groups[device.device_group].id, null)
             health_policy_id = try(local.map_health_policies[device.health_policy].id, null)
@@ -221,7 +222,7 @@ locals {
             {
               device_name          = ha_pair.name
               device_id            = try(data.fmc_device_ha_pair.module[ha_pair.name].id, fmc_device_ha_pair.module[ha_pair.name].id)
-              logical_name         = monitored_interface.logical_name
+              logical_name         = monitored_interface.interface_logical_name
               ipv4_standby_address = try(monitored_interface.ipv4_standby_address, null)
               monitor_interface    = try(monitored_interface.monitor_interface, null)
               ipv6_addresses = [for ipv6_address in try(monitored_interface.ipv6_addresses, {}) : {
@@ -282,18 +283,17 @@ locals {
             cluster_key                   = cluster.cluster_key
             control_node_device_id        = local.map_devices[cluster.control_node_device].id
             control_node_priority         = cluster.control_node_priority
-            control_node_interface_id     = local.map_interface_names["${cluster.control_node_device}:${cluster.control_node_interface}"].id
-            control_node_interface_name   = cluster.control_node_interface
-            control_node_interface_type   = local.map_interface_names["${cluster.control_node_device}:${cluster.control_node_interface}"].type
+            control_node_interface_id     = local.map_interface_names["${cluster.control_node_device}:${cluster.control_node_interface_name}"].id
+            control_node_interface_name   = cluster.control_node_interface_name
+            control_node_interface_type   = local.map_interface_names["${cluster.control_node_device}:${cluster.control_node_interface_name}"].type
             control_node_ccl_ipv4_address = cluster.control_node_ccl_ipv4_address
-            control_node_ccl_network      = cluster.control_node_ccl_network
-
+            control_node_ccl_prefix       = cluster.control_node_ccl_prefix
 
             # Optional
-            control_node_vni_network = try(cluster.control_node_ccl_network, null)
+            control_node_vni_prefix = try(cluster.control_node_vni_prefix, null)
             data_devices = [for data_device in try(cluster.data_devices, []) : {
               data_node_ccl_ipv4_address = data_device.data_node_ccl_ipv4_address
-              data_node_device_id        = local.map_devices[cluster.data_node_device].id
+              data_node_device_id        = local.map_devices[data_device.data_node_device].id
               data_node_priority         = data_device.data_node_priority
             }]
 
@@ -318,11 +318,10 @@ resource "fmc_device_cluster" "module" {
   control_node_interface_name   = each.value.control_node_interface_name
   control_node_interface_type   = each.value.control_node_interface_type
   control_node_ccl_ipv4_address = each.value.control_node_ccl_ipv4_address
-  control_node_ccl_network      = each.value.control_node_ccl_network
-
+  control_node_ccl_prefix       = each.value.control_node_ccl_prefix
   # Optional
-  control_node_vni_network = each.value.control_node_vni_network
-  data_devices             = each.value.data_devices
+  control_node_vni_prefix = each.value.control_node_vni_prefix
+  data_devices            = each.value.data_devices
 
   domain = each.value.domain_name
 
@@ -367,7 +366,7 @@ locals {
                 enable_sgt_propagate                  = try(physical_interface.enable_sgt_propagate, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.enable_sgt_propagate, null)
                 enabled                               = try(physical_interface.enabled, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.enabled, null)
                 fec_mode                              = try(physical_interface.fec_mode, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.fec_mode, null)
-                flow_control_send                     = try(physical_interface.flow_control_send, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.flow_control_send, null)
+                flow_control_send                     = try(physical_interface.flow_control_send, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.flow_control_send, false) ? "ON" : null
                 ip_based_monitoring                   = try(physical_interface.ip_based_monitoring, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.ip_based_monitoring, null)
                 ip_based_monitoring_next_hop          = try(physical_interface.ip_based_monitoring_next_hop, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.ip_based_monitoring_next_hop, null)
                 ip_based_monitoring_type              = try(physical_interface.ip_based_monitoring_type, local.defaults.fmc.domains[domain.name].devices.devices.vrfs[vrf.name].physical_interfaces.ip_based_monitoring_type, null)
@@ -879,53 +878,6 @@ resource "fmc_device_subinterface" "module" {
 }
 
 ##########################################################
-###    Deploy
-##########################################################
-
-locals {
-  resource_deploy = { for item in flatten([
-    for domain in local.domains : {
-      domain_name = domain.name
-      ignore_warning = try(local.fmc.system.deploy.ignore_warning, null)
-      #version    = null
-      deployment_note = try(local.fmc.system.deploy.deployment_note, null)
-      domain_name = domain.name
-      device_id_list = flatten([ for device in try(domain.devices.devices, []) : [ local.map_devices[device.name].id ] if try(device.deploy, false) && var.manage_deployment 
-        ])
-    }
-  ]) : item.domain_name => item if length(item.device_id_list) > 0
-  }
-}
-
-resource "fmc_device_deploy" "module" {
-  for_each = local.resource_deploy
-  # Mandatory  
-  device_id_list = each.value.device_id_list
-  # Optional      
-  ignore_warning    = each.value.ignore_warning
-  deployment_note   = each.value.deployment_note
-  domain            = each.value.domain_name
-
-  depends_on = [
-    fmc_device.module,
-    data.fmc_device.module,
-    fmc_device_physical_interface.module,
-    data.fmc_device_physical_interface.module,
-    fmc_device_etherchannel_interface.module,
-    data.fmc_device_etherchannel_interface.module,
-    fmc_device_subinterface.module,
-    data.fmc_device_subinterface.module,
-    fmc_device_ha_pair.module,
-    data.fmc_device_ha_pair.module,
-    fmc_device_ha_pair_monitoring.module,
-    fmc_device_cluster.module,
-    data.fmc_device_cluster.module,
-    fmc_policy_assignment.access_control_policy,
-  ]
-
-}
-
-##########################################################
 ###    Create maps for combined set of _data and _resources devices  
 ##########################################################
 
@@ -946,10 +898,10 @@ locals {
     {
       for item in flatten([
         for device_key, device_value in local.data_device : {
-          name          = device_key
-          id            = data.fmc_device.module[device_key].id
-          type          = data.fmc_device.module[device_key].type
-          domain_name   = device_value.domain_name
+          name        = device_key
+          id          = data.fmc_device.module[device_key].id
+          type        = data.fmc_device.module[device_key].type
+          domain_name = device_value.domain_name
         }
       ]) : item.name => item if contains(keys(item), "name")
     },
@@ -1024,7 +976,7 @@ locals {
       for item in flatten([
         for etherchannel_interface_key, etherchannel_interface_value in local.resource_etherchannel_interface : {
           name         = etherchannel_interface_value.name
-          type         = fmc_device_physical_interface.module[etherchannel_interface_key].type
+          type         = fmc_device_etherchannel_interface.module[etherchannel_interface_key].type
           device_name  = etherchannel_interface_value.device_name
           id           = fmc_device_etherchannel_interface.module[etherchannel_interface_key].id
           logical_name = etherchannel_interface_value.logical_name
@@ -1036,7 +988,7 @@ locals {
       for item in flatten([
         for etherchannel_interface_key, etherchannel_interface_value in local.data_etherchannel_interface : {
           name         = etherchannel_interface_value.name
-          type         = data.fmc_device_physical_interface.module[etherchannel_interface_key].type
+          type         = data.fmc_device_etherchannel_interface.module[etherchannel_interface_key].type
           device_name  = etherchannel_interface_value.device_name
           id           = data.fmc_device_etherchannel_interface.module[etherchannel_interface_key].id
           logical_name = try(data.fmc_device_etherchannel_interface.module[etherchannel_interface_key].logical_name, null)
@@ -1048,7 +1000,7 @@ locals {
       for item in flatten([
         for sub_interface_key, sub_interface_value in local.resource_sub_interface : {
           name         = sub_interface_value.name
-          type         = fmc_device_physical_interface.module[sub_interface_key].type
+          type         = fmc_device_subinterface.module[sub_interface_key].type
           device_name  = sub_interface_value.device_name
           id           = fmc_device_subinterface.module[sub_interface_key].id
           logical_name = sub_interface_value.logical_name
@@ -1060,7 +1012,7 @@ locals {
       for item in flatten([
         for sub_interface_key, sub_interface_value in local.data_sub_interface : {
           name         = sub_interface_value.name
-          type         = data.fmc_device_physical_interface.module[sub_interface_key].type
+          type         = data.fmc_device_subinterface.module[sub_interface_key].type
           device_name  = sub_interface_value.device_name
           id           = data.fmc_device_subinterface.module[sub_interface_key].id
           logical_name = try(data.fmc_device_subinterface.module[sub_interface_key].logical_name, null)

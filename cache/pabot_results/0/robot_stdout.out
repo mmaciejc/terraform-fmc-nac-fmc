@@ -1,0 +1,48 @@
+==============================================================================
+Cache                                                                         
+==============================================================================
+Cache.Config                                                                  
+==============================================================================
+Cache.Config.Objects                                                          
+==============================================================================
+Cache.Config.Objects.Hosts :: Verify hosts                                    
+==============================================================================
+Get All Hosts - Domain Global                                         | PASS |
+------------------------------------------------------------------------------
+Verify Host - Host_1                                                    
+  Traceback (most recent call last):
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/config/objects/hosts.robot:13
+    T:  Verify Host - Host_1    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/config/objects/hosts.robot:16
+      Should Be Equal Value Json String    ${HOSTS['Host_1']}    $.value    192.168.0.13
+      |  ${HOSTS['Host_1']} = {'links': {'self': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/005056B0-DCB6-0ed3-0000-004294968696', 'parent': 'https://10.62.158.200/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networkaddresses'}, 'type': 'Host', 'value': '192.168.0.15', 'overridable': False, 'description': ' ', 'id': '005056B0-DCB6-0ed3-0000-004294968696', 'name': 'Host_1', 'metadata': {'timestamp': 1738252690711, 'lastUser': {'name': 'apiadmin'}, 'domain': {'name': 'Global', 'id': 'e276abec-e0f2-11e3-8169-6d9ed49b625f', 'type': 'Domain'}, 'ipType': 'V_4', 'parentType': 'NetworkAddress'}} (dict)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/fmc_common.resource:36
+      Run Keyword If    "${value}" != "${EMPTY}"    Should Be Equal As Strings    ${r_value}[0]    ${value}
+      |  "${value}" != "${EMPTY}" = "192.168.0.13" != "" (str)
+      |  ${r_value}[0] = 192.168.0.15 (str)
+      |  ${value} = 192.168.0.13 (str)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/fmc_common.resource:36
+      Should Be Equal As Strings    ${r_value}[0]    ${value}
+      |  ${r_value}[0] = 192.168.0.15 (str)
+      |  ${value} = 192.168.0.13 (str)
+______________________________________________________________________________
+| FAIL |
+192.168.0.15 != 192.168.0.13
+------------------------------------------------------------------------------
+Cache.Config.Objects.Hosts :: Verify hosts                            | FAIL |
+2 tests, 1 passed, 1 failed
+==============================================================================
+Cache.Config.Objects                                                  | FAIL |
+2 tests, 1 passed, 1 failed
+==============================================================================
+Cache.Config                                                          | FAIL |
+2 tests, 1 passed, 1 failed
+==============================================================================
+Cache                                                                 | FAIL |
+2 tests, 1 passed, 1 failed
+==============================================================================
+Output:  /Users/mmaciejc/git/Official/new-provider/new-module/terraform-fmc-nac-fmc/cache/pabot_results/0/output.xml
