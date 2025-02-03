@@ -56,8 +56,8 @@ locals {
 
 }
 
-provider "fmc" {
-  username = "apiadmin"
-  password = "C1sco12345"
-  url      = "https://10.62.158.200"
-}
+#provider "fmc" {
+#  username = "apiadmin"
+#  password = "C1sco12345"
+#  url      = "https://10.62.158.200"
+#}
