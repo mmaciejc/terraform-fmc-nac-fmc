@@ -511,7 +511,7 @@ resource "fmc_device_physical_interface" "module" {
 
   depends_on = [
     fmc_device.module,
-    data.fmc_device.module
+    data.fmc_device.module,
   ]
 }
 ##########################################################
@@ -702,7 +702,7 @@ resource "fmc_device_etherchannel_interface" "module" {
     fmc_device.module,
     data.fmc_device.module,
     fmc_device_physical_interface.module,
-    data.fmc_device_physical_interface.module
+    data.fmc_device_physical_interface.module,
   ]
 
 }
@@ -872,7 +872,7 @@ resource "fmc_device_subinterface" "module" {
     fmc_device_physical_interface.module,
     data.fmc_device_physical_interface.module,
     fmc_device_etherchannel_interface.module,
-    data.fmc_device_etherchannel_interface.module
+    data.fmc_device_etherchannel_interface.module,
   ]
 
 }

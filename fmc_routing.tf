@@ -87,10 +87,62 @@ resource "fmc_device_vrf" "module" {
     fmc_device_etherchannel_interface.module,
     data.fmc_device_etherchannel_interface.module,
     fmc_device_subinterface.module,
-    data.fmc_device_subinterface.module
+    data.fmc_device_subinterface.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
   ]
 
 }
+
+##########################################################
+###    BFD TEMPLATES
+##########################################################
+locals {
+
+  resource_bfd_template = {
+    for item in flatten([
+      for domain in local.domains : [
+        for bfd_template in try(domain.objects.bfd_templates, []) : [
+          {
+            name                    = bfd_template.name
+            hop_type                = bfd_template.hop_type
+            echo                    = bfd_template.echo ? "ENABLED" : "DISABLED"
+
+            interval_time           = try(bfd_template.interval_time, null)
+            min_transmit            = try(bfd_template.min_transmit, null)
+            tx_rx_multiplier        = try(bfd_template.tx_rx_multiplier, null)
+            min_receive             = try(bfd_template.min_receive, null)
+            authentication_password = try(bfd_template.authentication_password, null)
+            authentication_key_id   = try(bfd_template.authentication_key_id, null)
+            authentication_type     = try(bfd_template.authentication_type, null)
+            domain_name = domain.name
+        }]
+      ]
+    ]) : item.name => item if contains(keys(item), "name") && !contains(try(keys(local.data_bfd_template), []), item.name)
+  }
+
+}
+resource "fmc_bfd_template" "module" {
+  for_each = local.resource_bfd_template
+
+  name   = each.value.name
+  domain = each.value.domain_name
+
+  hop_type                = each.value.hop_type
+  echo                    = each.value.echo
+  interval_time           = each.value.interval_time
+  min_transmit            = each.value.min_transmit
+  tx_rx_multiplier        = each.value.tx_rx_multiplier
+  min_receive             = each.value.min_receive
+  authentication_password = each.value.authentication_password
+  authentication_key_id   = each.value.authentication_key_id
+  authentication_type     = each.value.authentication_type
+}
+
+
+
 ##########################################################
 ###    BFDs
 ##########################################################
@@ -108,9 +160,9 @@ locals {
 
               interface_logical_name = bfd.interface_logical_name
               interface_id           = try(local.map_interface_logical_names["${device.name}:${bfd.interface_logical_name}"].id, null)
-              hop_type               = try(bfd.hop_type, null)
+              hop_type               = bfd.hop_type
               slow_timer             = try(bfd.slow_timer, null)
-              bfd_template_id        = try(data.fmc_bfd_template.module["${domain.name}:${bfd.bfd_template_name}"].id, null)
+              bfd_template_id        = local.map_bfd_templates[bfd.bfd_template].id
             }
           ] if !contains(try(keys(local.data_bfd), []), "${device.name}:${bfd.interface_logical_name}")
         ]
@@ -231,12 +283,16 @@ resource "fmc_device_ipv4_static_route" "module" {
     fmc_network_groups.module,
     data.fmc_device.module,
     fmc_device.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,    
     fmc_device_physical_interface.module,
     data.fmc_device_physical_interface.module,
     fmc_device_etherchannel_interface.module,
     data.fmc_device_etherchannel_interface.module,
     fmc_device_subinterface.module,
-    data.fmc_device_subinterface.module
+    data.fmc_device_subinterface.module,
   ]
 }
 
@@ -264,6 +320,10 @@ resource "fmc_device_vrf_ipv4_static_route" "module" {
     fmc_network_groups.module,
     data.fmc_device.module,
     fmc_device.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,      
     fmc_device_physical_interface.module,
     data.fmc_device_physical_interface.module,
     fmc_device_etherchannel_interface.module,
@@ -354,6 +414,10 @@ resource "fmc_device_bgp_general_settings" "module" {
   depends_on = [
     data.fmc_device.module,
     fmc_device.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,      
   ]
 }
 
@@ -506,6 +570,10 @@ resource "fmc_device_bgp" "module" {
   depends_on = [
     data.fmc_device.module,
     fmc_device.module,
+    fmc_device_ha_pair.module,
+    data.fmc_device_ha_pair.module,
+    fmc_device_cluster.module,
+    data.fmc_device_cluster.module,      
     data.fmc_device_bgp_general_settings.module,
     fmc_device_bgp_general_settings.module,
     data.fmc_hosts.module,
@@ -522,4 +590,34 @@ resource "fmc_device_bgp" "module" {
     fmc_device_subinterface.module,
     data.fmc_device_subinterface.module
   ]
+}
+
+
+
+######
+### map_bfd_templates
+######
+locals {
+  map_bfd_templates = merge({
+    for item in flatten([
+      for bfd_template_key, bfd_template_value in local.resource_bfd_template : {
+        name        = bfd_template_key
+        id          = fmc_bfd_template.module[bfd_template_key].id
+        type        = fmc_bfd_template.module[bfd_template_key].type
+        domain_name = bfd_template_value.domain_name
+      }
+    ]) : item.name => item if contains(keys(item), "name")
+    },
+    {
+      for item in flatten([
+        for bfd_template_key, bfd_template_value in local.data_bfd_template : {
+          name        = bfd_template_key
+          id          = data.fmc_device.module[bfd_template_key].id
+          type        = data.fmc_device.module[bfd_template_key].type
+          domain_name = bfd_template_value.domain_name
+        }
+      ]) : item.name => item if contains(keys(item), "name")
+    },
+  )
+
 }
